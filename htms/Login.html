@@ -1,0 +1,61 @@
+<div id="Login" class="container">
+    <style>
+        #loginForm{
+            width: 350px;
+            height: 250px;
+            position: absolute;
+            margin: auto;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        #Login .Message{
+            position: absolute;
+            bottom: 20px;
+            padding: 5px;
+            background-color: #faebcc;
+            border-radius: 5px;
+            box-shadow: 5px 5px 5px gray;
+        }
+
+    </style>
+    <div class="row">
+        <div id="loginForm" class="panel panel-default">
+            <div class="panel-body">
+                <div style="position: relative">
+                    <div class="Message hidden">
+
+                    </div>
+                </div>
+                <form role="form">
+                    <div class="form-group">
+                        <label for="user">Username</label>
+                        <input type="text" class="form-control" id="user" data-id="user">
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd">Password:</label>
+                        <input type="password" class="form-control" id="pwd" data-id="pass">
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox" data-id="chkPass"> Show password</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary pull-right">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        require(['MD5','Connector','Login'],function(){
+            var conn = new uplight.Connector();
+          var login = new uplight.Login($('#Login'),conn);
+            login.onComplete = function(res){
+                if(res.success=='loggedin'){
+                    window.location.href='Admin.php';
+
+                }
+            }
+        });
+    </script>
+</div>

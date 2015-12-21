@@ -1,0 +1,308 @@
+<section id="Accounts">
+    <style>
+        #Accounts .form-inline input{
+            min-width: 25px;
+        }
+        #Accounts .off{
+            display: none;
+        }
+
+         #Accounts .namespace{
+             color:crimson;
+         }
+
+    </style>
+    <section data-id="list_view" class="container">
+        <div class="row">
+            <h3>Accounts <small> You are currently have <span data-id="num_records"></span> accounts</small></h3>
+        </div>
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a  data-id="btnAdd" class="btn" title="Add new Account" ><div class="fa fa-plus"></div> Add </a>
+                    <a  data-id="btnEdit" class="btn" title="Edit selected account" > <div class="fa fa-bolt"></div> Edit</a>
+                    <a  data-id="btnDelete" class="btn" title="Delete selected Account" > <div class="fa fa-minus"></div> Delete</a>
+                </div>
+                <div class="panel-body">
+                    <div>
+                        <p>You have  accounts</p>
+                    </div>
+                        <table class="table">
+                            <thead data-id="list-header">
+                            </thead>
+                            <tbody data-id="list">
+
+                            </tbody>
+                        </table>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section data-id="edit-view" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <section data-id="edit-account">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-id="btnClose">&times;</button>
+                        <h4 class="modal-title" data-id="title">Edit Account</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form">
+                            <div class="form-group" data-id="id">
+                                <label>ID:</label> <!--<label class="btn"> <div class="fa fa-edit"> </div>Edit</label>-->
+                                <input type="text" class="form-control" readonly />
+                            </div>
+                            <div class="form-group" data-id="name">
+                                <label>Name:</label>
+                                <input  type="text"  placeholder="name is reqired"  class="form-control" />
+                            </div>
+
+                            <div class="form-group" data-id="description">
+                                <label>Descriptopn:</label>
+                                <input type="text" class="form-control" />
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-primary" data-id="btnSave">Next</button>
+                        <button type="button" class="btn btn-default" data-id="btnClose">Close</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </section>
+
+
+    <section data-ctr="AddAccount" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!--//////////////////////////////////////////////////////////-->
+
+                <form data-ctr="NamespaceCtr" class="off">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-id="btnClose">&times;</button>
+                        <h4 class="modal-title" data-id="title">Create Account</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form">
+                            <div class="form-group" data-id="namespace">
+                               <small> Namespace (ID) used in URL to idetify acoount on server.<br/>
+                               example : <b>1131MajMack</b><br/>
+                                Kiosk URL will be: <span data-id="server"></span>/dist/<span class="namespace">a1131MajMack</span>/Kiosk1080<br/>
+                                Admin URL will be: <span data-id="server-admin"></span>/dist/<span class="namespace">a1131MajMack</span>/Admin<br/>
+                               </small>
+                                <label>Namespace: </label><span><small> Letters and numbers only </small>
+                                <div class="off" data-id="message"></div>
+                            </span>
+                                <input  type="text"  placeholder="ID is reqired"  pattern="[[a-zA-Z0-9-]+" maxlength="30" required class="form-control" data-id="namespace" />
+                            </div>
+                            <div class="form-group" data-id="name">
+                                <label>Name:</label>
+                                <input type="text" class="form-control" maxlength="50" data-id="account-name" />
+                            </div>
+                            <div class="form-group" data-id="description">
+                                <label>Descriptopn:</label>
+                                <input type="text" class="form-control" maxlength="150" data-id="description"  />
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" data-id="btnSave">Next</button>
+                        <button type="button" class="btn btn-default" data-id="btnClose">Close</button>
+                    </div>
+                </form>
+
+                <!--//////////////////////////////////////////////////////////-->
+
+                <form  class="off" data-ctr="ConfigurationCtr">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-id="btnClose">&times;</button>
+                        <h4 class="modal-title" data-id="title">Configuration included</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-inline">
+                            <div data-id="message">
+                                &nbsp;
+                            </div>
+                            <div class="form-group" data-id="mobile">
+                                <input type="checkbox" class="form-control" checked data-id="mobile" />
+                                <label>Mobile </label><small> Mobile website (Part of standard package)</small>
+                            </div>
+                            <br/>
+                            <div class="form-group" data-id="kiosk1080">
+                                    <input  type="checkbox"   class="form-control" checked  data-id="kiosk1080"/>
+                                    <label >Kiosks 1080x1920</label> <small> Kiosk portrait application (Part of standard package)</small>
+                            </div>
+                            <div class="form-group" data-id="kiosk1920">
+                                <input  type="checkbox"   class="form-control" checked data-id="kiosk1820" />
+                                <label >Kiosks 1920x1080</label> <small> Kiosk landscape application (Part of standard package)</small>
+                            </div>
+                        </div>
+                    </div>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-id="btnBack">Back</button>
+                        <button type="button" class="btn btn-primary" data-id="btnSave">Next</button>
+                        <button type="button" class="btn btn-default" data-id="btnClose">Close</button>
+                    </div>
+                </form>
+
+                <!--//////////////////////////////////////////////////////////-->
+
+                <form id="AdministratorsCtr" class="off" data-ctr="AdministratorsCtr" method="post">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-id="btnClose">&times;</button>
+                        <h4 class="modal-title" data-id="title">Kiosk Administrator Accounts</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form">
+                            <h5>At list one administrator required to login into kiosk content management system (CMS) </h5>
+                            <div data-id="admin-item" class="admin-item">
+                                <button type="button" class="close" data-id="btnRemove">&times;</button>
+                                <hr/>
+                                <div class="form-group" data-id="email">
+                                    <label>Email</label>
+                                        <div class="pull-right">
+                                            <input  type="checkbox"   checked  data-id="sendemail"/><small> Send Email notification with username and password to owner</small>
+                                        </div>
+                                    <input type="email" class="form-control" maxlength="100" data-id="admin-email"  />
+                                </div>
+                                <div class="form-group" data-id="adminname">
+                                    <label>Name:</label>
+                                    <input type="text" class="form-control"  data-id="admin-name"  />
+                                </div>
+                                <div class="form-group" data-id="username">
+                                    <label>Username </label><small> Letters and numbers only </small>
+                                    <input type="text" class="form-control" placeholder="* Required" required  maxlength="50" pattern="[[a-zA-Z0-9-.]+" data-id="username" />
+                                </div>
+                                <div class="form-group" data-id="pass">
+                                    <label>Password </label> <small> Letters and numbers only </small>
+                                    <input type="text"  class="form-control" placeholder="* Required" required maxlength="50" pattern="[[a-zA-Z0-9-.]+"  data-id="password"/>
+                                </div>
+                            </div>
+                           <a class="btn" data-id="btnAddAdmin">
+                               <span class="fa fa-plus"></span><span> Add another administrator</span>
+                           </a>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-id="btnBack">Back</button>
+                        <button type="submit" class="btn btn-primary" data-id="btnSave">Next</button>
+                        <button type="button" class="btn btn-default" data-id="btnClose">Close</button>
+                    </div>
+                </form>
+
+                <!--//////////////////////////////////////////////////////////-->
+
+                <section id="FinalResultCtr" data-ctr="FinalResultCtr" class="off">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-id="btnClose">&times;</button>
+                        <h4 class="modal-title" data-id="title">Summary</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table">
+                            <tr data-id="account-name">
+                               <td> Name:</td> <td></td>
+                            </tr>
+                            <tr  data-id="description">
+                                <td> Description:</td><td></td>
+                            </tr>
+                            <tr data-id="namespace">
+                                <td> Namespace:</td><td class="namespace"></td>
+                            </tr>
+                            <tr data-id="kiosk1920" class="off">
+                               <td> Kiosk URL 1920x1080:</td><td></td>
+                            </tr>
+                            <tr data-id="kiosk1080" class="off">
+                               <td> Kiosk URL: 1080x1920</td><td></td>
+                            </tr>
+                            <tr data-id="mobile" class="off">
+                               <td> Mobile URL:</td><td></td>
+                            </tr>
+                            <tr data-id="admin-url">
+                               <td> Administrator URL:</td><td></td>
+                            </tr>
+                            <tr data-id="admins">
+                               <td> Administrators:</td><td></td>
+                            </tr>
+                        </table>
+                        <h5>You can edit this data later except <span class="namespace">Namespace</span></h5>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-id="btnBack">Back</button>
+                        <button type="button" class="btn btn-primary" data-id="btnSave">Create Account</button>
+                        <button type="button" class="btn btn-default" data-id="btnClose">Close</button>
+                    </div>
+                </section>
+                <!--//////////////////////////////////////////////////////////-->
+                <section data-ctr="InstallProcess" class="off">
+                    <style>
+                        #InstallProcessMessage{
+                            min-height: 400px;
+                        }
+                    </style>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-id="btnClose">&times;</button>
+                        <h4 class="modal-title" data-id="title">Installing account</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="InstallProcessMessage">
+                            <ul data-id="message">
+
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-id="btnClose">Close</button>
+                    </div>
+                </section>
+
+                <!--//////////////////////////////////////////////////////////-->
+            </div>
+        </div>
+    </section>
+
+
+    <section data-id="delete-view" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-id="btnClose">&times;</button>
+                    <h4 class="modal-title" data-id="edit_header">Delete</h4>
+                </div>
+                <div class="modal-body">
+                        <p data-id="message">You want to delete selected record?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-id="btnSave">Delete</button>
+                    <button type="button" class="btn btn-default" data-id="btnClose">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+      require(['ListEditor'],function(){
+         require(['Accounts','AddAccount','AddAccountSteps'],function(){
+           var acc= new uplight.Accounts($('#Accounts'),{service_id:'account'});
+            });
+        })
+
+    </script>
+
+</section>
