@@ -259,6 +259,7 @@ var uplight;
             _super.call(this, $view, 'AddAccount');
             this.$view = $view;
             this.init();
+            console.log('Add Account');
         }
         AddAccount.prototype.init = function () {
             var _this = this;
@@ -368,4 +369,4 @@ var uplight;
     })(uplight.DisplayObject);
     uplight.AddAccount = AddAccount;
 })(uplight || (uplight = {}));
-//# sourceMappingURL=AddAccount.js.map
+//# sourceMappingURL=AddAccountM.js.map

@@ -273,6 +273,7 @@ module uplight{
         constructor(public $view:JQuery){
             super($view,'AddAccount');
             this.init();
+            console.log('Add Account');
         }
 
         init():void{
