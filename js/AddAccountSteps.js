@@ -99,8 +99,15 @@ var uplight;
     var NamespaceCtr = (function (_super) {
         __extends(NamespaceCtr, _super);
         function NamespaceCtr($view, opts) {
+            var _this = this;
             _super.call(this, $view, opts);
             this.conn = new uplight.Connector();
+            this.conn.get('account.server_url').done(function (s) {
+                console.log(s);
+                var server = JSON.parse(s);
+                _this.$view.find('[data-id=server]:first').text(server.success);
+                _this.$view.find('[data-id=server-admin]:first').text(server.result);
+            });
         }
         NamespaceCtr.prototype.onSave = function () {
             var items = this.getElements();

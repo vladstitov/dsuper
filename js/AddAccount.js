@@ -156,6 +156,7 @@ var uplight;
         InstallProcess.prototype.onStep = function (res) {
         };
         InstallProcess.prototype.start = function () {
+            this._message = '';
             this.message('Sending requast to server');
             this.ask('start_create');
         };
@@ -310,20 +311,22 @@ var uplight;
                 _this.final.hide();
             };
             this.final.onSave = function () {
-                var inst = new InstallProcess(_this.$view.find('[data-ctr=InstallProcess]:first'), 'Installprocess');
+                if (!_this.installProcess) {
+                    _this.installProcess = new InstallProcess(_this.$view.find('[data-ctr=InstallProcess]:first'), 'Installprocess');
+                    _this.installProcess.onComplete = function (res) {
+                        console.log('InstallProcess complete');
+                        _this.onComplete();
+                    };
+                    _this.installProcess.onClose = function () {
+                        _this.onClose();
+                    };
+                }
                 var data = _this.final.getData();
-                console.log(JSON.stringify(data));
-                inst.setData(data);
+                // console.log(JSON.stringify(data));
+                _this.installProcess.setData(data);
                 _this.final.hide();
-                inst.show();
-                inst.start();
-                inst.onComplete = function (res) {
-                    console.log('InstallProcess complete');
-                    _this.onComplete();
-                };
-                inst.onClose = function () {
-                    _this.onClose();
-                };
+                _this.installProcess.show();
+                _this.installProcess.start();
             };
             this.steps = ar;
             for (var i = 0, n = ar.length; i < n; i++) {
@@ -363,6 +366,8 @@ var uplight;
                 ar[i].reset().hide();
             }
             this.final.hide();
+            if (this.installProcess)
+                this.installProcess.hide();
             return this;
         };
         return AddAccount;

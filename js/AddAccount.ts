@@ -160,6 +160,7 @@ module uplight{
 
 
         start():void{
+            this._message='';
             this.message('Sending requast to server');
             this.ask('start_create');
         }
@@ -276,6 +277,9 @@ module uplight{
             console.log('Add Account');
         }
 
+        private final:FinalResultCtr
+        private steps:EditorItem[];
+        private installProcess:InstallProcess;
         init():void{
             var ar:EditorItem[]=[];
             var ed:EditorItem =  new NamespaceCtr(this.$view.find('[data-ctr=NamespaceCtr]'),{});
@@ -320,6 +324,7 @@ module uplight{
             ar.push(ed);
 
             this.final =  new FinalResultCtr(this.$view.find('[data-ctr=FinalResultCtr]'));
+
             this.final.onClose = ()=>{
                 this.onClose();
             }
@@ -327,23 +332,29 @@ module uplight{
                 this.steps[2].show();
                 this.final.hide();
             }
+
             this.final.onSave =()=>{
-               var inst:InstallProcess = new InstallProcess(this.$view.find('[data-ctr=InstallProcess]:first'),'Installprocess');
-                var data:UItem[] = this.final.getData();
-                console.log(JSON.stringify(data));
-                inst.setData(data);
-                this.final.hide();
-                inst.show();
-                inst.start();
-                inst.onComplete = (res)=>{
-                    console.log('InstallProcess complete');
-                    this.onComplete();
-                };
-                inst.onClose = ()=>{
-                    this.onClose();
+                if(!this.installProcess){
+                    this.installProcess =  new InstallProcess(this.$view.find('[data-ctr=InstallProcess]:first'),'Installprocess');
+                    this.installProcess.onComplete = (res)=>{
+                        console.log('InstallProcess complete');
+                        this.onComplete();
+
+                    };
+                    this.installProcess.onClose = ()=>{
+                        this.onClose();
+                    }
                 }
 
+                var data:UItem[] = this.final.getData();
+               // console.log(JSON.stringify(data));
+                this.installProcess.setData(data);
+                this.final.hide();
+                this.installProcess.show();
+                this.installProcess.start();
+
             }
+
 
             this.steps = ar;
             for(var i=0,n=ar.length;i<n;i++){
@@ -357,11 +368,11 @@ module uplight{
 
         }
 
-        private final:FinalResultCtr
+
         onClose():void{
             console.log(' on close ',this);
         }
-        private steps:EditorItem[];
+
         onBack(editor):void{
             var i:number = this.steps.indexOf(editor);
             console.log(i);
@@ -388,6 +399,7 @@ module uplight{
             var ar = this.steps;
             for(var i=0,n=ar.length;i<n;i++){ ar[i].reset().hide(); }
             this.final.hide();
+            if(this.installProcess)this.installProcess.hide();
             return this;
         }
 

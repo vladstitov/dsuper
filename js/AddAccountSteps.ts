@@ -97,6 +97,12 @@ conn:Connector;
         constructor($view:JQuery,opts:any){
             super($view,opts);
             this.conn=new Connector();
+            this.conn.get('account.server_url').done((s)=>{
+                console.log(s);
+                var server:VOResult = JSON.parse(s);
+                this.$view.find('[data-id=server]:first').text(server.success);
+                this.$view.find('[data-id=server-admin]:first').text(server.result);
+            })
         }
 
         conn:Connector
