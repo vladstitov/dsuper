@@ -1,5 +1,5 @@
 <?
-require_once('DBConnector.php');
+require_once('MyConnector.php');
 class Accounts{		
 	var $_db2;
 	var $_db1;
@@ -9,7 +9,7 @@ class Accounts{
 	
 	private function db1(){
 				if($this->_db1)return $this->_db1;
-				$this->_db1=new DBConnector();
+				$this->_db1=new MyConnector();
 				return $this->_db1;
 	}	
 	

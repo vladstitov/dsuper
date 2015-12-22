@@ -1,13 +1,11 @@
 <?
-require_once('DBConnector.php');
 class Login{
-
 	var $conn;
 	public function process($post){
 		$out = new stdClass();
 		$out->error='hello world';		
 		$cred= explode(',',$post['credetials']);
-		$cmd = $cred[0];
+		$cmd = $cred[0];		
 		$out->result=$cmd;		
 		if($cmd == 'logout') return $this->logout();			
 		else if($cmd =='login') return $this->_login($cred[1],$cred[2]);				
@@ -67,7 +65,7 @@ class Login{
 	private function _login($user,$pass){
 			$out = new stdClass();			
 		
-			$conn= $this->con();	
+			$conn = $this->con();	
 		
 		$sql = "SELECT id,status,url FROM users WHERE username=? AND pass=?";
 		$result = $conn->query($sql,array($user,$pass));
@@ -94,7 +92,7 @@ class Login{
 	}
 	
 	private function con(){
-			if(!$this->conn) $this->conn =new DBConnector();
+			if(!$this->conn) $this->conn =new MyConnector();
 			return $this->conn;
 	}
 

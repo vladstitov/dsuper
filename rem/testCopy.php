@@ -1,9 +1,3 @@
-<?
-			echo $_SERVER['DOCUMENT_ROOT'];
-			$root = $_SERVER['DOCUMENT_ROOT'];
-			$src = $root."/demo/dir_test";
-			$dest = $root."/dist/dir_testcopy2";
-			$cmd = "git clone -l  $src $dest";
-			$res = shell_exec($cmd);
-			echo' '.$cmd.' result '.$res;
+<?php
+  $myPDO = new PDO('mysql:host=localhost;dbname=frontdes_dir', 'frontdes', 'zaq12wsxcde34rfv');
 ?>

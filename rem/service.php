@@ -4,6 +4,7 @@ if(isset($_GET['a'])){
 	$a=explode('.',$_GET['a']);
 	switch(array_shift($a)){
 		case 'account':
+			//require('DBConnector.php');
 			require('Accounts.php');
 			$ctr = new Accounts();
 			echo ($ctr->process($a,$_GET,$_POST));
@@ -33,10 +34,12 @@ if(isset($_GET['a'])){
 			echo json_encode($out);
 		break;
 		case 'login':
+		require('MyConnector.php');
 		require ('Login.php');
 		$login = new Login();
 		echo json_encode($login->process($_POST));	
 		break;
+		echo'heklo';
 	}
 
 }else{

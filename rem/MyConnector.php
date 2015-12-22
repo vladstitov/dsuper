@@ -1,9 +1,9 @@
-<?php
-class DbConnector{
+<?
+class MyConnector{
     var  $db;
-	var $stmt;	
-	function DbConnector(){
-		$this->db  = new PDO('mysql:host=localhost;dbname=frontdes_dir','frontdes_vlad','directories');	
+	var $stmt;
+	function MyConnector(){
+		$this->db  = new PDO('mysql:host=localhost;dbname=frontdes_dir', 'frontdes', 'zaq12wsxcde34rfv');	
 	}	
 
 	function getField($sql){
@@ -59,5 +59,6 @@ class DbConnector{
 		 	$res = $stmt->execute($ar);
 			if($res) return $this->db->lastInsertId();
 			return 0;
-	}	
+	}
+	
 }
