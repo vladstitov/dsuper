@@ -1,11 +1,11 @@
 <?
+require_once('DBConnector.php');
 class Login{
 
 	var $conn;
 	public function process($post){
 		$out = new stdClass();
-		$out->error='hello world';
-		
+		$out->error='hello world';		
 		$cred= explode(',',$post['credetials']);
 		$cmd = $cred[0];
 		$out->result=$cmd;		
@@ -26,77 +26,61 @@ class Login{
 				$out ->result = 'hacker';
 				return $out;	
 			}
-			$user = mysql_real_escape_string($user);
-			$pass = mysql_real_escape_string($pass);
+			
 			$exists = $this->checkUser($user);
+			if($exists->success=='taken')	return $exists ;			
+			
 			$ip = $_SERVER['REMOTE_ADDR'];
 			$url='?';
-			$conn= $this->con();
+			$conn = $this->con();			
+			$sql = "INSERT INTO users (username,pass,status,url,ip) VALUES (?,?,?,?,?)";
+			$result = $conn->query($sql,array($user,$pass,'newuser',$url,$ip));
+			if($result){
+				$out->success='usercreated';
+				$out->result=$url;	
+				$_SESSION['directories_role']='newuser';
+				$_SESSION['directories_userid']= $result;
+				
+			}else{
 			
-			if($exists->success=='spare'){		
-					$sql = "INSERT INTO users (username,pass,status,url,ip) VALUES ('$user','$pass','newuser','$url','$ip')";
-					$result = $conn->query($sql);
-					if($result){
-						$out->success='usercreated';
-						$out->result=$url;
-						return $out;
-					}else{
-						$out->error='createerror';
-						$out->result=$result;
-						return $out;
-					}
-			}else return $exists;
-			
-			$out->success='';
-			return $out;
-	
+				$out->error='createerror';
+				$out->result=$result;
+				return $out;
+			}			
+			return $out;	
 	}
+	
 	private function checkUser($user){
-		$user = mysql_real_escape_string($user);
-		$out = new stdClass();
-		$conn = $this->con();
-		$sql = "SELECT * FROM users WHERE username='$user'";
-		
-		$result = $conn->query($sql);		
-		if ($result && $result->num_rows === 0){
+		$out = new stdClass();	
+		$conn = $this->con();		
+		$sql = "SELECT * FROM users WHERE username=?";		
+		$result = $conn->query($sql,array($user));		
+		if(count($result) === 0){
 				$out->success='spare';
 				$out->result =  $user;
 				return $out;
 		}
 		$out->success='taken';
-		$out->result =  $user;		
+		$out->result =  $result;		
 		return $out;
 	}
 	private function _login($user,$pass){
-			$out = new stdClass();
-			$user = mysql_real_escape_string($user);
-			$pass = mysql_real_escape_string($pass);
+			$out = new stdClass();			
 		
-		$conn= $this->con();
-		if($conn->connect_error){
-				$out->error = $conn->connect_error;
-				return $out;
-		}
+			$conn= $this->con();	
 		
-		$sql = "SELECT id,status,url FROM users WHERE username='$user' AND pass='$pass'";
-		$result = $conn->query($sql);		
-		if ($result && $result->num_rows === 1){
-			$row = $result->fetch_assoc();			
-			$_SESSION['directories_userid'] = $row['id'];
-			$_SESSION['directories_role'] = $row['status'];
-			if($row['status']=='welcome'){
+		$sql = "SELECT id,status,url FROM users WHERE username=? AND pass=?";
+		$result = $conn->query($sql,array($user,$pass));
+		
+		if ($result && count($result) === 1){
+				$row = $result[0];
+				$_SESSION['directories_userid'] = $row->id;
+				$_SESSION['directories_role'] = $row->status;
 				$out->success='loggedin';
-				$out->result = 'createuser';	
-			}else{
-				$out->success='loggedin';
-				$out->result = $row['url'];	
-			}
-					
+				$out->result = $row->url;
 		}else {
-			$out->success=$user.','.$pass;
-			$out->result = $result?'num'.$result->num_rows:$result;
-			
-			
+				$out->success='wrong';
+				$out->result =  count($result);			
 		}		
 			return $out;
 	}
@@ -110,7 +94,7 @@ class Login{
 	}
 	
 	private function con(){
-			if(!$this->conn) $this->conn = new mysqli('localhost','Vlad','','test');
+			if(!$this->conn) $this->conn =new DBConnector();
 			return $this->conn;
 	}
 

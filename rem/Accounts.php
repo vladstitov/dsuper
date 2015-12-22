@@ -426,8 +426,7 @@ class Accounts{
 	}
 	
 	private function register(){
-				$out= new stdClass();
-				
+				$out= new stdClass();				
 				$folder = $_SERVER['DOCUMENT_ROOT'].$_SESSION['directories_folder'];	
 				$id = $_SESSION['directories_userid'];				
 				$data = json_decode(file_get_contents('account'.$id.'.json'));				

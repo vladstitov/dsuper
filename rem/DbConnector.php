@@ -3,7 +3,7 @@ class DbConnector{
     var  $db;
 	var $stmt;	
 	function DbConnector(){
-		$this->db  = new PDO('mysql:host=localhost;dbname=test','Vlad','');	
+		$this->db  = new PDO('mysql:host=localhost;dbname=frontdes_dir','frontdes_vlad','directories');	
 	}	
 
 	function getField($sql){

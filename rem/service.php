@@ -32,12 +32,15 @@ if(isset($_GET['a'])){
 			} else $out->error='error email';
 			echo json_encode($out);
 		break;
-	}
-
-}else if(isset($_POST['credetials'])){
+		case 'login':
 		require ('Login.php');
 		$login = new Login();
-		echo json_encode($login->process($_POST));		
+		echo json_encode($login->process($_POST));	
+		break;
+	}
+
+}else{
+echo 'Hello world';
 }
 
 

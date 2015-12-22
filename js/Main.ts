@@ -8,8 +8,9 @@ module uplight{
     export class Controller{
         private current:string;
         constructor(){
+            var conn:Connector = new Connector()
             $('#btnLogout').click(()=>{
-                Connector.logout().done((s:string)=>{
+                conn.post({credetials:'logout'},'login').done((s:string)=>{
                     var res:VOResult = JSON.parse(s);
                     if(res.success=='logout')window.location.reload();
                 });

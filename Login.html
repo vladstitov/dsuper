@@ -58,7 +58,7 @@
             })
 
             var send = function(obj){
-                $.post('rem/service.php',obj).done(function(res){
+                $.post('rem/service.php?a=login',obj).done(function(res){
                     var vo
                     try{
                         vo = JSON.parse(res);

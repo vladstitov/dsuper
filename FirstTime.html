@@ -8,7 +8,7 @@
     <meta name="author" content="ulight Vlad">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <title>Admin Super Login</title>
-    <script type="text/javascript" src="js/libs/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="js/libs/jquery-2.1.4.min.js"></script>
     <script src="js/libs/require.js"> </script>
 
     <style>
@@ -43,13 +43,12 @@
             }
         });
 $(document).ready(function(){
-    require(['Login','MD5','Connector','NewSuper'],function(){
-        var conn = new uplight.Connector();
-        var login = new uplight.Login($('#FirstLogin'),conn);
+    require(['Login','MD5','Utils'],function(){
+        var login = new uplight.Login($('#FirstLogin'));
         login.onComplete = function(res){
             if(res.result ==='createuser'){
                 login.hide();
-                var newsup = new uplight.NewSuper($('#CreateUser'),conn);
+                var newsup = new uplight.NewSuper($('#CreateUser'));
                 newsup.show();
                 newsup.cleanFields();
                 newsup.onComplete = function(res){
@@ -77,7 +76,7 @@ $(document).ready(function(){
         <div class="panel panel-default">
             <div class="panel-body">
                 <div style="position: relative">
-                    <div  class="Message hidden">
+                    <div  class="Message hidden" data-id="message">
 
                     </div>
                 </div>
@@ -103,7 +102,7 @@ $(document).ready(function(){
         <div  class="panel panel-default">
             <div class="panel-body">
                 <div style="position: relative">
-                    <div  class=".Message hidden">
+                    <div  class=".Message hidden" data-id="message">
 
                     </div>
                 </div>

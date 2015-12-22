@@ -1,11 +1,12 @@
 <?
 session_start();
-if(!isset($_SESSION['directories_role'])){
+if(!isset($_SESSION['directories_role'])  || $_SESSION['directories_role']=='welcome'){
 	 echo file_get_contents('Login.html');
 	  exit;
 }
-
 $role = $_SESSION['directories_role'];
+
+$user_id=$_SESSION['directories_userid'];
 
 
 ?>
@@ -36,7 +37,6 @@ $role = $_SESSION['directories_role'];
 
     </style>
     <script>
-        var role ='<?=$role?>';
         requirejs.config({
             baseUrl: 'js',
             paths:{
@@ -44,9 +44,9 @@ $role = $_SESSION['directories_role'];
                 'tween':'libs/easeljs-0.8.1.min',
                 'ListEdit':'ListEditor'
             }
-        });
+        }); var urole ='<?=$role.$user_id;?>';
     </script>
-        <title>Super Admin</title>
+        <title data-id="">Super Admin</title>
 </head>
 <body>
 <div class="container">
