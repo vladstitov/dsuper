@@ -369,4 +369,4 @@ var uplight;
     })(uplight.DisplayObject);
     uplight.AddAccount = AddAccount;
 })(uplight || (uplight = {}));
-//# sourceMappingURL=AddAccountM.js.map
+//# sourceMappingURL=AddAccount.js.map
