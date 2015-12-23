@@ -65,7 +65,7 @@ var uplight;
             return this;
         };
         return ConfigurationCtr;
-    })(uplight.EditorItem);
+    })(uplight.EditorForm);
     uplight.ConfigurationCtr = ConfigurationCtr;
     var AdministratorsCtr = (function (_super) {
         __extends(AdministratorsCtr, _super);
@@ -94,7 +94,7 @@ var uplight;
             this.onComplete();
         };
         return AdministratorsCtr;
-    })(uplight.EditorItem);
+    })(uplight.EditorForm);
     uplight.AdministratorsCtr = AdministratorsCtr;
     var NamespaceCtr = (function (_super) {
         __extends(NamespaceCtr, _super);
@@ -140,7 +140,7 @@ var uplight;
             }
         };
         return NamespaceCtr;
-    })(uplight.EditorItem);
+    })(uplight.EditorForm);
     uplight.NamespaceCtr = NamespaceCtr;
 })(uplight || (uplight = {}));
 //# sourceMappingURL=AddAccountSteps.js.map

@@ -2,8 +2,9 @@
 class MyConnector{
     var  $db;
 	var $stmt;
-	function MyConnector(){
-		$this->db  = new PDO('mysql:host=localhost;dbname=frontdes_dir', 'frontdes', 'zaq12wsxcde34rfv');	
+	function MyConnector($folder){
+		if($folder)$this->db = new PDO('sqlite:'.$folder.'/data/directories.db');
+		else	$this->db  = new PDO('mysql:host=localhost;dbname=frontdes_dir', 'frontdes', 'zaq12wsxcde34rfv');	
 	}	
 
 	function getField($sql){
@@ -43,9 +44,10 @@ class MyConnector{
 		$this->stmt=$this->db->prepare($sql);
 		
 	}
-	function execute($arVars){
-		$this->stmt->execute($arVars);
+	function prepare($sql){
+			return $this->db->prepare($sql);
 	}
+	
 	function commit(){
 		return $this->db()-> commit();
 	}

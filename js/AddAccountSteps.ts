@@ -8,7 +8,8 @@
 
 module uplight{
 
-    export class ConfigurationCtr extends EditorItem{
+    export class ConfigurationCtr extends EditorForm{
+
         constructor($view:JQuery,opts:any){
             super($view,opts);
 
@@ -47,7 +48,7 @@ module uplight{
             else  this.onComplete();
         }
 
-        reset():EditorItem{
+        reset():EditorForm{
             if(this.isDirty){
                 if(!this.$items) this.getElements();
                 var ar = this.$items;
@@ -63,7 +64,7 @@ module uplight{
 
     }
 
-    export class AdministratorsCtr  extends EditorItem{
+    export class AdministratorsCtr  extends EditorForm{
         constructor($view:JQuery,opts:any){
             super($view,opts);
 
@@ -93,7 +94,7 @@ conn:Connector;
 
     }
 
-    export class NamespaceCtr  extends EditorItem{
+    export class NamespaceCtr  extends EditorForm{
         constructor($view:JQuery,opts:any){
             super($view,opts);
             this.conn=new Connector();

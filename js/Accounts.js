@@ -13,6 +13,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var uplight;
 (function (uplight) {
+    var CLICK = CLICK || 'click';
     var Accounts = (function (_super) {
         __extends(Accounts, _super);
         function Accounts($view, opt) {
@@ -28,13 +29,27 @@ var uplight;
                 _this.addAccount.hide();
                 _this.loadData();
             };
-            var data = JSON.parse('[{"index":"namespace","value":"account3"},{"index":"account-name","value":"Name of new account"},{"index":"description","value":"Some description goes here "},{"index":"mobile","label":"Mobile ","value":true},{"index":"kiosk1080","label":"Kiosks 1080x1920","value":true},{"index":"kiosk1920","label":"Kiosks 1920x1080","value":false},{"index":"sendemail","value":true},{"index":"admin-email","value":"adminemail@mail.com"},{"index":"admin-name","value":"admin Name"},{"index":"username","value":"adminuserbane"},{"index":"password","value":"adminpass"}]');
-            this.addAccount.setData(data).show();
-            this.addAccount.goto(3);
-            _super.prototype.renderHeader.call(this, '<tr><th><small>ID</small></th><th>Name</th><th>Description</th></tr>');
+            //  var data=JSON.parse('[{"index":"namespace","value":"account3"},{"index":"account-name","value":"Name of new account"},{"index":"description","value":"Some description goes here "},{"index":"mobile","label":"Mobile ","value":true},{"index":"kiosk1080","label":"Kiosks 1080x1920","value":true},{"index":"kiosk1920","label":"Kiosks 1920x1080","value":false},{"index":"sendemail","value":true},{"index":"admin-email","value":"adminemail@mail.com"},{"index":"admin-name","value":"admin Name"},{"index":"username","value":"adminuserbane"},{"index":"password","value":"adminpass"}]');
+            // this.addAccount.setData(data).show();
+            // this.addAccount.goto(3);
+            _super.prototype.renderHeader.call(this, '<tr><th><small>Info</small></th><th>Name</th><th>Description</th></tr>');
         }
+        Accounts.prototype.onInit = function () {
+            var _this = this;
+            this.$list.on(CLICK, '.btn', function (evt) {
+                setTimeout(function () {
+                    if (!_this.accountInfo)
+                        _this.accountInfo = new AccountInfo(_this.$view.find('[data-ctr=AccountInfo]'), 'AccountInfo');
+                    _this.accountInfo.setData(_this.selectedItem);
+                    _this.accountInfo.show();
+                }, 10);
+                // var i:number = Number($(evt.currentTarget).parent().parent().data('i'));
+                //if(isNaN(i))return;
+                // var item
+            });
+        };
         Accounts.prototype.renderItem = function (item, i) {
-            return '<tr data-i="' + i + '"><td><small>' + item.id + '</small></td><td>' + item.name + '</td><td>' + item.description + '</td></tr>';
+            return '<tr data-i="' + i + '"><td><a class="btn fa fa-info-circle"></a></td><td>' + item.name + '</td><td>' + item.description + '</td></tr>';
         };
         Accounts.prototype.onAdd = function () {
             this.addAccount.reset().start();
@@ -43,5 +58,91 @@ var uplight;
         return Accounts;
     })(uplight.ListEditor);
     uplight.Accounts = Accounts;
+    var AccountEdit = (function (_super) {
+        __extends(AccountEdit, _super);
+        function AccountEdit($view, name) {
+            _super.call(this, $view, name);
+        }
+        return AccountEdit;
+    })(uplight.ModuleView);
+    uplight.AccountEdit = AccountEdit;
+    var UAccount = (function () {
+        function UAccount() {
+        }
+        return UAccount;
+    })();
+    uplight.UAccount = UAccount;
+    var AccCfg = (function () {
+        function AccCfg(data) {
+            for (var str in data)
+                this[str] = data[str];
+        }
+        return AccCfg;
+    })();
+    uplight.AccCfg = AccCfg;
+    var AccData = (function () {
+        function AccData(data) {
+            for (var str in data)
+                this[str] = data[str];
+            this.config = new AccCfg(this.config);
+        }
+        return AccData;
+    })();
+    uplight.AccData = AccData;
+    var AccountInfo = (function (_super) {
+        __extends(AccountInfo, _super);
+        function AccountInfo($view, name) {
+            _super.call(this, $view, name);
+        }
+        AccountInfo.prototype.renderData = function (data) {
+            console.log(data);
+            var url = 'http://' + data.server + '/' + data.config.folder + data.config.pub;
+            if (data.config.mobile)
+                this.$view.find('[data-id=mobile]:first').text(url + data.config.mobileUrl).attr('href', url + data.config.mobileUrl);
+            else
+                this.$view.find('[data-id=mobile]:first').parent().hide();
+            var admUrl = data.adminUrl + data.config.folder + data.config.pub + data.config.adminUrl;
+            this.$view.find('[data-id=admin-url]:first').text(admUrl).attr('href', admUrl);
+            var admins = '';
+            var ar = data.admins;
+            for (var i = 0, n = ar.length; i < n; i++) {
+                var item = ar[i];
+                admins += '<tr><td>' + item.name + '</td><td><a href="mailto:' + item.email + '" >' + item.email + '</a></td>';
+            }
+            this.$view.find('[data-id=admins]:first').html(admins);
+            var kiosks = '';
+            var ar2 = data.config.kiosksUrls;
+            if (ar2) {
+                for (var i = 0, n = ar2.length; i < n; i++)
+                    kiosks += '<a href="' + url + ar2[i] + '" target="_blank" class="list-group-item">' + url + ar2[i] + '</a>';
+                if (n === 0)
+                    this.$view.find('[data-id=kiosks]:first').parent().hide();
+                else
+                    this.$view.find('[data-id=kiosks]:first').html(kiosks);
+            }
+        };
+        AccountInfo.prototype.onShow = function () {
+            var _this = this;
+            var data = this.data;
+            console.log(data);
+            this.$view.find('[data-id=name]').text(data.name);
+            this.$view.find('[data-id=description]').text(data.description);
+            uplight.Connector.inst.get('account.get_info&id=' + data.id).done(function (s) {
+                var data;
+                try {
+                    var resp = JSON.parse(s);
+                    if (resp.success == 'success')
+                        data = new AccData(resp);
+                }
+                catch (e) {
+                    console.log(e);
+                }
+                if (data)
+                    _this.renderData(data);
+            });
+        };
+        return AccountInfo;
+    })(uplight.ModuleView);
+    uplight.AccountInfo = AccountInfo;
 })(uplight || (uplight = {}));
 //# sourceMappingURL=Accounts.js.map

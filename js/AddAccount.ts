@@ -278,11 +278,11 @@ module uplight{
         }
 
         private final:FinalResultCtr
-        private steps:EditorItem[];
+        private steps:EditorForm[];
         private installProcess:InstallProcess;
         init():void{
-            var ar:EditorItem[]=[];
-            var ed:EditorItem =  new NamespaceCtr(this.$view.find('[data-ctr=NamespaceCtr]'),{});
+            var ar:EditorForm[]=[];
+            var ed:EditorForm =  new NamespaceCtr(this.$view.find('[data-ctr=NamespaceCtr]'),{});
             ar.push(ed);
             ed.onBack =()=>{
 

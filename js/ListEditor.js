@@ -14,9 +14,9 @@ var uplight;
 (function (uplight) {
     var CLICK = CLICK || 'click';
     var SELECTED = SELECTED || 'selected';
-    var EditorItem = (function (_super) {
-        __extends(EditorItem, _super);
-        function EditorItem($view, opt, name) {
+    var EditorForm = (function (_super) {
+        __extends(EditorForm, _super);
+        function EditorForm($view, opt, name) {
             _super.call(this, $view, name);
             this.value_id = 'input';
             $view.submit(function () { return false; });
@@ -26,14 +26,14 @@ var uplight;
             this.initButtons();
             this.initItems();
         }
-        EditorItem.prototype.initButtons = function () {
+        EditorForm.prototype.initButtons = function () {
             var _this = this;
             this.$view.find('[data-id=btnClose]').click(function () { return _this.onClose(); });
             this.$view.find('[data-id=btnSave]').click(function () { return _this.onSave(); });
             this.$view.find('[data-id=btnBack]').click(function () { _this.onBack(); });
             this.$title = this.$view.find('[data-id=title]');
         };
-        EditorItem.prototype.initItems = function () {
+        EditorForm.prototype.initItems = function () {
             // var model:any = {};
             //  var value_id:string =  this.value_id;
             // this.$view.find('input').each((i,el)=>{
@@ -45,14 +45,14 @@ var uplight;
             //})
             // this.model = model;
         };
-        EditorItem.prototype.onSave = function () { console.log('onSave ' + this.id); };
-        EditorItem.prototype.onClose = function () { console.log('onClose ' + this.id); };
-        EditorItem.prototype.onBack = function () { console.log('onBack ' + this.id); };
-        EditorItem.prototype.onComplete = function () { console.log('onComplete ' + this.id); };
-        EditorItem.prototype.getView = function () {
+        EditorForm.prototype.onSave = function () { console.log('onSave ' + this.id); };
+        EditorForm.prototype.onClose = function () { console.log('onClose ' + this.id); };
+        EditorForm.prototype.onBack = function () { console.log('onBack ' + this.id); };
+        EditorForm.prototype.onComplete = function () { console.log('onComplete ' + this.id); };
+        EditorForm.prototype.getView = function () {
             return this.$view;
         };
-        EditorItem.prototype.reset = function () {
+        EditorForm.prototype.reset = function () {
             if (this.isDirty) {
                 if (!this.$items)
                     this.getElements();
@@ -64,14 +64,14 @@ var uplight;
             }
             return this;
         };
-        EditorItem.prototype.showMessage = function (str) {
+        EditorForm.prototype.showMessage = function (str) {
             var msg = this.$view.find('[data-id=message]').html(str);
             msg.show();
             setTimeout(function () {
                 msg.hide();
             }, 3000);
         };
-        EditorItem.prototype.getData = function () {
+        EditorForm.prototype.getData = function () {
             var out = [];
             this.$view.find('input').each(function (i, el) {
                 var item = new UItem();
@@ -85,10 +85,10 @@ var uplight;
             });
             return out;
         };
-        EditorItem.prototype.getElement = function (i) {
+        EditorForm.prototype.getElement = function (i) {
             return this.$items[i];
         };
-        EditorItem.prototype.getElements = function () {
+        EditorForm.prototype.getElements = function () {
             var out = [];
             this.$view.find('input').each(function (i, el) {
                 out.push(el);
@@ -96,9 +96,9 @@ var uplight;
             this.$items = out;
             return out;
         };
-        return EditorItem;
+        return EditorForm;
     })(uplight.DisplayObject);
-    uplight.EditorItem = EditorItem;
+    uplight.EditorForm = EditorForm;
     var UItem = (function () {
         function UItem() {
         }
@@ -108,7 +108,6 @@ var uplight;
     var ListEditor = (function (_super) {
         __extends(ListEditor, _super);
         function ListEditor($view, options, name) {
-            var _this = this;
             _super.call(this, $view, name);
             this.btn_edit_id = '[data-id=btnEdit]';
             this.btn_close_id = '[data-id=btnClose]';
@@ -126,6 +125,12 @@ var uplight;
             this.auto_start = true;
             for (var str in options)
                 this[str] = options[str];
+            this.init();
+            this.onInit();
+        }
+        ListEditor.prototype.init = function () {
+            var _this = this;
+            var $view = this.$view;
             this.conn = new uplight.Connector();
             this.$btnAdd = $view.find('[data-id=btnAdd]').click(function () { return _this.onAddClick(); });
             this.$btnEdit = $view.find(this.btn_edit_id).click(function () { return _this.onEditClick(); });
@@ -138,7 +143,9 @@ var uplight;
             this.$deleteView.find(this.btn_close_id).click(function () { return _this.hideDelete(); });
             if (this.auto_start)
                 this.loadData();
-        }
+        };
+        ListEditor.prototype.onInit = function () {
+        };
         ListEditor.prototype.onData = function (s) {
             // console.log(s);
             try {
@@ -157,6 +164,8 @@ var uplight;
         ListEditor.prototype.renderItem = function (item, i) {
             return '<tr data-i="' + i + '"><td><small>' + item.id + '</small></td><td>' + item.name + '</td><td>' + item.description + '</td></tr>';
         };
+        ListEditor.prototype.onRendered = function () {
+        };
         ListEditor.prototype.render = function () {
             var ar = this.data;
             var out = '';
@@ -164,6 +173,7 @@ var uplight;
                 out += this.renderItem(ar[i], i);
             this.$list.html(out);
             this.$num_records.text(n);
+            this.onRendered();
         };
         ListEditor.prototype.onListClick = function (evt) {
             var $el = $(evt.currentTarget);

@@ -3,6 +3,11 @@
  */
 ///<reference path='typing/jquery.d.ts' />
 ///<reference path='typing/underscore.d.ts' />
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var uplight;
 (function (uplight) {
     var Utils = (function () {
@@ -50,9 +55,16 @@ var uplight;
         Connector.prototype.Email = function (str) {
             return $.post(this.service + '?a=EMAIL', str);
         };
+        Connector.inst = new Connector();
         return Connector;
     })();
     uplight.Connector = Connector;
+    var Registry = (function () {
+        function Registry() {
+        }
+        return Registry;
+    })();
+    uplight.Registry = Registry;
     var DisplayObject = (function () {
         function DisplayObject($view, name) {
             this.$view = $view;
@@ -99,5 +111,26 @@ var uplight;
         return DisplayObject;
     })();
     uplight.DisplayObject = DisplayObject;
+    var WindowView = (function (_super) {
+        __extends(WindowView, _super);
+        function WindowView($view, opt, name) {
+            var _this = this;
+            _super.call(this, $view, name);
+            this.$view.find('[data-id=btnClose]').click(function () { return _this.onClose(); });
+        }
+        WindowView.prototype.onClose = function () {
+            this.hide();
+        };
+        return WindowView;
+    })(DisplayObject);
+    uplight.WindowView = WindowView;
+    var ModuleView = (function (_super) {
+        __extends(ModuleView, _super);
+        function ModuleView($view, opt, name) {
+            _super.call(this, $view, name);
+        }
+        return ModuleView;
+    })(WindowView);
+    uplight.ModuleView = ModuleView;
 })(uplight || (uplight = {}));
 //# sourceMappingURL=Utils.js.map

@@ -5,11 +5,12 @@ class Accounts{
 	var $_db1;
 	var $dist ='/dist/';
 	var $src = '/demo/dir_test';
+
 	
 	
 	private function db1(){
 				if($this->_db1)return $this->_db1;
-				$this->_db1=new MyConnector();
+				$this->_db1=new MyConnector(0);
 				return $this->_db1;
 	}	
 	
@@ -20,11 +21,9 @@ class Accounts{
 				return 0;
 	}
 	
-	private function db2($id){
-			if($id){
-				$foder = $this->getFolder($id);
-				if($folder) $this->_db2 = new PDO('sqlite:'.$folder.'/data/directories.db');								
-			}			
+	private function db2($folder){
+				if($this->_db2) return $this->_db2;
+				$this->_db2 = new MyConnector($folder);					
 			return $this->_db2;			
 	}
 	public function process($cmd,$get,$post){
@@ -79,11 +78,9 @@ class Accounts{
 				break;
 				case 'get_info';							
 				return json_encode($this->get_config($get['id']));
-				break;
+				break;				
 				/*
-				case 'get_admins';					
-				return json_encode($this->get_admins($get['id']));
-				break;
+				
 				case 'add_admin';							
 				return json_encode($this->add_admin($get['id'],$post));
 				break;
@@ -105,6 +102,7 @@ class Accounts{
 			
 	}
 	
+	
 	private function save_config($id,$data){
 				$out= new stdClass();
 				$foder = $this->getFolder($id);
@@ -121,10 +119,26 @@ class Accounts{
 	}
 	private function get_config($id){
 				$out= new stdClass();
-				$foder = $this->getFolder($id);
+				$folder = $this->getFolder($id);
+				
 				if($folder){
-						$out->success = 'success';
-						$out->result = file_get_contents($folder.'/data/config.json');
+						$folder= $_SERVER['DOCUMENT_ROOT'].$folder;
+						if(file_exists($folder) || is_dir($folder)){
+								$out->success = 'success';
+								if(file_exists($folder.'/data/config.json'))$out->config = json_decode(file_get_contents($folder.'/data/config.json'));
+								$sql = "SELECT name,email FROM users WHERE role = ?";
+								$res = $this->db2($folder)->query($sql,array('admin'));
+								$out->admins =  $res;
+								$out->server = $_SERVER['SERVER_NAME'];
+								$out->adminUrl='https://frontdes-wwwss24.ssl.supercp.com';
+								
+						}else{
+							$out->error='error';
+							$out->result = 'no folder '.$folder;
+						}
+						
+							
+						
 				}else {
 					$out->error='error';
 					$out->result = 'no namespace '.$id;
@@ -164,20 +178,39 @@ class Accounts{
 	}
 	
 	private function cancel_install(){	
-			$out= new stdClass();	
-			if(isset($_SESSION['account_id']) && $_SESSION['account_id']) {					
-					$res = $this->delete_account($_SESSION['account_id']);
+			$out= new stdClass();
+			$id  =  isset($_SESSION['account_id'])?$_SESSION['account_id']:0;
+			if($id){					
+					$res = $this->delete_account($id);
 					$_SESSION['account_id']=0;
 					return $res;
 					
 			}	
-			if(isset($_SESSION['directories_folder'])){	
+			$folder = isset($_SESSION['directories_folder'])?$_SESSION['directories_folder']:0;			
+			if($folder){	
+				$folder = $_SERVER['DOCUMENT_ROOT'].$folder;
 						//f on linux use: rm -rf /dir
 						////If on windows use: rd c:\dir /S /Q
-				$out->result =$this->deleteDirectory($_SESSION['directories_folder']);
-				$_SESSION['directories_folder']=0;
+				if(file_exists($folder) && is_dir($folder)){				
+						$res=$this->deleteDirectory($folder);
+						if($res){
+							$_SESSION['directories_folder']=0;
+							$out->success='folder_removed';
+							$out->result = $res;
+						}else{
+							$out->error='cant_remove_folder';
+							$out->result = $folder;							
+						}
+				}else{
+					$out->error='no folder';
+					$out->result = $folder;
+				}
+				
+			}else{
+				$out->success='no_folder_yet';
+				$out->result = 'cancel_install';
 			}
-			$out->success='success';
+			
 			return $out;				
 	}
 	
@@ -287,10 +320,11 @@ class Accounts{
 			$config->pub = '/pub/';
 			$config->data='/data/';
 			$config->db = 'directories.db';
-			$config->adminUrl='Admin.php';
-			$config->mobileUrl='KioskMobile.php';
+			$config->adminUrl='Admin';
+			$config->mobile = $indexed['mobile'];
+			if($config->mobile)$config->mobileUrl='KioskMobile';
 			$config->kiosksUrls=array();			
-			$kiosks = array('kiosk1920'=>'Kiosk1920.php','kiosk1080'=>'Kiosk1080.php');			
+			$kiosks = array('kiosk1920'=>'Kiosk1920','kiosk1080'=>'Kiosk1080');			
 			foreach($kiosks as $key=>$value)if(isset($indexed[$key]) && $indexed[$key])$config->kiosksUrls[]=$value;			
 			
 			$ar= array();
@@ -308,7 +342,7 @@ class Accounts{
 					else return 'MISSINF FILE '.$val;					
 			}
 			 
-				file_put_contents($config->root.$config->folder.$config->data.'config.json',json_encode($data));			
+				file_put_contents($config->root.$config->folder.$config->data.'config.json',json_encode($config));			
 			return 'INSTALL_SUCCESS';			
 	}
 	
@@ -323,7 +357,8 @@ class Accounts{
 				$admins=array();				
 				$n=count($data);
 				$names=array();
-				$sendEmail=array();;
+				$sendEmail=array();
+				
 				for($i=0;$i<$n;$i++){					
 					if($data[$i]->index=='username'){
 						$user = new stdClass();
@@ -337,18 +372,18 @@ class Accounts{
 						$admins[] = $user;						
 					}
 				}					
-									
-				$db = new PDO('sqlite:'.$root.$folder.'/data/directories.db');
 				
-				$sql ='INSERT INTO users (name,email,username,password,sendemail,role) VALUES(?,?,?,?,?,?)';
 				
-				foreach($admins as $admin){
-					$stmt = $db->prepare($sql);
-					if(!$stmt) {
+				$db = $this->db2($root.$folder);
+				
+				$sql ='INSERT INTO users (name,email,username,password,sendemail,role) VALUES(?,?,?,?,?,?)';				
+				$stmt = $db->prepare($sql);
+				if(!$stmt){
 						$out->error='prepare';
 						$out->result = $db->errorInfo();
 						return $out;
-					}
+				}
+				foreach($admins as $user){					
 					$res = $stmt->execute(array($user->name,$user->email,$user->username,$user->pass,$user->sendemail,'admin'));
 					if(!$res) {
 						$out->error='insertadmin';
@@ -360,9 +395,7 @@ class Accounts{
 				else	$out->success = 'admins_created';			
 				$out->result = implode(',',$names);
 				$this->addStep('create_admins');
-				return $out;
-				
-				
+				return $out;				
 	}
 	
 	private function send_email_notification(){
@@ -410,39 +443,57 @@ class Accounts{
 	}
 	
 	private function delete_account($id){
-				$out= new stdClass();
-				$sql='SELECT * FROM accounts WHERE id='.(int)$id;	
-				$db = $this->db1();
-				$result = $db->getAllAsObj($sql);
-				if(count($result)){
-						$result->success = 'deleted';
-						$folder = $result[0]->folder;
+				$out= new stdClass();					
+				$folder = $this->getFolder($id);
+				
+				if($folder){				 
 						$sql='DELETE FROM accounts WHERE id='.(int)$id;
-						$out->result=$db->deleteRecord($sql);
-						if(file_exists($folder) && is_dir($folder)) $this->deleteDirectory($folder);
+						$res = $this->db1()->deleteRecord($sql);
+						if($res){							
+							$out->success = 'account_deleted';
+							$folder = $_SERVER['DOCUMENT_ROOT'].$folder;
+							if(file_exists($folder) && is_dir($folder)) {
+								$res = $this->deleteDirectory($folder);
+								if($res){								
+									$out->result = 'folder_deleted';
+									return $out;
+								}else{
+									$out->result = 'cant_delete'.$folder;
+								}
+							}else{
+								$out->result='no_folder'.$folder;
+							}
+						}else{
+							$out->error='cant_delete';
+							$out->result=$id;
+						}
+				}else {
+					$out->error='no_folder';
+					$out->result=$id;
+				}				
 											
-				}else $out->error='no such id '.$id;
+				
 			return $out;
 	}
 	
 	private function register(){
-				$out= new stdClass();				
-				$folder = $_SERVER['DOCUMENT_ROOT'].$_SESSION['directories_folder'];	
+				$out= new stdClass();
+				$root=$_SERVER['DOCUMENT_ROOT'];				
+				$folder = $_SESSION['directories_folder'];	
 				$id = $_SESSION['directories_userid'];				
-				$data = json_decode(file_get_contents('account'.$id.'.json'));				
+				$data = json_decode(file_get_contents('account'.$id.'.json'));			
 		
 			foreach($data as $item){				
 				if($item->index=='account-name') $name = $item->value;
 				else if($item->index=='description') $description = $item->value;
 				else if($item->index=='password')$item->value='';
 			}
-			$res = file_put_contents($folder.'/data/account.json',json_encode($data));
+			$res = file_put_contents($root.$folder.'/data/account.json',json_encode($data));
 			$status='new';
 			$ar = array($id,$folder,$status,$name,$description);
 			$sql="INSERT INTO accounts (user_id,folder,status,name,description) VALUES(?,?,?,?,?)";
 			$db = $this->db1();
-			$result = $db->insertRow($sql,$ar);
-			
+			$result = $db->insertRow($sql,$ar);			
 			if($result){
 				$_SESSION['account_id']= $result;
 				$this->addStep('registered');

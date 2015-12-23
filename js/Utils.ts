@@ -21,6 +21,7 @@ module uplight{
 
    }
 
+
     export class VOResult{
         success:string;
         error:string;
@@ -30,7 +31,9 @@ module uplight{
 
 
     export class Connector{
+        static inst:Connector = new Connector();
        service:string = 'rem/service.php';
+        static results:_.Dictionary<VOResult>;
         post(obj:any,url?:string):JQueryPromise<string>{
             if(!url)url='';
             return  $.post(this.service+'?a='+url,obj);
@@ -49,6 +52,11 @@ module uplight{
         }
     }
 
+   export class Registry{
+       static connector:Connector;
+       static data:any;
+       static settings:any;
+   }
 
 
     export class DisplayObject{
@@ -101,4 +109,24 @@ module uplight{
 
 
     }
+
+    export class WindowView extends  DisplayObject{
+        constructor($view:JQuery,opt:any,name?:string) {
+            super($view, name);
+            this.$view.find('[data-id=btnClose]').click(()=>this.onClose());
+        }
+        onClose():void{
+            this.hide();
+        }
+
+    }
+    export class ModuleView extends  WindowView{
+        constructor($view:JQuery,opt:any,name?:string) {
+            super($view, name);
+        }
+
+    }
+
+
+
 }

@@ -9,8 +9,7 @@ module uplight{
     var CLICK = CLICK || 'click';
     var SELECTED = SELECTED || 'selected';
 
-
-    export class EditorItem extends DisplayObject{
+    export class EditorForm extends DisplayObject{
         constructor($view:JQuery,opt:any,name?:string){
             super($view,name);
             $view.submit(function(){  return false;  });
@@ -57,7 +56,7 @@ module uplight{
         }
 
         isDirty:boolean;
-        reset():EditorItem{
+        reset():EditorForm{
             if(this.isDirty){
                 if(!this.$items) this.getElements();
                 var ar = this.$items;
@@ -104,6 +103,7 @@ module uplight{
     }
 
 
+
     export class UItem{
         index:string;
         label:string;
@@ -115,6 +115,13 @@ module uplight{
         constructor($view:JQuery,options:{service_id:string},name?:string){
             super($view,name)
             for(var str in options) this[str] = options[str];
+            this.init();
+            this.onInit();
+
+        }
+
+        init():void{
+            var $view = this.$view;
             this.conn = new Connector();
             this.$btnAdd = $view.find('[data-id=btnAdd]').click(()=>this.onAddClick());
             this.$btnEdit = $view.find(this.btn_edit_id).click(()=>this.onEditClick());
@@ -125,14 +132,12 @@ module uplight{
             this.$deleteView = $view.find(this.delete_view_id);
             this.$deleteView.find('[data-id=btnSave]').click(()=>this.onDeleteConfirmed())
             this.$deleteView.find(this.btn_close_id).click(()=>this.hideDelete());
-           if(this.auto_start) this.loadData();
+            if(this.auto_start) this.loadData();
         }
+        onInit():void{
 
-
+        }
         conn:Connector;
-        editItem:EditorItem;
-
-        visuals:_.Dictionary<JQuery>;
         $btnAdd:JQuery;
         $btnEdit:JQuery;
         btn_edit_id:string='[data-id=btnEdit]';
@@ -181,12 +186,16 @@ module uplight{
             return '<tr data-i="'+i+'"><td><small>'+item.id+'</small></td><td>'+item.name+'</td><td>'+item.description+'</td></tr>';
         }
 
+        onRendered():void{
+
+        }
         render():void{
             var ar = this.data;
             var out:string='';
             for(var i=0,n=ar.length;i<n;i++) out+= this.renderItem(ar[i],i);
             this.$list.html(out);
             this.$num_records.text(n);
+            this.onRendered();
         }
 
         onListClick(evt:JQueryEventObject):void{
