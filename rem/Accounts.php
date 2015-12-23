@@ -224,9 +224,9 @@ class Accounts{
 	private function save_data($data){
 			$out= new stdClass();		
 			$id = $_SESSION['directories_userid'];
-			$res = file_put_contents('account'.$id.'.json',$data);
+			$res = file_put_contents('../temp/account'.$id.'.json',$data);
 			sleep(2);
-			$data = json_decode(file_get_contents('account'.$id.'.json'));			
+			$data = json_decode(file_get_contents('../temp/account'.$id.'.json'));			
 			$namespace='temp__';
 			foreach($data as $item) if($item->index=='namespace') $namespace= $item->value;			
 			
@@ -307,7 +307,7 @@ class Accounts{
 	private function check_install(){
 			$out= new stdClass();			
 			$id = $_SESSION['directories_userid'];
-			$data = json_decode(file_get_contents('account'.$id.'.json'));
+			$data = json_decode(file_get_contents('../temp/account'.$id.'.json'));
 			$indexed = array();
 			foreach($data as $item)	$indexed[$item->index] = $item->value;			
 			
@@ -351,7 +351,7 @@ class Accounts{
 				$root = $_SERVER['DOCUMENT_ROOT'];
 				$folder  = $_SESSION['directories_folder'];
 				$id = $_SESSION['directories_userid'];
-				$data = json_decode(file_get_contents('account'.$id.'.json'));
+				$data = json_decode(file_get_contents('../temp/account'.$id.'.json'));
 
 				
 				$admins=array();				
@@ -481,7 +481,7 @@ class Accounts{
 				$root=$_SERVER['DOCUMENT_ROOT'];				
 				$folder = $_SESSION['directories_folder'];	
 				$id = $_SESSION['directories_userid'];				
-				$data = json_decode(file_get_contents('account'.$id.'.json'));			
+				$data = json_decode(file_get_contents('../temp/account'.$id.'.json'));			
 		
 			foreach($data as $item){				
 				if($item->index=='account-name') $name = $item->value;

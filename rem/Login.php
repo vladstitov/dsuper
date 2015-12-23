@@ -92,7 +92,7 @@ class Login{
 	}
 	
 	private function con(){
-			if(!$this->conn) $this->conn =new MyConnector();
+			if(!$this->conn) $this->conn =new MyConnector(FALSE);
 			return $this->conn;
 	}
 
