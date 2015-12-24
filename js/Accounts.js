@@ -5,7 +5,8 @@
 ///<reference path='typing/underscore.d.ts' />
 ///<reference path="ListEditor.ts"/>
 ///<reference path="Utils.ts"/>
-///<reference path="AddAccount.ts"/>
+///<reference path="AddAccountCtr.ts"/>
+///<reference path="AccountInfo.ts"/>
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -19,7 +20,7 @@ var uplight;
         function Accounts($view, opt) {
             var _this = this;
             _super.call(this, $view, opt);
-            this.addAccount = new uplight.AddAccount($view.find('[data-ctr=AddAccount]'));
+            this.addAccount = new uplight.AddAccountCtr($view.find('[data-ctr=AddAccount]'));
             this.addAccount.onClose = function () {
                 _this.addAccount.$view.hide();
                 // this.addAccount.reset();
@@ -29,7 +30,7 @@ var uplight;
                 _this.addAccount.hide();
                 _this.loadData();
             };
-            var data = '{"success":"success","result":{"namespace":"namespase","account_name":"account name","description":"Account description","KioskMobile":"true","Kiosk1080":"","Kiosk1820":"true","sendemail":"true","admin-email":"email@email","admin_name":"Admin name","username":"username1","password":"password1","folder":"\/dist\/namespase","server":"http:\/\/localhost","uid":"2","root":"C:\/wamp\/www","pub":"\/pub\/","data":"\/data\/","db":"directories.db","https":"https:\/\/frontdes-wwwss24.ssl.supercp.com","adminurl":"https:\/\/frontdes-wwwss24.ssl.supercp.com\/dist\/namespaseAdmin"}}';
+            //  var data='{"success":"success","result":{"namespace":"namespase","account_name":"account name","description":"Account description","KioskMobile":"true","Kiosk1080":"","Kiosk1820":"true","sendemail":"true","admin-email":"email@email","admin_name":"Admin name","username":"username1","password":"password1","folder":"\/dist\/namespase","server":"http:\/\/localhost","uid":"2","root":"C:\/wamp\/www","pub":"\/pub\/","data":"\/data\/","db":"directories.db","https":"https:\/\/frontdes-wwwss24.ssl.supercp.com","adminurl":"https:\/\/frontdes-wwwss24.ssl.supercp.com\/dist\/namespaseAdmin"}}';
             // this.addAccount.setData(data).show();
             // var ctr = this.addAccount.goto(3);
             // this.addAccount.show();
@@ -41,7 +42,7 @@ var uplight;
             this.$list.on(CLICK, '.btn', function (evt) {
                 setTimeout(function () {
                     if (!_this.accountInfo)
-                        _this.accountInfo = new AccountInfo(_this.$view.find('[data-ctr=AccountInfo]'), 'AccountInfo');
+                        _this.accountInfo = new uplight.AccountInfo(_this.$view.find('[data-ctr=AccountInfo]'), 'AccountInfo');
                     _this.accountInfo.setData(_this.selectedItem);
                     _this.accountInfo.show();
                 }, 10);
@@ -91,57 +92,5 @@ var uplight;
         return AccData;
     })();
     uplight.AccData = AccData;
-    var AccountInfo = (function (_super) {
-        __extends(AccountInfo, _super);
-        function AccountInfo($view, name) {
-            _super.call(this, $view, name);
-        }
-        AccountInfo.prototype.renderData = function (data) {
-            console.log(data);
-            var url = 'http://' + data.server + '/' + data.config.folder + data.config.pub;
-            if (data.config.mobile)
-                this.$view.find('[data-id=mobile]:first').text(url + data.config.mobileUrl).attr('href', url + data.config.mobileUrl).parent().show();
-            else
-                this.$view.find('[data-id=mobile]:first').parent().hide();
-            var admUrl = data.adminUrl + data.config.folder + data.config.pub + data.config.adminUrl;
-            this.$view.find('[data-id=admin-url]:first').text(admUrl).attr('href', admUrl);
-            var admins = '';
-            var ar = data.admins;
-            for (var i = 0, n = ar.length; i < n; i++) {
-                var item = ar[i];
-                admins += '<tr><td>' + item.name + '</td><td><a href="mailto:' + item.email + '" >' + item.email + '</a></td>';
-            }
-            this.$view.find('[data-id=admins]:first').html(admins);
-            var kiosks = '';
-            var ar2 = data.config.kiosksUrls;
-            if (ar2 || ar2.length) {
-                for (var i = 0, n = ar2.length; i < n; i++)
-                    kiosks += '<a href="' + url + ar2[i] + '" target="_blank" class="list-group-item">' + url + ar2[i] + '</a>';
-            }
-            this.$view.find('[data-id=kiosks]:first').html(kiosks);
-        };
-        AccountInfo.prototype.onShow = function () {
-            var _this = this;
-            var data = this.data;
-            console.log(data);
-            this.$view.find('[data-id=name]').text(data.name);
-            this.$view.find('[data-id=description]').text(data.description);
-            uplight.Connector.inst.get('account.get_info&id=' + data.id).done(function (s) {
-                var data;
-                try {
-                    var resp = JSON.parse(s);
-                    if (resp.success == 'success')
-                        data = new AccData(resp);
-                }
-                catch (e) {
-                    console.log(e);
-                }
-                if (data)
-                    _this.renderData(data);
-            });
-        };
-        return AccountInfo;
-    })(uplight.ModuleView);
-    uplight.AccountInfo = AccountInfo;
 })(uplight || (uplight = {}));
 //# sourceMappingURL=Accounts.js.map

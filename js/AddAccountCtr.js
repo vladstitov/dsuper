@@ -15,15 +15,15 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var uplight;
 (function (uplight) {
-    var AddAccount = (function (_super) {
-        __extends(AddAccount, _super);
-        function AddAccount($view) {
+    var AddAccountCtr = (function (_super) {
+        __extends(AddAccountCtr, _super);
+        function AddAccountCtr($view) {
             _super.call(this, $view, 'AddAccount');
             this.$view = $view;
             this.init();
             console.log('Add Account');
         }
-        AddAccount.prototype.init = function () {
+        AddAccountCtr.prototype.init = function () {
             var _this = this;
             var ar = [];
             var ed = new uplight.NamespaceCtr(this.$view.find('[data-ctr=NamespaceCtr]'), 'NS', 'NamespaceCtr');
@@ -82,7 +82,7 @@ var uplight;
             //  this.steps[2].show();
             // this.$view.show();
         };
-        AddAccount.prototype.initFinal = function () {
+        AddAccountCtr.prototype.initFinal = function () {
             var _this = this;
             this.final = new uplight.FinalResultCtr(this.$view.find('[data-ctr=FinalResultCtr]'), 'FinalResultCtr');
             this.final.onClose = function () {
@@ -111,22 +111,22 @@ var uplight;
                 _this.installProcess.start();
             };
         };
-        AddAccount.prototype.onClose = function () {
+        AddAccountCtr.prototype.onClose = function () {
             console.log(' on close ', this);
         };
-        AddAccount.prototype.onBack = function (editor) {
+        AddAccountCtr.prototype.onBack = function (editor) {
             var i = this.steps.indexOf(editor);
             console.log(i);
         };
-        AddAccount.prototype.onComplete = function () {
+        AddAccountCtr.prototype.onComplete = function () {
         };
-        AddAccount.prototype.onDataReady = function () {
+        AddAccountCtr.prototype.onDataReady = function () {
             console.log('data ready');
         };
-        AddAccount.prototype.start = function () {
+        AddAccountCtr.prototype.start = function () {
             this.steps[0].show();
         };
-        AddAccount.prototype.goto = function (num) {
+        AddAccountCtr.prototype.goto = function (num) {
             if (num == this.steps.length) {
                 if (!this.final)
                     this.initFinal();
@@ -136,7 +136,7 @@ var uplight;
             else
                 this.steps[num].show();
         };
-        AddAccount.prototype.reset = function () {
+        AddAccountCtr.prototype.reset = function () {
             var ar = this.steps;
             for (var i = 0, n = ar.length; i < n; i++) {
                 ar[i].reset().hide();
@@ -149,8 +149,8 @@ var uplight;
                 this.admins.reset().hide();
             return this;
         };
-        return AddAccount;
+        return AddAccountCtr;
     })(uplight.DisplayObject);
-    uplight.AddAccount = AddAccount;
+    uplight.AddAccountCtr = AddAccountCtr;
 })(uplight || (uplight = {}));
-//# sourceMappingURL=AddAccount.js.map
+//# sourceMappingURL=AddAccountCtr.js.map

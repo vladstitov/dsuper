@@ -10,10 +10,7 @@
     ///<reference path="FinalResultCtr.ts"/>
 
 module uplight{
-
-
-
-    export class AddAccount extends DisplayObject{
+    export class AddAccountCtr extends DisplayObject{
 
         constructor(public $view:JQuery){
             super($view,'AddAccount');
@@ -152,7 +149,7 @@ module uplight{
             }else this.steps[num].show();
         }
 
-        reset():AddAccount{
+        reset():AddAccountCtr{
             var ar = this.steps;
             for(var i=0,n=ar.length;i<n;i++){ ar[i].reset().hide(); }
             if(this.final)this.final.reset().hide();
