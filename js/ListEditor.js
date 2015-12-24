@@ -16,34 +16,40 @@ var uplight;
     var SELECTED = SELECTED || 'selected';
     var EditorForm = (function (_super) {
         __extends(EditorForm, _super);
-        function EditorForm($view, opt, name) {
+        function EditorForm($view, index, name) {
             _super.call(this, $view, name);
             this.value_id = 'input';
+            this.index = index;
             $view.submit(function () { return false; });
-            this.id = $view.data('ctr');
-            for (var str in opt)
-                this[str] = opt[str];
-            this.initButtons();
-            this.initItems();
         }
-        EditorForm.prototype.initButtons = function () {
+        EditorForm.prototype.init = function () {
             var _this = this;
-            this.$view.find('[data-id=btnClose]').click(function () { return _this.onClose(); });
-            this.$view.find('[data-id=btnSave]').click(function () { return _this.onSave(); });
-            this.$view.find('[data-id=btnBack]').click(function () { _this.onBack(); });
+            this.$btnClose = this.$view.find('[data-id=btnClose]').click(function () { return _this.onClose(); });
+            this.$btnSubmit = this.$view.find('[data-id=btnSave]').click(function () { return _this.onSave(); });
+            this.$btnBack = this.$view.find('[data-id=btnBack]').click(function () { _this.onBack(); });
             this.$title = this.$view.find('[data-id=title]');
+            var out = [];
+            var inds = {};
+            this.$view.find('input').each(function (i, el) {
+                el.addEventListener(CLICK, function (evt) { return _this.onFocus(evt); });
+                out.push(el);
+                inds[el.getAttribute('data-id')] = el;
+            });
+            this.inputs = out;
+            this.inputsInd = inds;
+            this.isInit = true;
+            this.onInit();
         };
-        EditorForm.prototype.initItems = function () {
-            // var model:any = {};
-            //  var value_id:string =  this.value_id;
-            // this.$view.find('input').each((i,el)=>{
-            // var  $el:JQuery = $(el);
-            // var ind:string  = $el.data('index').toString();
-            // var $el = $el.find(value_id);
-            //if(!$el.length)console.log('error cant find value element for index '+ind+ ' with selecyor '+value_id);
-            //else model[ind] = $el;
-            //})
-            // this.model = model;
+        EditorForm.prototype.onFocus = function (evt) {
+            this.currentInput = evt.currentTarget;
+            this.isDirty = true;
+            ///console.log('this.isDirty '+this.isDirty +' '+this.name);
+        };
+        EditorForm.prototype.onInit = function () {
+        };
+        EditorForm.prototype.onShow = function () {
+            if (!this.isInit)
+                this.init();
         };
         EditorForm.prototype.onSave = function () { console.log('onSave ' + this.id); };
         EditorForm.prototype.onClose = function () { console.log('onClose ' + this.id); };
@@ -52,11 +58,19 @@ var uplight;
         EditorForm.prototype.getView = function () {
             return this.$view;
         };
+        EditorForm.prototype.isValid = function () {
+            var ar = this.inputs;
+            for (var i = 0, n = ar.length; i < n; i++) {
+                if (!ar[i].checkValidity())
+                    return false;
+            }
+            return true;
+        };
         EditorForm.prototype.reset = function () {
+            //console.log(this.isDirty+' '+this.name);
             if (this.isDirty) {
-                if (!this.$items)
-                    this.getElements();
-                var ar = this.$items;
+                this.currentInput = null;
+                var ar = this.inputs;
                 for (var i = 0, n = ar.length; i < n; i++) {
                     ar[i].value = '';
                 }
@@ -71,30 +85,50 @@ var uplight;
                 msg.hide();
             }, 3000);
         };
+        EditorForm.prototype.setData = function (data) {
+            this.data = data;
+            return this;
+        };
+        EditorForm.prototype.setItemData = function (item, el) {
+            el.value = item.value;
+        };
+        EditorForm.prototype.render = function () {
+            var ar = this.data;
+            for (var i = 0, n = ar.length; i < n; i++) {
+                var el = this.inputsInd[ar[i].id];
+                if (!el)
+                    console.log('no element with index ' + ar[i].id);
+                else
+                    this.setItemData(ar[i], el);
+            }
+        };
+        EditorForm.prototype.getInputData = function (el) {
+            var item = new UItem();
+            item.id = el.getAttribute('data-id');
+            item.index = this.index;
+            item.value = el.value;
+            return item;
+        };
         EditorForm.prototype.getData = function () {
             var out = [];
-            this.$view.find('input').each(function (i, el) {
-                var item = new UItem();
-                var $el = $(el);
-                item.index = $el.data('id');
-                if ($el.attr('type') == 'checkbox')
-                    item.value = $el.prop('checked');
-                else
-                    item.value = $el.val();
-                out.push(item);
-            });
+            var ar = this.inputs;
+            if (ar)
+                for (var i = 0, n = ar.length; i < n; i++)
+                    out.push(this.getInputData(ar[i]));
+            else
+                console.log('call init first');
+            /*  this.$view.find('input').each((i,el:HTMLElement)=>{
+                  var item:UItem = new UItem();
+                  var $el = $(el);
+                  item.index =$el.data('id');
+                  if($el.attr('type')=='checkbox') item.value = $el.prop('checked');
+                  else item.value = $el.val();
+                  out.push(item);
+              });*/
             return out;
         };
         EditorForm.prototype.getElement = function (i) {
-            return this.$items[i];
-        };
-        EditorForm.prototype.getElements = function () {
-            var out = [];
-            this.$view.find('input').each(function (i, el) {
-                out.push(el);
-            });
-            this.$items = out;
-            return out;
+            return this.inputs[i];
         };
         return EditorForm;
     })(uplight.DisplayObject);

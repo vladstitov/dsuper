@@ -2414,4 +2414,185 @@ Call Stack:
     0.0028     467280   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:10
     0.0028     467688   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:71
 
-[]
+[]2015-12-23 02:40:57
+Error installing application MISSINF FILE /pub/KioskMobile2015-12-23 02:41:27
+Error installing application MISSINF FILE /pub/KioskMobile2015-12-23 02:41:57
+Error installing application MISSINF FILE /pub/KioskMobile2015-12-23 02:47:56
+
+Warning: mail(): Failed to connect to mailserver at "localhost" port 25, verify your "SMTP" and "smtp_port" setting in php.ini or use ini_set() in C:\wamp\www\dir_super\rem\Accounts.php on line 424
+
+Call Stack:
+    0.0005     266536   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0028     467752   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0029     468160   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:71
+    0.0040     477128   4. mail() C:\wamp\www\dir_super\rem\Accounts.php:424
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 433
+
+Call Stack:
+    0.0005     266536   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0028     467752   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0029     468160   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:71
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 434
+
+Call Stack:
+    0.0005     266536   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0028     467752   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0029     468160   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:71
+
+
+Notice: Trying to get property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 435
+
+Call Stack:
+    0.0005     266536   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0028     467752   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0029     468160   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:71
+
+
+Notice: Trying to get property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 435
+
+Call Stack:
+    0.0005     266536   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0028     467752   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0029     468160   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:71
+
+[]2015-12-23 16:10:48
+
+Warning: mail(): Failed to connect to mailserver at "localhost" port 25, verify your "SMTP" and "smtp_port" setting in php.ini or use ini_set() in C:\wamp\www\dir_super\rem\Accounts.php on line 424
+
+Call Stack:
+    0.0004     266520   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0027     467520   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0027     467928   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:71
+    0.0038     480240   4. mail() C:\wamp\www\dir_super\rem\Accounts.php:424
+
+
+Warning: mail(): Failed to connect to mailserver at "localhost" port 25, verify your "SMTP" and "smtp_port" setting in php.ini or use ini_set() in C:\wamp\www\dir_super\rem\Accounts.php on line 424
+
+Call Stack:
+    0.0004     266520   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0027     467520   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0027     467928   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:71
+    1.0059     482328   4. mail() C:\wamp\www\dir_super\rem\Accounts.php:424
+
+
+Warning: mail(): Failed to connect to mailserver at "localhost" port 25, verify your "SMTP" and "smtp_port" setting in php.ini or use ini_set() in C:\wamp\www\dir_super\rem\Accounts.php on line 424
+
+Call Stack:
+    0.0004     266520   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0027     467520   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0027     467928   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:71
+    2.0082     482488   4. mail() C:\wamp\www\dir_super\rem\Accounts.php:424
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 433
+
+Call Stack:
+    0.0004     266520   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0027     467520   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0027     467928   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:71
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 434
+
+Call Stack:
+    0.0004     266520   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0027     467520   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0027     467928   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:71
+
+
+Notice: Trying to get property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 435
+
+Call Stack:
+    0.0004     266520   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0027     467520   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0027     467928   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:71
+
+
+Notice: Trying to get property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 435
+
+Call Stack:
+    0.0004     266520   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0027     467520   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0027     467928   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:71
+
+[]2015-12-23 18:34:22
+
+Warning: mail(): Failed to connect to mailserver at "localhost" port 25, verify your "SMTP" and "smtp_port" setting in php.ini or use ini_set() in C:\wamp\www\dir_super\rem\Accounts.php on line 424
+
+Call Stack:
+    0.0005     266520   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0030     467672   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0030     468080   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:71
+    0.0040     477040   4. mail() C:\wamp\www\dir_super\rem\Accounts.php:424
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 433
+
+Call Stack:
+    0.0005     266520   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0030     467672   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0030     468080   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:71
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 434
+
+Call Stack:
+    0.0005     266520   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0030     467672   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0030     468080   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:71
+
+
+Notice: Trying to get property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 435
+
+Call Stack:
+    0.0005     266520   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0030     467672   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0030     468080   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:71
+
+
+Notice: Trying to get property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 435
+
+Call Stack:
+    0.0005     266520   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0030     467672   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0030     468080   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:71
+
+[]2015-12-24 02:25:41
+
+Notice: Trying to get property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 234
+
+Call Stack:
+    0.0004     268408   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0027     480424   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0027     482056   3. Accounts->save_data() C:\wamp\www\dir_super\rem\Accounts.php:56
+
+
+Notice: Trying to get property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 234
+
+Call Stack:
+    0.0004     268408   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0027     480424   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0027     482056   3. Accounts->save_data() C:\wamp\www\dir_super\rem\Accounts.php:56
+
+{"error":"error"}2015-12-24 02:51:02
+
+Notice: Trying to get property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 235
+
+Call Stack:
+    0.0004     268432   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0025     482792   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0025     484448   3. Accounts->save_data() C:\wamp\www\dir_super\rem\Accounts.php:56
+
+
+Notice: Trying to get property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 235
+
+Call Stack:
+    0.0004     268432   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0025     482792   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0025     484448   3. Accounts->save_data() C:\wamp\www\dir_super\rem\Accounts.php:56
+
+{"error":"error"}

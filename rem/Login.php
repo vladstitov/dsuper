@@ -14,9 +14,7 @@ class Login{
 		
 		return $out;
 		
-	}
-	
-	
+	}	
 	
 	private function createUser($user,$pass){
 			$out = new stdClass();
@@ -63,10 +61,8 @@ class Login{
 		return $out;
 	}
 	private function _login($user,$pass){
-			$out = new stdClass();			
-		
-			$conn = $this->con();	
-		
+			$out = new stdClass();		
+			$conn = $this->con();		
 		$sql = "SELECT id,status,url FROM users WHERE username=? AND pass=?";
 		$result = $conn->query($sql,array($user,$pass));
 		

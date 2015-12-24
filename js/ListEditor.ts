@@ -10,40 +10,54 @@ module uplight{
     var SELECTED = SELECTED || 'selected';
 
     export class EditorForm extends DisplayObject{
-        constructor($view:JQuery,opt:any,name?:string){
+        constructor($view:JQuery,index:string,name?:string){
             super($view,name);
+            this.index = index;
             $view.submit(function(){  return false;  });
-            this.id = $view.data('ctr');
-            for(var str in opt) this[str] = opt[str];
-            this.initButtons();
-            this.initItems();
         }
+        index:string;
+        $btnSubmit:JQuery;
+        $btnBack:JQuery;
+        $btnClose:JQuery;
         i:number;
         value_id:string='input';
         item:any;
         model:any;
         $title:JQuery;
-        $items:HTMLInputElement[];
-
-        initButtons():void{
-            this.$view.find('[data-id=btnClose]').click(()=>this.onClose());
-            this.$view.find('[data-id=btnSave]').click(()=>this.onSave());
-            this.$view.find('[data-id=btnBack]').click(()=>{this.onBack()});
+        inputs:HTMLInputElement[];
+        inputsInd:_.Dictionary<HTMLInputElement>;
+        currentInput:HTMLInputElement;
+        data:UItem[];
+        isInit:boolean;
+        init():void{
+            this.$btnClose = this.$view.find('[data-id=btnClose]').click(()=>this.onClose());
+            this.$btnSubmit = this.$view.find('[data-id=btnSave]').click(()=>this.onSave());
+            this.$btnBack =  this.$view.find('[data-id=btnBack]').click(()=>{this.onBack()});
             this.$title = this.$view.find('[data-id=title]');
+            var out:HTMLInputElement[]=[];
+            var inds:_.Dictionary<HTMLInputElement> = {};
+            this.$view.find('input').each((i,el:HTMLInputElement)=>{
+                el.addEventListener(CLICK,(evt:MouseEvent)=>this.onFocus(evt))
+                out.push(el);
+                inds[el.getAttribute('data-id')]=el;
+
+            });
+            this.inputs = out;
+            this.inputsInd = inds;
+            this.isInit = true;
+            this.onInit();
+        }
+
+        onFocus(evt:MouseEvent):void{
+            this.currentInput = <HTMLInputElement>evt.currentTarget;
+            this.isDirty = true;
+            ///console.log('this.isDirty '+this.isDirty +' '+this.name);
+        }
+        onInit():void{
 
         }
-        initItems():void{
-           // var model:any = {};
-          //  var value_id:string =  this.value_id;
-           // this.$view.find('input').each((i,el)=>{
-               // var  $el:JQuery = $(el);
-               // var ind:string  = $el.data('index').toString();
-               // var $el = $el.find(value_id);
-                //if(!$el.length)console.log('error cant find value element for index '+ind+ ' with selecyor '+value_id);
-                //else model[ind] = $el;
-            //})
-
-           // this.model = model;
+        onShow():void{
+            if(!this.isInit) this.init();
         }
 
         onSave():void{  console.log('onSave '+this.id); }
@@ -55,11 +69,20 @@ module uplight{
             return this.$view;
         }
 
+        isValid():boolean{
+            var ar= this.inputs;
+            for(var i=0,n=ar.length;i<n;i++){
+             if(!ar[i].checkValidity()) return false;
+             }
+            return true;
+        }
+
         isDirty:boolean;
         reset():EditorForm{
+            //console.log(this.isDirty+' '+this.name);
             if(this.isDirty){
-                if(!this.$items) this.getElements();
-                var ar = this.$items;
+                this.currentInput = null;
+                var ar = this.inputs;
                 for(var i=0,n=ar.length;i<n;i++){
                         ar[i].value='';
                 }
@@ -75,29 +98,51 @@ module uplight{
                 msg.hide();
             },3000);
         }
+        setData(data:UItem[]):EditorForm{
+            this.data = data;
+            return this;
+        }
+        setItemData(item:UItem,el:HTMLInputElement):void{
+            el.value = item.value;
+        }
+
+        render():void{
+            var ar:UItem[] = this.data;
+            for(var i=0,n=ar.length;i<n;i++){
+                var el:HTMLInputElement = this.inputsInd[ar[i].id];
+                if(!el)console.log('no element with index '+ar[i].id);
+                else this.setItemData(ar[i],el);
+            }
+        }
+
+        getInputData(el:HTMLInputElement):UItem{
+            var item:UItem = new UItem();
+            item.id= el.getAttribute('data-id');
+            item.index= this.index;
+            item.value = el.value;
+            return item;
+        }
         getData():UItem[]{
             var out:UItem[]=[];
-            this.$view.find('input').each((i,el:HTMLElement)=>{
+
+            var ar = this.inputs;
+           if(ar) for(var i=0,n=ar.length;i<n;i++) out.push(this.getInputData(ar[i]));
+            else console.log('call init first');
+
+
+          /*  this.$view.find('input').each((i,el:HTMLElement)=>{
                 var item:UItem = new UItem();
                 var $el = $(el);
                 item.index =$el.data('id');
                 if($el.attr('type')=='checkbox') item.value = $el.prop('checked');
                 else item.value = $el.val();
                 out.push(item);
-            });
+            });*/
             return out;
 
         }
-        getElement(i:number):HTMLElement{
-            return this.$items[i];
-        }
-        getElements():HTMLInputElement[]{
-            var out:HTMLInputElement[]=[];
-            this.$view.find('input').each((i,el:HTMLInputElement)=>{
-                out.push(el);
-            });
-            this.$items = out;
-           return out;
+        getElement(i:number):HTMLInputElement{
+            return this.inputs[i];
         }
 
     }
@@ -105,9 +150,10 @@ module uplight{
 
 
     export class UItem{
-        index:string;
+        id:string;
         label:string;
         value:string;
+        index:string;
     }
 
 
@@ -117,7 +163,6 @@ module uplight{
             for(var str in options) this[str] = options[str];
             this.init();
             this.onInit();
-
         }
 
         init():void{

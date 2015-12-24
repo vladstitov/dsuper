@@ -14,27 +14,28 @@ var uplight;
 (function (uplight) {
     var ConfigurationCtr = (function (_super) {
         __extends(ConfigurationCtr, _super);
-        function ConfigurationCtr($view, opts) {
-            _super.call(this, $view, opts);
+        function ConfigurationCtr($view, index, name) {
+            _super.call(this, $view, index, name);
             this.isBlocked = false;
         }
         ConfigurationCtr.prototype.getData = function () {
+            var ar = this.inputs;
             var out = [];
-            this.getView().find('.form-group').each(function (i, el) {
+            for (var i = 0, n = ar.length; i < n; i++) {
                 var item = new uplight.UItem();
-                var $el = $(el);
-                item.index = $el.data('id');
-                item.label = $el.find('label').text();
-                item.value = $el.find('input').prop('checked');
+                item.index = this.index;
+                var el = ar[i];
+                item.id = el.getAttribute('data-id');
+                item.value = el.checked ? 'true' : '';
                 out.push(item);
-            });
+            }
             return out;
         };
         ConfigurationCtr.prototype.onSave = function () {
             var _this = this;
             if (this.isBlocked)
                 return;
-            var ar = this.getElements();
+            var ar = this.inputs;
             var isAny = false;
             for (var i = 0, n = ar.length; i < n; i++) {
                 if (ar[i].checked)
@@ -54,9 +55,7 @@ var uplight;
         };
         ConfigurationCtr.prototype.reset = function () {
             if (this.isDirty) {
-                if (!this.$items)
-                    this.getElements();
-                var ar = this.$items;
+                var ar = this.inputs;
                 for (var i = 0, n = ar.length; i < n; i++) {
                     ar[i].checked = true;
                 }
@@ -69,28 +68,74 @@ var uplight;
     uplight.ConfigurationCtr = ConfigurationCtr;
     var AdministratorsCtr = (function (_super) {
         __extends(AdministratorsCtr, _super);
-        function AdministratorsCtr($view, opts) {
+        function AdministratorsCtr($view, index, name) {
             var _this = this;
-            _super.call(this, $view, opts);
+            _super.call(this, $view, name);
+            this.admins = [];
             $view.find('[data-id=btnAddAdmin]').click(function () { return _this.addAdmin(); });
-            this.templ = $view.find('[data-id=admin-item]:first').clone();
+            // this.$btnSubmit = this.$view.find('[data-id=btnSave]').click(()=>this.onSave());
+            // this.$btnBack =  this.$view.find('[data-id=btnBack]').click(()=>{this.onBack()});
+            var form = new uplight.EditorForm($view.find('[data-id=admin-item]:first'), 'admin');
+            form.init();
+            this.templ = form.$view.clone();
             $view.find('[data-id=btnRemove]:first').remove();
-            this.conn = new uplight.Connector();
+            this.admins.push(form);
+            ///this.conn = new Connector();
         }
         AdministratorsCtr.prototype.addAdmin = function () {
+            var _this = this;
             var admin = this.templ.clone();
-            admin.insertAfter(this.getView().find('[data-id=admin-item]').last());
+            var editor = new uplight.EditorForm(admin, 'admin');
+            admin.insertAfter(this.$view.find('[data-id=admin-item]').last());
             admin.find('[data-id=btnRemove]').click(function () {
-                admin.remove();
+                _this.admins.splice(editor.i, 1);
+                editor.remove();
             });
+            editor.i = this.admins.length;
+            editor.init();
+            this.admins.push(editor);
+            return editor;
+        };
+        AdministratorsCtr.prototype.reset = function () {
+            var ar = this.admins;
+            for (var i = 1, n = ar.length; i < n; i++) {
+                ar[i].remove();
+            }
+            this.admins = [ar[0].reset()];
+            return this;
+        };
+        AdministratorsCtr.prototype.indexAr = function (data) {
+            var out = {};
+            var ar = data;
+            for (var i = 0, n = ar.length; i < n; i++) {
+                var item = ar[i];
+                out[item.id] = item.value;
+            }
+            return out;
+        };
+        AdministratorsCtr.prototype.getAdmins = function () {
+            var admins = [];
+            var ar = this.admins;
+            var names = [];
+            for (var i = 0, n = ar.length; i < n; i++) {
+                var item = ar[i];
+                var data = item.getData();
+                data[0].value = item.getElement(0).checked ? 'true' : '';
+                admins.push(this.indexAr(data));
+            }
+            return admins;
+        };
+        AdministratorsCtr.prototype.onComplete = function () {
+        };
+        AdministratorsCtr.prototype.onBack = function () {
         };
         AdministratorsCtr.prototype.onSave = function () {
-            var items = this.getElements();
-            var ar = items;
+            var ar = this.admins;
             for (var i = 0, n = ar.length; i < n; i++) {
-                if (!ar[i].checkValidity())
+                if (!ar[i].isValid())
                     return;
             }
+            console.log('AdministratorsCtr valid');
             this.onComplete();
         };
         return AdministratorsCtr;
@@ -98,9 +143,9 @@ var uplight;
     uplight.AdministratorsCtr = AdministratorsCtr;
     var NamespaceCtr = (function (_super) {
         __extends(NamespaceCtr, _super);
-        function NamespaceCtr($view, opts) {
+        function NamespaceCtr($view, index, name) {
             var _this = this;
-            _super.call(this, $view, opts);
+            _super.call(this, $view, index, name);
             this.conn = new uplight.Connector();
             this.conn.get('account.server_url').done(function (s) {
                 console.log(s);
@@ -110,7 +155,7 @@ var uplight;
             });
         }
         NamespaceCtr.prototype.onSave = function () {
-            var items = this.getElements();
+            var items = this.inputs;
             var ar = items;
             for (var i = 0, n = ar.length; i < n; i++) {
                 if (!ar[i].checkValidity())
@@ -120,12 +165,16 @@ var uplight;
         };
         NamespaceCtr.prototype.checkName = function () {
             var _this = this;
+            console.log('checkName');
             var $item;
-            var ar = this.getElements();
+            var ar = this.inputs;
             $item = $(ar[0]);
             var val = $item.val();
             if (val.length) {
+                this.$btnSubmit.prop('disabled', true);
                 this.conn.get('account.check_url&url=' + val).done(function (s) {
+                    _this.$btnSubmit.prop('disabled', false);
+                    console.log('check name ' + s);
                     var res = JSON.parse(s);
                     if (res.success == 'OK')
                         _this.onComplete();

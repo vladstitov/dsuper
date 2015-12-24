@@ -9,28 +9,27 @@
 module uplight{
 
     export class ConfigurationCtr extends EditorForm{
-
-        constructor($view:JQuery,opts:any){
-            super($view,opts);
-
+        constructor($view:JQuery,index:string,name?:string){
+            super($view,index,name);
         }
-        getData():UItem[]{
-            var out:UItem[]=[];
-            this.getView().find('.form-group').each((i,el:HTMLElement)=>{
-                var item:UItem = new UItem();
-                var $el = $(el);
-                item.index =$el.data('id');
-                item.label = $el.find('label').text();
-                item.value = $el.find('input').prop('checked');
-                out.push(item);
-            });
-            return out;
 
+        getData():UItem[]{
+            var ar = this.inputs;
+            var out:UItem[]=[];
+            for(var i=0,n=ar.length;i<n;i++){
+                var item:UItem = new UItem();
+                item.index = this.index;
+                var el:HTMLInputElement = ar[i];
+                item.id=el.getAttribute('data-id');
+                item.value = el.checked?'true':'';
+                out.push(item);
+            }
+            return out;
         }
         isBlocked:boolean = false;
         onSave():void{
             if(this.isBlocked) return;
-            var ar =  this.getElements();
+            var ar =  this.inputs;
             var isAny:boolean = false;
             for(var i=0,n=ar.length;i<n;i++){
                 if(ar[i].checked) isAny = true;
@@ -50,8 +49,7 @@ module uplight{
 
         reset():EditorForm{
             if(this.isDirty){
-                if(!this.$items) this.getElements();
-                var ar = this.$items;
+                var ar = this.inputs;
                 for(var i=0,n=ar.length;i<n;i++){
                     ar[i].checked=true;
                 }
@@ -64,39 +62,89 @@ module uplight{
 
     }
 
-    export class AdministratorsCtr  extends EditorForm{
-        constructor($view:JQuery,opts:any){
-            super($view,opts);
-
-            $view.find('[data-id=btnAddAdmin]').click(()=>this.addAdmin())
-            this.templ =   $view.find('[data-id=admin-item]:first').clone();
+    export class AdministratorsCtr extends EditorForm{
+        constructor($view:JQuery,index:string,name?:string){
+            super($view,name);
+            $view.find('[data-id=btnAddAdmin]').click(()=>this.addAdmin());
+           // this.$btnSubmit = this.$view.find('[data-id=btnSave]').click(()=>this.onSave());
+           // this.$btnBack =  this.$view.find('[data-id=btnBack]').click(()=>{this.onBack()});
+            var form:EditorForm = new EditorForm($view.find('[data-id=admin-item]:first'),'admin');
+            form.init();
+            this.templ =   form.$view.clone();
             $view.find('[data-id=btnRemove]:first').remove();
-this.conn = new Connector();
+            this.admins.push(form);
+            ///this.conn = new Connector();
         }
-conn:Connector;
+        conn:Connector;
+        $btnSubmit:JQuery;
+        $btnBack:JQuery;
         private templ:JQuery;
-        private addAdmin():void{
+        private admins:EditorForm[]=[];
+        private addAdmin():EditorForm{
             var admin:JQuery = this.templ.clone();
-            admin.insertAfter(this.getView().find('[data-id=admin-item]').last());
-            admin.find('[data-id=btnRemove]').click(function () {
-                admin.remove();
+            var editor:EditorForm = new EditorForm(admin,'admin');
+            admin.insertAfter(this.$view.find('[data-id=admin-item]').last());
+            admin.find('[data-id=btnRemove]').click( ()=>{
+                this.admins.splice(editor.i,1);
+                editor.remove();
             })
+            editor.i =  this.admins.length;
+            editor.init();
+            this.admins.push(editor);
+            return editor;
         }
 
-        onSave():void {
-            var items:HTMLInputElement[] = this.getElements();
-            var ar = items;
-            for(var i=0,n=ar.length;i<n;i++){
-                if(!ar[i].checkValidity()) return;
+        reset():AdministratorsCtr{
+            var ar = this.admins;
+            for(var i=1,n=ar.length;i<n;i++){
+                ar[i].remove();
             }
-            this.onComplete();
+            this.admins=[ar[0].reset()];
+            return this;
+        }
+
+        private indexAr(data:UItem[]):any{
+            var out:any = {};
+            var ar = data;
+            for(var i=0,n=ar.length;i<n;i++){
+                var item = ar[i];
+                out[item.id]=item.value;
+            }
+            return out;
+        }
+        getAdmins():UItem[][]{
+            var admins:any[]=[];
+            var ar = this.admins;
+            var names:string[]=[];
+            for(var i=0,n=ar.length;i<n;i++){
+                var item = ar[i];
+                var data:UItem[]= item.getData();
+                data[0].value = item.getElement(0).checked?'true':''
+                admins.push(this.indexAr(data));
+            }
+            return admins;
+        }
+
+        onComplete():void{
+
+        }
+        onBack():void{
+
+        }
+        onSave():void {
+            var ar = this.admins;
+           for(var i=0,n=ar.length;i<n;i++){
+               if(!ar[i].isValid()) return;
+           }
+            console.log('AdministratorsCtr valid');
+           this.onComplete();
         }
 
     }
 
     export class NamespaceCtr  extends EditorForm{
-        constructor($view:JQuery,opts:any){
-            super($view,opts);
+        constructor($view:JQuery,index:string,name?:string){
+            super($view,index,name);
             this.conn=new Connector();
             this.conn.get('account.server_url').done((s)=>{
                 console.log(s);
@@ -108,7 +156,7 @@ conn:Connector;
 
         conn:Connector
         onSave():void{
-            var items:HTMLInputElement[] = this.getElements();
+            var items:HTMLInputElement[] = this.inputs;
             var ar = items;
             for(var i=0,n=ar.length;i<n;i++){
                 if(!ar[i].checkValidity()) return;
@@ -117,13 +165,17 @@ conn:Connector;
         }
 
         checkName(){
+            console.log('checkName');
             var $item:JQuery;
-            var ar = this.getElements();
+            var ar = this.inputs;
             $item = $(ar[0]);
 
             var val:string = $item.val();
             if(val.length){
+                this.$btnSubmit.prop('disabled',true);
                 this.conn.get('account.check_url&url='+val).done((s)=>{
+                    this.$btnSubmit.prop('disabled',false);
+                    console.log('check name '+s);
                     var res:VOResult = JSON.parse(s);
                     if(res.success =='OK') this.onComplete();
                     else if(res.success=='ISOK'){

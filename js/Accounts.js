@@ -29,9 +29,11 @@ var uplight;
                 _this.addAccount.hide();
                 _this.loadData();
             };
-            //  var data=JSON.parse('[{"index":"namespace","value":"account3"},{"index":"account-name","value":"Name of new account"},{"index":"description","value":"Some description goes here "},{"index":"mobile","label":"Mobile ","value":true},{"index":"kiosk1080","label":"Kiosks 1080x1920","value":true},{"index":"kiosk1920","label":"Kiosks 1920x1080","value":false},{"index":"sendemail","value":true},{"index":"admin-email","value":"adminemail@mail.com"},{"index":"admin-name","value":"admin Name"},{"index":"username","value":"adminuserbane"},{"index":"password","value":"adminpass"}]');
+            var data = '{"success":"success","result":{"namespace":"namespase","account_name":"account name","description":"Account description","KioskMobile":"true","Kiosk1080":"","Kiosk1820":"true","sendemail":"true","admin-email":"email@email","admin_name":"Admin name","username":"username1","password":"password1","folder":"\/dist\/namespase","server":"http:\/\/localhost","uid":"2","root":"C:\/wamp\/www","pub":"\/pub\/","data":"\/data\/","db":"directories.db","https":"https:\/\/frontdes-wwwss24.ssl.supercp.com","adminurl":"https:\/\/frontdes-wwwss24.ssl.supercp.com\/dist\/namespaseAdmin"}}';
             // this.addAccount.setData(data).show();
-            // this.addAccount.goto(3);
+            // var ctr = this.addAccount.goto(3);
+            // this.addAccount.show();
+            // ctr.onServer(data);
             _super.prototype.renderHeader.call(this, '<tr><th><small>Info</small></th><th>Name</th><th>Description</th></tr>');
         }
         Accounts.prototype.onInit = function () {
@@ -98,7 +100,7 @@ var uplight;
             console.log(data);
             var url = 'http://' + data.server + '/' + data.config.folder + data.config.pub;
             if (data.config.mobile)
-                this.$view.find('[data-id=mobile]:first').text(url + data.config.mobileUrl).attr('href', url + data.config.mobileUrl);
+                this.$view.find('[data-id=mobile]:first').text(url + data.config.mobileUrl).attr('href', url + data.config.mobileUrl).parent().show();
             else
                 this.$view.find('[data-id=mobile]:first').parent().hide();
             var admUrl = data.adminUrl + data.config.folder + data.config.pub + data.config.adminUrl;
@@ -112,14 +114,11 @@ var uplight;
             this.$view.find('[data-id=admins]:first').html(admins);
             var kiosks = '';
             var ar2 = data.config.kiosksUrls;
-            if (ar2) {
+            if (ar2 || ar2.length) {
                 for (var i = 0, n = ar2.length; i < n; i++)
                     kiosks += '<a href="' + url + ar2[i] + '" target="_blank" class="list-group-item">' + url + ar2[i] + '</a>';
-                if (n === 0)
-                    this.$view.find('[data-id=kiosks]:first').parent().hide();
-                else
-                    this.$view.find('[data-id=kiosks]:first').html(kiosks);
             }
+            this.$view.find('[data-id=kiosks]:first').html(kiosks);
         };
         AccountInfo.prototype.onShow = function () {
             var _this = this;
