@@ -6,7 +6,8 @@ if(isset($_SESSION['directories_userid']) && $_SESSION['directories_userid']!=0 
 			case 'account':			
 				require('Accounts.php');
 				$ctr = new Accounts();
-				echo ($ctr->process($a,$_GET,$_POST));
+				$res = $ctr->process($a,$_GET,$_POST);
+				echo (is_string($res)?$res:json_encode($res));
 			break;
 			case 'server_url':
 				$out = new stdClass();

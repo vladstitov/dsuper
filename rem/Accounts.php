@@ -5,9 +5,7 @@ class Accounts{
 	var $_db1;
 	var $dist ='/dist/';
 	var $src = '/demo/dir_test';
-	var $https='https://frontdes-wwwss24.ssl.supercp.com';
-
-	
+	var $https='https://frontdes-wwwss24.ssl.supercp.com';	
 	
 	private function db1(){
 				if($this->_db1)return $this->_db1;
@@ -59,7 +57,7 @@ class Accounts{
 				break;
 				case 'create_admins';				
 				$folder  =  $_SERVER['DOCUMENT_ROOT'].$_SESSION['install_folder'];
-				return json_encode($this->create_admins(json_decode(file_get_contents("php://input"),$folder)));
+				return json_encode($this->create_admins(json_decode(file_get_contents("php://input")),$folder));
 				break;
 				case 'register';							
 				return json_encode($this->register());
@@ -113,8 +111,8 @@ class Accounts{
 				}else {
 					$out->error='error';
 					$out->result = 'no id '.$id;
-				}
-				
+				}				
+              
 				return $out;
 	
 	}
@@ -163,15 +161,15 @@ class Accounts{
 					return $res;
 					
 			}	
-			$folder = isset($_SESSION['directories_folder'])?$_SESSION['directories_folder']:0;			
-			if($folder){	
-				$folder = $_SERVER['DOCUMENT_ROOT'].$folder;
+			$folder = $this->getInstallFolder();			
+			if($folder){
+					$foder=$_SERVER['DOCUMENT_ROOT'].$folder;
 						//f on linux use: rm -rf /dir
 						////If on windows use: rd c:\dir /S /Q
 				if(file_exists($folder) && is_dir($folder)){				
 						$res=$this->deleteDirectory($folder);
 						if($res){
-							$_SESSION['directories_folder']=0;
+							$this->setInstallFolder(0);
 							$out->success='folder_removed';
 							$out->result = $res;
 						}else{
@@ -220,6 +218,9 @@ class Accounts{
 	private function getInstallFolder(){
 		isset($_SESSION['install_folder'])?$_SESSION['install_folder']:0;
 	}
+	private function setInstallFolder($filder){
+			$_SESSION['install_folder'];
+	}
 	
 	
 	private function create_config($data){			
@@ -267,9 +268,28 @@ class Accounts{
 			sleep(3);
 			$out= new stdClass();
 			if(isset($_SESSION['directories_config'])){
-				$out->success='ready';
+				$cfg = $this->getInstallConfig();
+				$db = $this->db1();
+				$sql='SELECT * FROM accounts WHERE folder=?';
+				$res = $db->query($sql,array($cfg->folder));
+				if(count($res)!==0){
+					$out->error='exists';
+					return $out;
+				}
+				
+				$status='try';
+				$ar = array($cfg->uid,$cfg->folder,'try',$cfg->account_name,$cfg->description,json_encode($cfg));				
+				$sql="INSERT INTO accounts (user_id,folder,status,name,description,text) VALUES(?,?,?,?,?,?)";				
+				$result = $db->insertRow($sql,$ar);			
+				if($result){
+					$_SESSION['account_id']= $result;
+					$out->success='ready';
+				}
+			
+				
 				$cmd = "git -v";
-				$out->result =  shell_exec($cmd);	
+				$out->result = $cfg->namespace;
+				$out->message = shell_exec($cmd);		
 			}else{
 				$out->error='no_config';
 			}		
@@ -296,7 +316,8 @@ class Accounts{
 			return $out;			
 	}	
 	
-	private function check_install(){			
+	private function check_install(){
+			$out= new stdClass();	
 			$cfg = $this->getInstallConfig();			
 			$ar= array();
 			$ar[]=$cfg->pub;
@@ -313,10 +334,22 @@ class Accounts{
 					}
 					else $errors[]=$val;					
 			}			
-			if(count(errors))	return 'missing_files '.implode(',',$errors);	
-			 
-			$res = file_put_contents($cfg->root.$cfg->folder.$cfg->data.'config.json',json_encode($cfg));
-			if($res) return 'INSTALL_SUCCESS';	
+			if(count($errors)){
+						$out->error='missing_files';
+						$out->result=implode(',',$errors);
+						return $out;						
+			}			
+			 $file_name = $cfg->root.$cfg->folder.$cfg->data.'config.json';
+			$res = file_put_contents($file_name,json_encode($cfg));
+			if($res){
+				$out->success='check_complete';
+				$out->result= implode(',',$ar);
+				return $out;
+			}else{
+					$out->error='cant_save_config';
+					$out->result=$file_name;
+				return $out;
+			}			
 			return 'NO CONFIG SAVED';				
 	}
 		
@@ -331,17 +364,21 @@ class Accounts{
 						return $out;
 				}
 				$sendemail = array();
+				$names =array();
 				foreach($admins as $user){
-					if($user->sendemail) $sendemail[$user];
-					$res = $stmt->execute(array($user->name,$user->email,$user->username,$user->pass,$user->sendemail,'admin'));
+					if($user->sendemail) $sendemail[]=$user;
+					$names[]=$user->name;
+					$res = $stmt->execute(array($user->name,$user->email,$user->username,$user->password,$user->sendemail,'admin'));
 					if(!$res) {
 						$out->error='insertadmin';
 						$out->result = $db->errorInfo();
 						return $out;
 					}
 				}
-				if(count($sendemail))$out->success = 'admins_created_email';						
-				else	$out->success = 'admins_created';			
+				if(count($sendemail)){
+								$out->success = 'admins_created_email';	
+							}				
+				else$out->success = 'admins_created';			
 				$out->result = implode(',',$names);
 				$this->addStep('create_admins');
 				return $out;				
@@ -426,34 +463,12 @@ class Accounts{
 	
 	private function register(){
 				$out= new stdClass();
-				$root=$_SERVER['DOCUMENT_ROOT'];				
-				$folder = $_SESSION['directories_folder'];	
-				$id = $_SESSION['directories_userid'];				
-				$data = json_decode(file_get_contents('../temp/account'.$id.'.json'));			
-		
-			foreach($data as $item){				
-				if($item->index=='account-name') $name = $item->value;
-				else if($item->index=='description') $description = $item->value;
-				else if($item->index=='password')$item->value='';
-			}
-			$res = file_put_contents($root.$folder.'/data/account.json',json_encode($data));
-			$status='new';
-			$ar = array($id,$folder,$status,$name,$description);
-			$sql="INSERT INTO accounts (user_id,folder,status,name,description) VALUES(?,?,?,?,?)";
-			$db = $this->db1();
-			$result = $db->insertRow($sql,$ar);			
-			if($result){
-				$_SESSION['account_id']= $result;
-				$this->addStep('registered');
 				$out->success='registered';
-				$out->result = $result;
-			}else{
-				$out->error='error_register';
-				$out->result=$db->errorInfo();
-				$this->log(' register '.$out->result);
+				$id=$_SESSION['account_id'];
+				$sql="UPDATE accounts SET status='new' WHERE id=".$id;
+				$db = $this->db1();
+				$res = $db->queryPure($sql);				
 				
-			}			
-			sleep(2);			
 			return $out;
 	}
 		
@@ -464,7 +479,7 @@ class Accounts{
 				$sql='SELECT * FROM accounts WHERE folder=?';
 				$ns = 	$get['url'];				
 				if(is_numeric(substr($ns,0,1))) $ns='a'.$ns;
-				$root = $_SERVER['DOCUMENT_ROOT'];					 
+				//$root = $_SERVER['DOCUMENT_ROOT'];					 
 				$dest = $this->dist.$ns;							
 				$ar=array($dest);
 				$db = $this->db1();
