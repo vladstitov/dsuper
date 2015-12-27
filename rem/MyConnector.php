@@ -2,20 +2,27 @@
 class MyConnector{
     var  $db;
 	var $stmt;
-	function MyConnector($folder){
-		if($folder)$this->db = new PDO('sqlite:'.$folder.'/data/directories.db');
-		else	$this->db  = new PDO('mysql:host=localhost;dbname=frontdes_dir', 'frontdes', 'zaq12wsxcde34rfv');	
+	var $filename;
+	function MyConnector($folder){		
+		$filename= $folder.'/data/directories.db';
+		if($folder && file_exists($filename)){
+			$this->db = new PDO('sqlite:'.$filename);
+			$this->filename=$filename;
+		}else	{
+			$this->db  = new PDO('mysql:host=localhost;dbname=frontdes_dir', 'frontdes', 'zaq12wsxcde34rfv');	
+		}
 	}	
 
+	function getFilename(){
+		return $this->filename;
+	}
 	function getField($sql){
 		return $this->db->query($sql)->fetchColumn();
 	}
 	function queryPure($sql){
 		return  $this->db->query($sql);
 	}
-	function deleteRecord($sql){
-		return  $this->db->query($sql);
-	}	
+		
 	
 	function getAsArray($sql){
 		return  $this->db->query($sql)->fetchAll(PDO::FETCH_NUM);
@@ -23,7 +30,7 @@ class MyConnector{
 	function getAllAsObj($sql){
 		return  $this->db->query($sql)->fetchAll(PDO::FETCH_OBJ);
 	}
-	function query($sql,$ar){
+	function query($sql,$ar){			
 			$stmt =   $this->db->prepare($sql);
 			if(!$stmt) return $this->db->errorInfo();
 			$res = $stmt->execute($ar);			

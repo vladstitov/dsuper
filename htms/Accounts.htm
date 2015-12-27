@@ -41,7 +41,7 @@
     </section>
 
     <!-- /////////////////////////////////////////////////////////-->
-    <section data-id="AccountEdit" class="modal">
+    <section data-ctr="AccountEditCtr" class="modal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <section data-id="edit-account">
@@ -51,25 +51,24 @@
                     </div>
                     <div class="modal-body">
                         <div class="form">
-                            <div class="form-group" data-id="id">
+                            <div class="form-group">
                                 <label>ID:</label> <!--<label class="btn"> <div class="fa fa-edit"> </div>Edit</label>-->
-                                <input type="text" class="form-control" readonly />
+                                <input type="text" class="form-control" readonly  data-id="id" />
                             </div>
-                            <div class="form-group" data-id="name">
+                            <div class="form-group">
                                 <label>Name:</label>
-                                <input  type="text"  placeholder="name is reqired"  class="form-control" />
+                                <input  type="text"  placeholder="name is reqired"  class="form-control"  data-id="name" />
                             </div>
 
-                            <div class="form-group" data-id="description">
+                            <div class="form-group" >
                                 <label>Descriptopn:</label>
-                                <input type="text" class="form-control" />
+                                <input type="text" class="form-control" data-id="description" />
                             </div>
 
                         </div>
                     </div>
                     <div class="modal-footer">
-
-                        <button type="button" class="btn btn-primary" data-id="btnSave">Next</button>
+                        <button type="button" class="btn btn-primary" data-id="btnSave">Save</button>
                         <button type="button" class="btn btn-default" data-id="btnClose">Close</button>
                     </div>
                 </section>
@@ -287,9 +286,10 @@
                                <td> Administrator URL:</td><td></td>
                             </tr>
                             <tr data-id="admins">
-                               <td> Administrators:</td><td></td>
+                                <td> Administrators:</td><td></td>
                             </tr>
                         </table>
+
                         <h5>You can edit this data later except <span class="namespace">Namespace</span></h5>
                     </div>
 
@@ -349,7 +349,7 @@
     </section>
     <script>
       require(['ListEditor'],function(){
-         require(['FinalResultCtr','InstallProcess','AccountInfo','Accounts','AddAccountCtr','AddAccountSteps'],function(){
+         require(['AccountEditCtr','FinalResultCtr','InstallProcess','AccountInfo','Accounts','AddAccountCtr','AddAccountSteps'],function(){
            var acc= new uplight.Accounts($('#Accounts'),{service_id:'account'});
             });
         })

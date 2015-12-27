@@ -273,12 +273,12 @@ module uplight{
             this.selectedIndex =-1;
             this.onAdd();
         }
-        onEditShow():void{
+        onEdit(item:any):void{
 
         }
         showEdit():void{
             if(!this.selectedItem) return;
-            this.onEditShow();
+            this.onEdit(this.selectedItem);
             //this.editItem.setItem(this.selectedItem);
            // this.editItem.$view.show();
         }

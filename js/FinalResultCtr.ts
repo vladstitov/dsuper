@@ -7,8 +7,17 @@
     ///<reference path="Utils.ts"/>
     ///<reference path="AddAccountSteps.ts"/>
 module uplight{
+
+    export class UAdmin{
+            email:string;
+            name:string;
+        sendemail:string;
+        username:string;
+        password:string;
+
+    }
     export class UFinal{
-        admins:UItem[][];
+        admins:UAdmin[];
         config:UItem[];
     }
     export class FinalResultCtr extends DisplayObject{
@@ -43,7 +52,7 @@ module uplight{
             return this;
         }
         onServer(s:string):void{
-            console.log(this.name,s);
+           /// console.log(this.name,s);
             var res:any
             try{
                 res = JSON.parse(s);
@@ -60,11 +69,14 @@ module uplight{
         setData1(data:UFinal):FinalResultCtr{
             this.data = data;
             var ar = data.admins;
-            var admins:string[] = []
+            this.$view.find('.uadmin').detach();
+            var out:string='';
             for(var i=0,n=ar.length;i<n;i++){
-                admins.push(this.getName(ar[i]));
+                out+='<tr class="uadmin"><td>'+ar[i].name+'</td><td>'+ar[i].email+'</td>';
+
             }
-            this.$view.find('[data-id=admins]').children().last().text(admins.join(' , '));
+
+            this.$view.find('[data-id=admins]').after(out);
             console.log('FinalResultCtr ',data);
             this.conn.post(JSON.stringify(data.config),'account.create_config').done((s)=>this.onServer(s));
             return this;
@@ -80,7 +92,6 @@ module uplight{
         }
         render(config:any):void{
             var server:string = config.server;
-
 
             var v:JQuery = this.$view;
             var namespace:string = config.namespace;

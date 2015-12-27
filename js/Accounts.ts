@@ -7,6 +7,8 @@
     ///<reference path="Utils.ts"/>
     ///<reference path="AddAccountCtr.ts"/>
     ///<reference path="AccountInfo.ts"/>
+    ///<reference path="AccountEditCtr.ts"/>
+
 
 module uplight{
     var CLICK = CLICK || 'click';
@@ -39,7 +41,12 @@ module uplight{
         onInit():void{
             this.$list.on(CLICK,'.btn',(evt)=>{
                 setTimeout(()=>{
-                    if(!this.accountInfo)this.accountInfo = new AccountInfo(this.$view.find('[data-ctr=AccountInfo]'),'AccountInfo');
+                    if(!this.accountInfo){
+                        this.accountInfo = new AccountInfo(this.$view.find('[data-ctr=AccountInfo]'),'AccountInfo');
+                        this.accountInfo.onDataError = ()=>{
+                            this.loadData();
+                        }
+                    }
                     this.accountInfo.setData(this.selectedItem);
                     this.accountInfo.show();
                 },10)
@@ -54,10 +61,19 @@ module uplight{
             return '<tr data-i="'+i+'"><td><a class="btn fa fa-info-circle"></a></td><td>'+item.name+'</td><td>'+item.description+'</td></tr>';
         }
 
+        onEdit(item):void{
+            if(!this.accountEdit) this.accountEdit = new AccountEditCtr(this.$view.find('[data-ctr=AccountEditCtr]:first'),'editor','AccountEditCtr');
+            this.accountEdit.setItem(item).show();
+            this.accountEdit.onComplete = ()=>{
+                this.accountEdit.hide();
+                this.loadData();
+            }
+        }
 
         addAccount:AddAccountCtr;
-        accountEdit:AccountEdit;
+        accountEdit:AccountEditCtr;
         accountInfo:AccountInfo;
+
 
         onAdd():void{
             this.addAccount.reset().start();
@@ -65,13 +81,6 @@ module uplight{
 
         }
 
-
-
-    }
-    export class AccountEdit extends ModuleView{
-        constructor($view:JQuery,name?:string) {
-            super($view, name);
-        }
 
 
     }
@@ -92,19 +101,22 @@ module uplight{
         pub:string;
         data:string;
         db:string;
-        adminUrl:string;
-        mobile:boolean;
-        mobileUrl:string;
-        kiosksUrls:string[];
+        server:string;
+        adminurl:string;
+        KioskMobile:string;
+        Kiosk1080:string;
+        Kiosk1920:string;
+        Admin:string;
         constructor(data:any){
             for(var str in data)this[str] = data[str];
         }
     }
     export class AccData{
         config: AccCfg;
-        admins:{name:string;email:string}[];
         server:string;
-        adminUrl:string;
+        admins:{name:string;email:string}[];
+
+
         constructor(data:any){
            for(var str in data)this[str] = data[str];
             this.config = new AccCfg(this.config);

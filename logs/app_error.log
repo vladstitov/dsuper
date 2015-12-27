@@ -2595,4 +2595,745 @@ Call Stack:
     0.0025     482792   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
     0.0025     484448   3. Accounts->save_data() C:\wamp\www\dir_super\rem\Accounts.php:56
 
-{"error":"error"}
+{"error":"error"}2015-12-24 06:19:28
+Error installing application 
+Notice: Use of undefined constant errors - assumed 'errors' in C:\wamp\www\dir_super\rem\Accounts.php on line 318
+
+Call Stack:
+    0.0004     269384   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0027     469360   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0027     469808   3. Accounts->check_install() C:\wamp\www\dir_super\rem\Accounts.php:58
+
+missing_files 2015-12-24 06:19:58
+Error installing application 
+Notice: Use of undefined constant errors - assumed 'errors' in C:\wamp\www\dir_super\rem\Accounts.php on line 318
+
+Call Stack:
+    0.0006     269384   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0023     469360   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0023     469808   3. Accounts->check_install() C:\wamp\www\dir_super\rem\Accounts.php:58
+
+missing_files 2015-12-24 06:20:28
+Error installing application 
+Notice: Use of undefined constant errors - assumed 'errors' in C:\wamp\www\dir_super\rem\Accounts.php on line 318
+
+Call Stack:
+    0.0004     269384   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0018     469360   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0018     469808   3. Accounts->check_install() C:\wamp\www\dir_super\rem\Accounts.php:58
+
+missing_files 2015-12-24 06:53:39
+
+Catchable fatal error: Object of class stdClass could not be converted to string in C:\wamp\www\dir_super\rem\service.php on line 9
+
+Call Stack:
+    0.0003     269384   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+
+2015-12-24 06:58:29
+
+Warning: Missing argument 2 for Accounts::create_admins(), called in C:\wamp\www\dir_super\rem\Accounts.php on line 62 and defined in C:\wamp\www\dir_super\rem\Accounts.php on line 337
+
+Call Stack:
+    0.0003     271432   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0017     473000   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0017     475208   3. Accounts->create_admins() C:\wamp\www\dir_super\rem\Accounts.php:62
+
+
+Notice: Undefined variable: folder in C:\wamp\www\dir_super\rem\Accounts.php on line 339
+
+Call Stack:
+    0.0003     271432   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0017     473000   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0017     475208   3. Accounts->create_admins() C:\wamp\www\dir_super\rem\Accounts.php:62
+
+
+Notice: Trying to get property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 349
+
+Call Stack:
+    0.0003     271432   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0017     473000   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0017     475208   3. Accounts->create_admins() C:\wamp\www\dir_super\rem\Accounts.php:62
+
+
+Notice: Trying to get property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 350
+
+Call Stack:
+    0.0003     271432   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0017     473000   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0017     475208   3. Accounts->create_admins() C:\wamp\www\dir_super\rem\Accounts.php:62
+
+
+Notice: Trying to get property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 350
+
+Call Stack:
+    0.0003     271432   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0017     473000   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0017     475208   3. Accounts->create_admins() C:\wamp\www\dir_super\rem\Accounts.php:62
+
+
+Notice: Trying to get property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 350
+
+Call Stack:
+    0.0003     271432   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0017     473000   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0017     475208   3. Accounts->create_admins() C:\wamp\www\dir_super\rem\Accounts.php:62
+
+
+Notice: Trying to get property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 350
+
+Call Stack:
+    0.0003     271432   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0017     473000   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0017     475208   3. Accounts->create_admins() C:\wamp\www\dir_super\rem\Accounts.php:62
+
+
+Notice: Trying to get property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 350
+
+Call Stack:
+    0.0003     271432   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0017     473000   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0017     475208   3. Accounts->create_admins() C:\wamp\www\dir_super\rem\Accounts.php:62
+
+{"error":"insertadmin","result":["00000",null,null]}2015-12-24 07:00:33
+
+Warning: Illegal offset type in C:\wamp\www\dir_super\rem\Accounts.php on line 349
+
+Call Stack:
+    0.0005     271432   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0028     473000   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0029     475264   3. Accounts->create_admins() C:\wamp\www\dir_super\rem\Accounts.php:62
+
+
+Notice: Undefined property: stdClass::$pass in C:\wamp\www\dir_super\rem\Accounts.php on line 350
+
+Call Stack:
+    0.0005     271432   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0028     473000   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0029     475264   3. Accounts->create_admins() C:\wamp\www\dir_super\rem\Accounts.php:62
+
+
+Notice: Undefined variable: names in C:\wamp\www\dir_super\rem\Accounts.php on line 359
+
+Call Stack:
+    0.0005     271432   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0028     473000   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0029     475264   3. Accounts->create_admins() C:\wamp\www\dir_super\rem\Accounts.php:62
+
+
+Warning: implode(): Invalid arguments passed in C:\wamp\www\dir_super\rem\Accounts.php on line 359
+
+Call Stack:
+    0.0005     271432   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0028     473000   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0029     475264   3. Accounts->create_admins() C:\wamp\www\dir_super\rem\Accounts.php:62
+    0.2598     479816   4. implode() C:\wamp\www\dir_super\rem\Accounts.php:359
+
+{"success":"admins_created","result":null}2015-12-24 07:05:19
+
+Notice: Undefined property: stdClass::$pass in C:\wamp\www\dir_super\rem\Accounts.php on line 351
+
+Call Stack:
+    0.0008     271456   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0044     473640   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0044     475880   3. Accounts->create_admins() C:\wamp\www\dir_super\rem\Accounts.php:62
+
+
+Notice: Undefined variable: names in C:\wamp\www\dir_super\rem\Accounts.php on line 360
+
+Call Stack:
+    0.0008     271456   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0044     473640   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0044     475880   3. Accounts->create_admins() C:\wamp\www\dir_super\rem\Accounts.php:62
+
+
+Warning: implode(): Invalid arguments passed in C:\wamp\www\dir_super\rem\Accounts.php on line 360
+
+Call Stack:
+    0.0008     271456   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0044     473640   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0044     475880   3. Accounts->create_admins() C:\wamp\www\dir_super\rem\Accounts.php:62
+    0.0822     480584   4. implode() C:\wamp\www\dir_super\rem\Accounts.php:360
+
+{"success":"admins_created_email","result":null}2015-12-24 07:12:57
+
+Notice: Undefined variable: names in C:\wamp\www\dir_super\rem\Accounts.php on line 363
+
+Call Stack:
+    0.0007     271424   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0031     474792   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0032     477032   3. Accounts->create_admins() C:\wamp\www\dir_super\rem\Accounts.php:62
+
+
+Warning: implode(): Invalid arguments passed in C:\wamp\www\dir_super\rem\Accounts.php on line 363
+
+Call Stack:
+    0.0007     271424   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0031     474792   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0032     477032   3. Accounts->create_admins() C:\wamp\www\dir_super\rem\Accounts.php:62
+    0.2133     481776   4. implode() C:\wamp\www\dir_super\rem\Accounts.php:363
+
+{"success":"admins_created_email","result":null}2015-12-24 07:19:03
+
+Warning: Missing argument 2 for MyConnector::query(), called in C:\wamp\www\dir_super\rem\Accounts.php on line 378 and defined in C:\wamp\www\dir_super\rem\MyConnector.php on line 26
+
+Call Stack:
+    0.0006     270264   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0032     474016   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0032     474560   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+    0.0037     475984   4. MyConnector->query() C:\wamp\www\dir_super\rem\Accounts.php:378
+
+
+Notice: Undefined variable: ar in C:\wamp\www\dir_super\rem\MyConnector.php on line 29
+
+Call Stack:
+    0.0006     270264   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0032     474016   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0032     474560   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+    0.0037     475984   4. MyConnector->query() C:\wamp\www\dir_super\rem\Accounts.php:378
+
+
+Fatal error: Call to a member function fetchAll() on a non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 378
+
+Call Stack:
+    0.0006     270264   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0032     474016   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0032     474560   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+
+2015-12-24 07:19:03
+
+Notice: Trying to get property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 457
+
+Call Stack:
+    0.0222     270184   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0327     473840   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0330     474288   3. Accounts->register() C:\wamp\www\dir_super\rem\Accounts.php:65
+
+
+Notice: Trying to get property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 458
+
+Call Stack:
+    0.0222     270184   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0327     473840   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0330     474288   3. Accounts->register() C:\wamp\www\dir_super\rem\Accounts.php:65
+
+
+Notice: Trying to get property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 459
+
+Call Stack:
+    0.0222     270184   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0327     473840   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0330     474288   3. Accounts->register() C:\wamp\www\dir_super\rem\Accounts.php:65
+
+
+Notice: Trying to get property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 457
+
+Call Stack:
+    0.0222     270184   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0327     473840   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0330     474288   3. Accounts->register() C:\wamp\www\dir_super\rem\Accounts.php:65
+
+
+Notice: Trying to get property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 458
+
+Call Stack:
+    0.0222     270184   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0327     473840   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0330     474288   3. Accounts->register() C:\wamp\www\dir_super\rem\Accounts.php:65
+
+
+Notice: Trying to get property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 459
+
+Call Stack:
+    0.0222     270184   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0327     473840   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0330     474288   3. Accounts->register() C:\wamp\www\dir_super\rem\Accounts.php:65
+
+
+Warning: file_put_contents(C:/wamp/www/dist/km/data/account.json): failed to open stream: No such file or directory in C:\wamp\www\dir_super\rem\Accounts.php on line 461
+
+Call Stack:
+    0.0222     270184   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0327     473840   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0330     474288   3. Accounts->register() C:\wamp\www\dir_super\rem\Accounts.php:65
+    0.0440     490944   4. file_put_contents() C:\wamp\www\dir_super\rem\Accounts.php:461
+
+
+Notice: Undefined variable: name in C:\wamp\www\dir_super\rem\Accounts.php on line 463
+
+Call Stack:
+    0.0222     270184   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0327     473840   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0330     474288   3. Accounts->register() C:\wamp\www\dir_super\rem\Accounts.php:65
+
+
+Notice: Undefined variable: description in C:\wamp\www\dir_super\rem\Accounts.php on line 463
+
+Call Stack:
+    0.0222     270184   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0327     473840   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0330     474288   3. Accounts->register() C:\wamp\www\dir_super\rem\Accounts.php:65
+
+
+Notice: Array to string conversion in C:\wamp\www\dir_super\rem\Accounts.php on line 475
+
+Call Stack:
+    0.0222     270184   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0327     473840   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0330     474288   3. Accounts->register() C:\wamp\www\dir_super\rem\Accounts.php:65
+
+{"error":"error_register","result":["00000",null,null]}2015-12-24 07:49:38
+
+Catchable fatal error: Object of class stdClass could not be converted to string in C:\wamp\www\dir_super\rem\Accounts.php on line 283
+
+Call Stack:
+    0.0008     270200   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0038     470384   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0038     470832   3. Accounts->start_create() C:\wamp\www\dir_super\rem\Accounts.php:52
+
+2015-12-24 07:51:37
+
+Notice: Undefined property: stdClass::$name in C:\wamp\www\dir_super\rem\Accounts.php on line 283
+
+Call Stack:
+    0.0005     270200   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0027     470344   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0027     470792   3. Accounts->start_create() C:\wamp\www\dir_super\rem\Accounts.php:52
+
+{"result":"jjj","message":null}2015-12-24 07:52:37
+
+Warning: Missing argument 2 for MyConnector::query(), called in C:\wamp\www\dir_super\rem\Accounts.php on line 395 and defined in C:\wamp\www\dir_super\rem\MyConnector.php on line 26
+
+Call Stack:
+    0.0007     270264   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0032     470368   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0032     470912   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+    0.0037     472336   4. MyConnector->query() C:\wamp\www\dir_super\rem\Accounts.php:395
+
+
+Notice: Undefined variable: ar in C:\wamp\www\dir_super\rem\MyConnector.php on line 29
+
+Call Stack:
+    0.0007     270264   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0032     470368   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0032     470912   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+    0.0037     472336   4. MyConnector->query() C:\wamp\www\dir_super\rem\Accounts.php:395
+
+
+Fatal error: Call to a member function fetchAll() on a non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 395
+
+Call Stack:
+    0.0007     270264   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0032     470368   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0032     470912   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+
+2015-12-24 20:50:11
+
+Notice: Undefined index: install_folder in C:\wamp\www\dir_super\rem\Accounts.php on line 61
+
+Call Stack:
+    0.0006     271432   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0032     478328   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+
+{"error":"prepare","result":["HY000",1,"no such table: users"]}2015-12-24 20:54:05
+
+Warning: Missing argument 2 for MyConnector::query(), called in C:\wamp\www\dir_super\rem\Accounts.php on line 426 and defined in C:\wamp\www\dir_super\rem\MyConnector.php on line 26
+
+Call Stack:
+    0.0007     270264   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0032     477504   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0032     478040   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:67
+    0.0038     479416   4. MyConnector->query() C:\wamp\www\dir_super\rem\Accounts.php:426
+
+
+Notice: Undefined variable: ar in C:\wamp\www\dir_super\rem\MyConnector.php on line 29
+
+Call Stack:
+    0.0007     270264   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0032     477504   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0032     478040   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:67
+    0.0038     479416   4. MyConnector->query() C:\wamp\www\dir_super\rem\Accounts.php:426
+
+
+Fatal error: Call to a member function fetchAll() on a non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 426
+
+Call Stack:
+    0.0007     270264   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0032     477504   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0032     478040   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:67
+
+2015-12-24 20:54:44
+
+Warning: Missing argument 2 for MyConnector::query(), called in C:\wamp\www\dir_super\rem\Accounts.php on line 426 and defined in C:\wamp\www\dir_super\rem\MyConnector.php on line 26
+
+Call Stack:
+    0.0005     270264   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0030     477504   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0030     478040   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:67
+    0.0035     479416   4. MyConnector->query() C:\wamp\www\dir_super\rem\Accounts.php:426
+
+
+Notice: Undefined variable: ar in C:\wamp\www\dir_super\rem\MyConnector.php on line 29
+
+Call Stack:
+    0.0005     270264   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0030     477504   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0030     478040   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:67
+    0.0035     479416   4. MyConnector->query() C:\wamp\www\dir_super\rem\Accounts.php:426
+
+
+Fatal error: Call to a member function fetchAll() on a non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 426
+
+Call Stack:
+    0.0005     270264   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0030     477504   2. Accounts->process() C:\wamp\www\dir_super\rem\service.php:9
+    0.0030     478040   3. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:67
+
+2015-12-26 05:44:59
+
+Warning: Missing argument 1 for Router::rote(), called in C:\wamp\www\dir_super\rem\Router.php on line 6 and defined in C:\wamp\www\dir_super\rem\Router.php on line 8
+
+Call Stack:
+    0.0005     252648   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0027     375416   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0027     375416   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+
+{"success":"check_complete","result":"\/pub\/,\/data\/,\/pub\/KioskMobile.php,\/pub\/Kiosk1080.php,\/pub\/Kiosk1920.php,\/pub\/Admin.php,\/data\/directories.db"}2015-12-26 05:47:34
+
+Warning: Missing argument 2 for MyConnector::query(), called in C:\wamp\www\dir_super\rem\Accounts.php on line 431 and defined in C:\wamp\www\dir_super\rem\MyConnector.php on line 26
+
+Call Stack:
+    0.0005     252712   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0026     375744   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0026     375744   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0043     549696   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0043     550200   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:72
+    0.0049     551584   6. MyConnector->query() C:\wamp\www\dir_super\rem\Accounts.php:431
+
+
+Notice: Undefined variable: ar in C:\wamp\www\dir_super\rem\MyConnector.php on line 29
+
+Call Stack:
+    0.0005     252712   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0026     375744   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0026     375744   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0043     549696   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0043     550200   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:72
+    0.0049     551584   6. MyConnector->query() C:\wamp\www\dir_super\rem\Accounts.php:431
+
+
+Fatal error: Call to a member function fetchAll() on a non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 431
+
+Call Stack:
+    0.0005     252712   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0026     375744   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0026     375744   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0043     549696   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0043     550200   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:72
+
+2015-12-26 05:50:40
+
+Warning: mail(): Failed to connect to mailserver at "localhost" port 25, verify your "SMTP" and "smtp_port" setting in php.ini or use ini_set() in C:\wamp\www\dir_super\rem\Accounts.php on line 447
+
+Call Stack:
+    0.0006     252712   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0032     375744   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0032     375744   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0055     549696   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0055     550200   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:72
+    0.0068     558968   6. mail() C:\wamp\www\dir_super\rem\Accounts.php:447
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 449
+
+Call Stack:
+    0.0006     252712   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0032     375744   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0032     375744   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0055     549696   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0055     550200   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:72
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 450
+
+Call Stack:
+    0.0006     252712   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0032     375744   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0032     375744   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0055     549696   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0055     550200   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:72
+
+[]2015-12-26 14:20:07
+../temp/install_cfg4_1451139606jsoninstall_cfg../temp/install_cfg4_1451139606json{"error":"no_config_file","result":"..\/temp\/install_cfg4_1451139606json"}2015-12-26 14:23:55
+../temp/install_cfg4_1451139835jsoninstall_cfg../temp/install_cfg4_1451139835jsonint(0)
+{"error":"no_config_file","result":"..\/temp\/install_cfg4_1451139835json"}2015-12-26 14:26:53
+../temp/install_cfg4_1451140010jsoninstall_cfg../temp/install_cfg4_1451140010json1int(0)
+{"error":"no_config_file","result":"..\/temp\/install_cfg4_1451140010json"}2015-12-26 14:28:37
+../temp/install_cfg4_1451140116jsoninstall_cfg../temp/install_cfg4_1451140116jsonisset1=int(0)
+{"error":"no_config_file","result":"..\/temp\/install_cfg4_1451140116json"}2015-12-26 14:29:50
+../temp/install_cfg4_1451140189jsoninstall_cfg../temp/install_cfg4_1451140189jsonisset1=1int(0)
+{"error":"no_config_file","result":"..\/temp\/install_cfg4_1451140189json"}2015-12-26 14:30:38
+../temp/install_cfg4_1451140233jsonclass stdClass#5 (19) {
+  public $namespace =>
+  string(4) "mmmm"
+  public $account_name =>
+  string(0) ""
+  public $description =>
+  string(0) ""
+  public $KioskMobile =>
+  string(11) "KioskMobile"
+  public $Kiosk1080 =>
+  string(9) "Kiosk1080"
+  public $Kiosk1920 =>
+  string(9) "Kiosk1920"
+  public $folder =>
+  string(10) "/dist/mmmm"
+  public $server =>
+  string(16) "http://localhost"
+  public $uid =>
+  string(1) "4"
+  public $filename =>
+  string(21) "cfg_4_1451140233.json"
+  public $root =>
+  string(11) "C:/wamp/www"
+  public $dist =>
+  string(6) "/dist/"
+  public $src =>
+  string(14) "/demo/dir_test"
+  public $pub =>
+  string(5) "/pub/"
+  public $data =>
+  string(6) "/data/"
+  public $db =>
+  string(14) "directories.db"
+  public $https =>
+  string(40) "https://frontdes-wwwss24.ssl.supercp.com"
+  public $adminurl =>
+  string(56) "https://frontdes-wwwss24.ssl.supercp.com/dist/mmmm/Admin"
+  public $Admin =>
+  string(5) "Admin"
+}
+{"message":null,"result":"mmmm","success":"ready"}2015-12-26 16:53:10
+
+Warning: mail(): Failed to connect to mailserver at "localhost" port 25, verify your "SMTP" and "smtp_port" setting in php.ini or use ini_set() in C:\wamp\www\dir_super\rem\Accounts.php on line 416
+
+Call Stack:
+    0.0006     252696   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0028     375608   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0028     375608   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0046     535920   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0046     536352   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+    0.0059     545208   6. mail() C:\wamp\www\dir_super\rem\Accounts.php:416
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 418
+
+Call Stack:
+    0.0006     252696   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0028     375608   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0028     375608   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0046     535920   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0046     536352   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 419
+
+Call Stack:
+    0.0006     252696   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0028     375608   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0028     375608   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0046     535920   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0046     536352   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+
+[]2015-12-26 17:01:14
+
+Warning: mail(): Failed to connect to mailserver at "localhost" port 25, verify your "SMTP" and "smtp_port" setting in php.ini or use ini_set() in C:\wamp\www\dir_super\rem\Accounts.php on line 417
+
+Call Stack:
+    0.0007     252696   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0030     375608   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0030     375608   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0046     536072   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0046     536504   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+    0.0057     545360   6. mail() C:\wamp\www\dir_super\rem\Accounts.php:417
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 419
+
+Call Stack:
+    0.0007     252696   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0030     375608   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0030     375608   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0046     536072   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0046     536504   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 420
+
+Call Stack:
+    0.0007     252696   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0030     375608   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0030     375608   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0046     536072   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0046     536504   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+
+[]2015-12-26 19:14:31
+
+Warning: mail(): Failed to connect to mailserver at "localhost" port 25, verify your "SMTP" and "smtp_port" setting in php.ini or use ini_set() in C:\wamp\www\dir_super\rem\Accounts.php on line 426
+
+Call Stack:
+    0.0004     252696   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0027     374056   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0027     374056   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0045     539888   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0045     540312   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+    0.0057     549176   6. mail() C:\wamp\www\dir_super\rem\Accounts.php:426
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 428
+
+Call Stack:
+    0.0004     252696   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0027     374056   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0027     374056   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0045     539888   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0045     540312   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 429
+
+Call Stack:
+    0.0004     252696   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0027     374056   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0027     374056   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0045     539888   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0045     540312   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+
+[]2015-12-26 19:24:40
+
+Warning: mail(): Failed to connect to mailserver at "localhost" port 25, verify your "SMTP" and "smtp_port" setting in php.ini or use ini_set() in C:\wamp\www\dir_super\rem\Accounts.php on line 426
+
+Call Stack:
+    0.0007     252696   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0033     374064   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0033     374064   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0053     539896   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0053     540320   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+    0.0063     550848   6. mail() C:\wamp\www\dir_super\rem\Accounts.php:426
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 428
+
+Call Stack:
+    0.0007     252696   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0033     374064   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0033     374064   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0053     539896   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0053     540320   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 429
+
+Call Stack:
+    0.0007     252696   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0033     374064   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0033     374064   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0053     539896   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0053     540320   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+
+[]2015-12-26 21:18:24
+
+Warning: mail(): Failed to connect to mailserver at "localhost" port 25, verify your "SMTP" and "smtp_port" setting in php.ini or use ini_set() in C:\wamp\www\dir_super\rem\Accounts.php on line 426
+
+Call Stack:
+    0.0004     252696   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0022     374056   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0022     374056   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0039     540504   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0040     540920   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+    0.0050     551488   6. mail() C:\wamp\www\dir_super\rem\Accounts.php:426
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 428
+
+Call Stack:
+    0.0004     252696   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0022     374056   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0022     374056   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0039     540504   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0040     540920   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 429
+
+Call Stack:
+    0.0004     252696   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0022     374056   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0022     374056   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0039     540504   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0040     540920   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+
+[]2015-12-27 00:06:44
+
+Warning: mail(): Failed to connect to mailserver at "localhost" port 25, verify your "SMTP" and "smtp_port" setting in php.ini or use ini_set() in C:\wamp\www\dir_super\rem\Accounts.php on line 432
+
+Call Stack:
+    0.0007     252696   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0029     375960   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0029     375960   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0043     543720   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0043     544136   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+    0.0052     554776   6. mail() C:\wamp\www\dir_super\rem\Accounts.php:432
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 434
+
+Call Stack:
+    0.0007     252696   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0029     375960   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0029     375960   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0043     543720   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0043     544136   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 435
+
+Call Stack:
+    0.0007     252696   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0029     375960   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0029     375960   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0043     543720   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0043     544136   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+
+[]2015-12-27 01:20:31
+
+Warning: mail(): Failed to connect to mailserver at "localhost" port 25, verify your "SMTP" and "smtp_port" setting in php.ini or use ini_set() in C:\wamp\www\dir_super\rem\Accounts.php on line 432
+
+Call Stack:
+    0.0007     252712   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0031     376784   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0031     376784   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0050     544456   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0051     544872   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+    0.0064     553872   6. mail() C:\wamp\www\dir_super\rem\Accounts.php:432
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 434
+
+Call Stack:
+    0.0007     252712   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0031     376784   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0031     376784   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0050     544456   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0051     544872   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 435
+
+Call Stack:
+    0.0007     252712   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0031     376784   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:8
+    0.0031     376784   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0050     544456   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
+    0.0051     544872   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+
+[]

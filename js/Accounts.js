@@ -7,6 +7,7 @@
 ///<reference path="Utils.ts"/>
 ///<reference path="AddAccountCtr.ts"/>
 ///<reference path="AccountInfo.ts"/>
+///<reference path="AccountEditCtr.ts"/>
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -41,8 +42,12 @@ var uplight;
             var _this = this;
             this.$list.on(CLICK, '.btn', function (evt) {
                 setTimeout(function () {
-                    if (!_this.accountInfo)
+                    if (!_this.accountInfo) {
                         _this.accountInfo = new uplight.AccountInfo(_this.$view.find('[data-ctr=AccountInfo]'), 'AccountInfo');
+                        _this.accountInfo.onDataError = function () {
+                            _this.loadData();
+                        };
+                    }
                     _this.accountInfo.setData(_this.selectedItem);
                     _this.accountInfo.show();
                 }, 10);
@@ -54,6 +59,16 @@ var uplight;
         Accounts.prototype.renderItem = function (item, i) {
             return '<tr data-i="' + i + '"><td><a class="btn fa fa-info-circle"></a></td><td>' + item.name + '</td><td>' + item.description + '</td></tr>';
         };
+        Accounts.prototype.onEdit = function (item) {
+            var _this = this;
+            if (!this.accountEdit)
+                this.accountEdit = new uplight.AccountEditCtr(this.$view.find('[data-ctr=AccountEditCtr]:first'), 'editor', 'AccountEditCtr');
+            this.accountEdit.setItem(item).show();
+            this.accountEdit.onComplete = function () {
+                _this.accountEdit.hide();
+                _this.loadData();
+            };
+        };
         Accounts.prototype.onAdd = function () {
             this.addAccount.reset().start();
             this.addAccount.show();
@@ -61,14 +76,6 @@ var uplight;
         return Accounts;
     })(uplight.ListEditor);
     uplight.Accounts = Accounts;
-    var AccountEdit = (function (_super) {
-        __extends(AccountEdit, _super);
-        function AccountEdit($view, name) {
-            _super.call(this, $view, name);
-        }
-        return AccountEdit;
-    })(uplight.ModuleView);
-    uplight.AccountEdit = AccountEdit;
     var UAccount = (function () {
         function UAccount() {
         }

@@ -63,9 +63,6 @@ var uplight;
                 ;
                 final.config = out;
                 _this.final.setData1(final);
-                uplight.Connector.inst.post(JSON.stringify(final.admins), 'account.create_admins').done(function (s) {
-                    console.log(s);
-                });
             };
             admins.onBack = function () {
                 _this.steps[1].show();

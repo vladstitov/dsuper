@@ -65,9 +65,7 @@ module uplight{
                 final.config = out;
                 this.final.setData1(final);
 
-                Connector.inst.post(JSON.stringify(final.admins),'account.create_admins').done((s)=>{
-                    console.log(s);
-                })
+
             }
             admins.onBack =()=>{
                 this.steps[1].show();

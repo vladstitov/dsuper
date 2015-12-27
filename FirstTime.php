@@ -44,24 +44,7 @@
         });
 $(document).ready(function(){
     require(['Login','MD5','Utils'],function(){
-        var login = new uplight.Login($('#FirstLogin'));
-        login.onComplete = function(res){
-            if(res.result ==='createuser'){
-                login.hide();
-                var newsup = new uplight.NewSuper($('#CreateUser'));
-                newsup.show();
-                newsup.cleanFields();
-                newsup.onComplete = function(res){
-                    console.log(res);
-                    if(res.success=='usercreated'){
-                        var ar = window.location.href.split('/');
-                        ar.pop();
-                        window.location.href=ar.join('/')+'/'+res.result;
-                    }
-                }
-            }
-
-        }
+        var login = new uplight.LoginController($('[data-ctr=uplightLoginController]:first'));
 
     });
 })
@@ -71,7 +54,7 @@ $(document).ready(function(){
     <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<div class="container">
+<div class="container" data-ctr="uplightLoginController">
     <div id="CreateUser"  class="row hidden">
         <div class="panel panel-default">
             <div class="panel-body">
@@ -83,13 +66,22 @@ $(document).ready(function(){
                 <h4>Create new user</h4>
                 <form role="form">
                     <div class="form-group">
-                        <label for="create-pwd">Username</label>
-                        <input type="text" class="form-control" id="create-user" data-id="user">
+                        <label for="create-email">Email</label><small> (Reqired to restore password) </small>
+                        <input type="email" class="form-control" id="create-email" data-id="email1" />
+                    </div>
+                   <!-- <div class="form-group">
+                        <label for="create-email2">Confirm Email</label>
+                        <input type="email" class="form-control" id="create-email2" data-id="email2" />
+                    </div>-->
+                    <div class="form-group">
+                        <label for="create-user">Username</label>
+                        <input type="text" min="" class="form-control" id="create-user" data-id="user" placeholder="Minimum 5 characters"  pattern=".{5,30}" required  />
                     </div>
                     <div class="form-group">
                         <label for="create-pwd">Password:</label>
-                        <input type="password" class="form-control" id="create-pwd" data-id="pass">
+                        <input type="password" class="form-control" id="create-pwd" data-id="pass" placeholder="Minimum 5 characters"  pattern=".{5,30}" required />
                     </div>
+
                     <div class="checkbox">
                         <label><input type="checkbox" data-id="chkPass"> Show password</label>
                     </div>
@@ -109,11 +101,11 @@ $(document).ready(function(){
                 <form>
                     <div class="form-group">
                         <label for="welcome-user">Username</label>
-                        <input type="text" class="form-control" id="welcome-user" data-id="user">
+                        <input type="text" class="form-control" id="welcome-user" data-id="user" required />
                     </div>
                     <div class="form-group">
                         <label for="welcome-pwd">Password:</label>
-                        <input type="password" class="form-control" id="welcome-pwd" data-id="pass">
+                        <input type="password" class="form-control" id="welcome-pwd" data-id="pass" required />
                     </div>
                     <div class="checkbox">
                         <label><input type="checkbox" data-id="chkPass"> Show password</label>

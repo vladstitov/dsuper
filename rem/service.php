@@ -1,5 +1,14 @@
 <?
 session_start();
+require ('Login.php');
+require('MyConnector.php');
+$login = new Login();
+if($login->isValid()){	
+	require ('Router.php');
+	$ctr = new Router($login);
+}	
+
+/*
 if(isset($_SESSION['directories_userid']) && $_SESSION['directories_userid']!=0 && isset($_GET['a'])){
 	$a=explode('.',$_GET['a']);
 	switch(array_shift($a)){
@@ -46,4 +55,5 @@ if(isset($_SESSION['directories_userid']) && $_SESSION['directories_userid']!=0 
 			echo json_encode($login->process($_POST));	
 			
 }else  echo 'Hello world';
+*/
 ?>

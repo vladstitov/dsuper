@@ -5,6 +5,8 @@
     ///<reference path='typing/underscore.d.ts' />
     ///<reference path="ListEditor.ts"/>
     ///<reference path="Utils.ts"/>
+    ///<reference path="FinalResultCtr.ts"/>
+
 
 module uplight{
 
@@ -112,7 +114,7 @@ module uplight{
             }
             return out;
         }
-        getAdmins():UItem[][]{
+        getAdmins():UAdmin[]{
             var admins:any[]=[];
             var ar = this.admins;
             var names:string[]=[];

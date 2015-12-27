@@ -7,6 +7,33 @@ var __extends = (this && this.__extends) || function (d, b) {
 ///<reference path='Utils.ts' />
 var uplight;
 (function (uplight) {
+    var LoginController = (function () {
+        function LoginController($view) {
+            var login = new uplight.Login($('#FirstLogin'));
+            login.onComplete = function (res) {
+                if (res.success === 'welcome') {
+                    login.hide();
+                    var newsup = new uplight.NewSuper($('#CreateUser'));
+                    newsup.show();
+                    newsup.cleanFields();
+                    newsup.onComplete = function (res) {
+                        console.log(res);
+                        if (res.success == 'usercreated') {
+                            newsup.message('User created. Redirecting to Administrator page');
+                            setTimeout(function () {
+                                window.location.href = res.result;
+                            }, 3000);
+                        }
+                    };
+                }
+                else if (res.success == 'logedin') {
+                    window.location.href = res.result;
+                }
+            };
+        }
+        return LoginController;
+    })();
+    uplight.LoginController = LoginController;
     var Login = (function () {
         function Login($view) {
             var _this = this;
@@ -16,13 +43,20 @@ var uplight;
             this.$user = $view.find('[data-id=user]');
             this.$pass = $view.find('[data-id=pass]');
             this.$msg = this.$view.find('[data-id=message]');
-            $view.find('button[type=submit]:first').click(function (evt) {
-                var btn = $(evt.currentTarget).prop('disabled', true);
-                setTimeout(function () { btn.prop('disabled', false); }, 3000);
-                evt.preventDefault();
+            this.$btnSubmit = $view.find('button[type=submit]:first').click(function (evt) {
+                //    var btn = $(evt.currentTarget).prop('disabled',true);
+                //  this.timeout =  setTimeout(function(){btn.prop('disabled',false)},3000);
+                //  evt.preventDefault();
+                var valid = true;
+                _this.$view.find('input').each(function (i, el) {
+                    if (!el.checkValidity())
+                        valid = false;
+                    // console.log(el);
+                });
                 var user = _this.$user.val();
                 var pass = _this.$pass.val();
-                _this.send(MD5(user) + ',' + MD5(pass));
+                if (valid)
+                    _this.send(user + ',' + MD5(pass));
             });
             $view.find('[data-id=chkPass]:first').change(function (el) {
                 if ($(el.currentTarget).prop('checked')) {
@@ -34,6 +68,7 @@ var uplight;
         }
         Login.prototype.send = function (str) {
             var _this = this;
+            console.log('send');
             var obj = { credetials: 'login,' + str };
             this.conn.post(obj, 'login').done(function (s) { return _this.onResult(s); });
         };
@@ -57,14 +92,10 @@ var uplight;
                 console.log(s);
                 return;
             }
-            if (res.success) {
-                if (res.success == 'loggedin' && this.onComplete)
-                    this.onComplete(res);
-                else
-                    this.message('Please check your Username and Password');
-            }
+            if (res.success && this.onComplete)
+                this.onComplete(res);
             else
-                this.message(res.result);
+                this.message('Please check your Username and Password');
         };
         Login.prototype.message = function (msg) {
             var m = this.$msg;
@@ -94,7 +125,14 @@ var uplight;
         };
         NewSuper.prototype.send = function (str) {
             var _this = this;
-            var obj = { credetials: 'createuser,' + str };
+            var email1 = this.$view.find('[data-id=email1]').val();
+            /*
+             var email2:string = this.$view.find('[data-id=email2]').val();
+             if(email1!=email2){
+                 this.message('Emails are not match');
+                 return;
+             }*/
+            var obj = { credetials: 'createuser,' + str + ',' + email1 };
             this.conn.post(obj, 'login').done(function (s) { return _this.onCreated(s); });
         };
         NewSuper.prototype.onCreated = function (s) {
@@ -104,8 +142,9 @@ var uplight;
                 this.message('User with this name exists. Please use your email address or change username');
             }
             else if (res.success = 'usercreated') {
-                localStorage.setItem('newuser', this.$user.val());
-                //localStorage.setItem('pass',this.$pass.val());
+                localStorage.setItem('usercreated', this.$user.val());
+                clearTimeout(this.timeout);
+                this.$btnSubmit.prop('disabled', true);
                 if (this.onComplete)
                     this.onComplete(res);
             }

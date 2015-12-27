@@ -51,37 +51,19 @@ module uplight{
         onInstall(s:string){
             console.log('onInstall isCancel '+this.isCancel+'  '+s);
             if(this.isCancel) return;
-            switch(s){
-                case 'INSTALL_FINISHED':
-                    this.message('Checking installation');
-                    this.checkInstall();
-                    break;
-                case 'INSTALL_SUCCESS':
-                    this.message('Installation successful');
-                    this.step = 4;
-                    this.message('Creating accounts for administrators');
-                    this.ask('create_admins');
-                    break;
-                default:
-                    this.message('Please wait');
-                    this.installCount++;
-                    this.conn.Log('Error installing application '+s);
-                    if(this.installCount>2){
-                        this.conn.Email('Error installing application '+s);
-                        alert('Error installation application. Email sent to application development team');
-                    }else{
-                        setTimeout(()=>{
-                            this.checkInstall();
-                        },30000)
-                    }
+           if(s=='INSTALL_FINISHED'){
+               this.message('Installation completed');
+               this.ask('check_install');
+               this.message('Checking installation');
+           }
+            else {
+               this.message('Please wait..');
+               setTimeout(()=>{
+                   this.message('Checking installation');
+                   this.ask('check_install');
+               },30000)
+           }
 
-                    break
-            }
-
-        }
-
-        private checkInstall():void{
-            this.conn.get(this.service+'check_install').done((s)=>this.onInstall(s));
         }
 
         onRespond(s):void {
@@ -111,21 +93,20 @@ module uplight{
                 case 'ready':
                     this.step=1;
                     this.message('Server Ready');
-                    this.sendData();
-                    this.message('Sending data');
-                    break;
-                case 'saved':
-                    this.step = 2;
-                    this.message('Server Received data');
                     this.conn.get(this.service+'install').done((s)=>this.onInstall(s));
                     this.message('Installing kiosk Application at '+res.result);
+                    break;
+                case 'check_complete':
+                    this.message('Creating administrators');
+                    this.sendAdmins();
                     break;
                 case 'admins_created':
                     this.message('Created accounts for '+res.result);
                     this.step = 5;
-                    this.ask('registr');
+                    this.ask('register');
                     this.message('Registering Application on server');
                     break;
+
                 case 'admins_created_email':
                     this.message('Created accounts for '+res.result);
                     this.step = 6;
@@ -158,6 +139,7 @@ module uplight{
 
         start():void{
             this.isCancel = false;
+            this.installCount=0;
             this._message='';
             console.log('Install process start');
             this.message('Sending request to server');
@@ -172,8 +154,8 @@ module uplight{
         ask(str:string):void{
             this.conn.get(this.service+str).done((s)=>this.onRespond(s));
         }
-        sendData():void{
-            this.conn.post(JSON.stringify(this.data),this.service+'save_data').done((s)=>this.onRespond(s));
+        sendAdmins():void{
+            this.conn.post(JSON.stringify(this.data.admins),this.service+'create_admins').done((s)=>this.onRespond(s));
         }
 
     }

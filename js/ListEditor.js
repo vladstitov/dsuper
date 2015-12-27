@@ -239,12 +239,12 @@ var uplight;
             this.selectedIndex = -1;
             this.onAdd();
         };
-        ListEditor.prototype.onEditShow = function () {
+        ListEditor.prototype.onEdit = function (item) {
         };
         ListEditor.prototype.showEdit = function () {
             if (!this.selectedItem)
                 return;
-            this.onEditShow();
+            this.onEdit(this.selectedItem);
             //this.editItem.setItem(this.selectedItem);
             // this.editItem.$view.show();
         };
