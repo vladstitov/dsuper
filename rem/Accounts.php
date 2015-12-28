@@ -279,17 +279,24 @@ class Accounts{
 						$out->result = $filename;
 						return $out;
 					}
-					mkdir($filename, 0755);
+					
+					$res = @mkdir($filename, 0755);
+					if(!$res){
+						$out->error='cant_make_dir';
+						$out->result=$filename;
+						return $out;
+					}
 					$this->saveInstallId($id);				
 				}else {
 					$out->error='cant insert';
 					return $out;
-				}
-				
+				}				
 			
 				sleep(1);
-				$cmd = "git -v";				
-				$out->message = shell_exec($cmd);
+				$cmd = "git -v";
+				$msg='';			
+				$msg.= shell_exec($cmd);
+				$out->message = $msg;
 				$out->result = $cfg->namespace;
 				sleep(3);
 				$out->success='ready';
@@ -310,9 +317,11 @@ class Accounts{
 					$dest = $root.$cfg->folder;
 					$folder = $cfg->folder;
 					$this->login->setInstallFolder($folder);
-								
-					$cmd = "git clone -l  $src $dest";
-					$sh = shell_exec($cmd);
+					$out="\r\n".date("Y-m-d H:i:s")."  folder:  ".$folder."\r\n";
+					error_log($out,3,'../logs/install_'.$cfg->uid.'.log');					
+					$cmd = "git clone -l  $src $dest";					
+					$out.= shell_exec($cmd);
+					error_log($out,3,'../logs/install_'.$cfg->uid.'.log');
 					sleep(1);
 					$res = file_exists($dest);					
 					if($res){									

@@ -3368,4 +3368,68 @@ Call Stack:
     0.0044     560784   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:13
     0.0044     561208   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
 
+[]2015-12-28 19:08:34
+
+Warning: mail(): Failed to connect to mailserver at "localhost" port 25, verify your "SMTP" and "smtp_port" setting in php.ini or use ini_set() in C:\wamp\www\dir_super\rem\Accounts.php on line 432
+
+Call Stack:
+    0.0005     256088   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0028     397352   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:17
+    0.0028     397352   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0042     564432   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:13
+    0.0042     564856   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+    0.0052     573880   6. mail() C:\wamp\www\dir_super\rem\Accounts.php:432
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 434
+
+Call Stack:
+    0.0005     256088   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0028     397352   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:17
+    0.0028     397352   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0042     564432   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:13
+    0.0042     564856   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 435
+
+Call Stack:
+    0.0005     256088   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0028     397352   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:17
+    0.0028     397352   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0042     564432   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:13
+    0.0042     564856   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+
+[]2015-12-28 19:59:44
+
+Warning: mail(): Failed to connect to mailserver at "localhost" port 25, verify your "SMTP" and "smtp_port" setting in php.ini or use ini_set() in C:\wamp\www\dir_super\rem\Accounts.php on line 442
+
+Call Stack:
+    0.0006     256104   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0035     397336   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:17
+    0.0035     397336   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0054     568088   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:13
+    0.0054     568512   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+    0.0068     577536   6. mail() C:\wamp\www\dir_super\rem\Accounts.php:442
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 444
+
+Call Stack:
+    0.0006     256104   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0035     397336   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:17
+    0.0035     397336   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0054     568088   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:13
+    0.0054     568512   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 445
+
+Call Stack:
+    0.0006     256104   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0035     397336   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:17
+    0.0035     397336   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0054     568088   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:13
+    0.0054     568512   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+
 []
