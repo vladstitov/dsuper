@@ -39,6 +39,12 @@ module uplight{
            super($view,'login','LoginForm');
             this.init();
             this.show();
+            var pwd:JQuery =  $view.find('[name=password]');
+           var chk:JQuery =  $view.find('[data-id=chkPass]').click(()=>{
+                if(chk.prop('checked')) pwd.attr('type','text');
+               else  pwd.attr('type','password');
+
+            })
         }
         credentials:string='welcome';
 

@@ -54,13 +54,14 @@ class Restore{
 			$username = $this->getValue($index,$db);			
 			if(!$username) return 'ERROR,no_value_for,'.$email;
 			$to= $email;
-			 $subject= 'username restore ';
+			 $subject= 'Username restore ';
 			 $message ='Your username is: '.$username;
 			 $headers = 'From: admin@front-desk.ca' . "\r\n" . 'Reply-To: admin@front-desk.ca' . "\r\n" . 'X-Mailer: PHP/' . phpversion();
 			mail($to, $subject, $message,$headers);	
 				$out=new stdClass();
 				$out->success='username_sent_to';
-				$out->result=$email;		
+				$out->result=$email;	
+				$out->message= 'Username sent to '.$email;	
 			return $out;//'RESULT,username_sent_to'.$email;		
 		}
 		return 'ERROR,no_user_with_email,'.$email;
@@ -90,6 +91,7 @@ class Restore{
 				$out=new stdClass();
 				$out->success='password_sent_to';
 				$out->result=$email.$password;
+				$out->message= 'Password sent to your email';
 			return $out;//'RESULT,'.$password.','.$email;
 		}
 		return 'ERROR,no_user_with_username,'.$username;

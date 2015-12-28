@@ -41,6 +41,13 @@ var uplight;
             this.credentials = 'welcome';
             this.init();
             this.show();
+            var pwd = $view.find('[name=password]');
+            var chk = $view.find('[data-id=chkPass]').click(function () {
+                if (chk.prop('checked'))
+                    pwd.attr('type', 'text');
+                else
+                    pwd.attr('type', 'password');
+            });
         }
         Login.prototype.onSubmit = function (obj) {
             var obj2 = { credentials: this.credentials + ',' + obj.username + ',' + obj.password };
