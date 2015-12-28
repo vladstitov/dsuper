@@ -100,6 +100,12 @@ class Login{
 		return $strS;
 	}
 	
+	function Log($str){
+		error_log($str,3,'../logs/install_'.$this->getUserId().'.log');
+	}
+	function Email($str){
+		error_log($str,1,'uplight.ca@gmail.com');
+	}
 	private function createUser($username,$pass,$email){
 			$out = new stdClass();			
 			if($this->getRole()!=='welcome'){

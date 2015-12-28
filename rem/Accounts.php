@@ -246,8 +246,9 @@ class Accounts{
 			//$config->kiosksUrls=array();			
 			//$kiosks = array('kiosk1920'=>'Kiosk1920','kiosk1080'=>'Kiosk1080');			
 			//foreach($kiosks as $key=>$value)if(isset($indexed[$key]) && $indexed[$key])$config->kiosksUrls[]=$value;	
+			$log = "\r\n".date("Y-m-d H:i:s").json_encode($config);
 			
-				
+			$this->login->Log($log);				
 			$res = $this->saveInstallCongig($config);
 						
 			if($res)return $config;			
@@ -287,8 +288,9 @@ class Accounts{
 						return $out;
 					}
 					$this->saveInstallId($id);				
-				}else {
-					$out->error='cant insert';
+				}else {					
+						
+						$out->error='cant insert';
 					return $out;
 				}				
 			
