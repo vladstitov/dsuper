@@ -270,7 +270,7 @@ class Accounts{
 					
 				$status='try';
 				$ar = array($cfg->uid,$cfg->folder,'try',$cfg->account_name,$cfg->description,json_encode($cfg));				
-				$sql="INSERT INTO accounts (user_id,folder,status,name,description,text) VALUES(?,?,?,?,?,?)";				
+				$sql="INSERT INTO accounts (user_id,folder,status,name,description,config) VALUES(?,?,?,?,?,?)";				
 				$id = $db->insertRow($sql,$ar);
 				if($id){
 					$filename = $cfg->root.$cfg->folder;
