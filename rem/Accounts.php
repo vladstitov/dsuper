@@ -246,7 +246,7 @@ class Accounts{
 			//$config->kiosksUrls=array();			
 			//$kiosks = array('kiosk1920'=>'Kiosk1920','kiosk1080'=>'Kiosk1080');			
 			//foreach($kiosks as $key=>$value)if(isset($indexed[$key]) && $indexed[$key])$config->kiosksUrls[]=$value;	
-			$log = "\r\n".date("Y-m-d H:i:s").json_encode($config);
+			$log = 'new config:'.json_encode($config);
 			
 			$this->login->Log($log);				
 			$res = $this->saveInstallCongig($config);
@@ -256,7 +256,19 @@ class Accounts{
 	}
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
+	private function getUserId(){
+		return $this->login->getUserId();
+	}
 	
+	function log($str){
+		error_log("\r\n".date("Y-m-d H:i:s").$str,3,'../logs/account_'.$this->getUserId().'.log');
+	}
+	function emailError($str){
+		error_log($str,1,'uplight.ca@gmail.com');
+	}
+	function logError($str){
+		error_log("\r\n".date("Y-m-d H:i:s").$str,3,'../logs/ERROR_account_'.$this->getUserId().'.log');
+	}
 	private function start_create(){			
 			$out= new stdClass();
 			$cfg = $this->getInstallConfig();
@@ -265,6 +277,7 @@ class Accounts{
 				$sql='SELECT * FROM accounts WHERE folder=?';
 				$res = $db->query($sql,array($cfg->folder));
 				if(count($res)!==0){
+					$this->logError('start create folder exists', 'install');
 					$out->error='exists';
 					return $out;
 				}
@@ -274,36 +287,42 @@ class Accounts{
 				$sql="INSERT INTO accounts (user_id,folder,status,name,description,config) VALUES(?,?,?,?,?,?)";				
 				$id = $db->insertRow($sql,$ar);
 				if($id){
+					
 					$filename = $cfg->root.$cfg->folder;
 					if(file_exists($filename)){
 						$out->error='folder_exists';
+						$this->login->Log('ERROR start_create folder_exists');
 						$out->result = $filename;
 						return $out;
 					}
 					
 					$res = @mkdir($filename, 0755);
-					if(!$res){
+					if(!$res){						
 						$out->error='cant_make_dir';
+						$this->logError('ERROR start_create cant create '.$filename,'install');
 						$out->result=$filename;
 						return $out;
 					}
 					$this->saveInstallId($id);				
-				}else {					
-						
-						$out->error='cant insert';
+				}else {				
+					$out->error='cant insert';
+					$this->logError('start_create cant insert  '.$sql, 'install');					
 					return $out;
 				}				
 			
 				sleep(1);
 				$cmd = "git -v";
-				$msg='';			
+				$msg='';
 				$msg.= shell_exec($cmd);
+				$this->login->Log($msg);
 				$out->message = $msg;
 				$out->result = $cfg->namespace;
 				sleep(3);
 				$out->success='ready';
+				
 					return $out;
 			}else{
+				$this->login->Log('no_config_file');
 				$out->error='no_config_file';
 		 		$out->result = $_SESSION['data_install_cfg'];
 			}		

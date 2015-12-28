@@ -100,11 +100,14 @@ class Login{
 		return $strS;
 	}
 	
-	function Log($str){
-		error_log($str,3,'../logs/install_'.$this->getUserId().'.log');
+	function log($str){
+		error_log("\r\n".date("Y-m-d H:i:s").$str,3,'../logs/login_'.$this->getUserId().'.log');
 	}
-	function Email($str){
+	function emailError($str){
 		error_log($str,1,'uplight.ca@gmail.com');
+	}
+	function logError($str){
+		error_log("\r\n".date("Y-m-d H:i:s").$str,3,'../logs/ERROR_login_'.$this->getUserId().'.log');
 	}
 	private function createUser($username,$pass,$email){
 			$out = new stdClass();			
