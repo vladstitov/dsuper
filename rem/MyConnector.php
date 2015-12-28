@@ -16,8 +16,17 @@ class MyConnector{
 	function getFilename(){
 		return $this->filename;
 	}
+	
+	function getRows($sql){
+		$res = $this->db->query($sql);
+		if($res) return $res->fetchAll(PDO::FETCH_ASSOC);
+		return 0;
+		
+	}
 	function getField($sql){
-		return $this->db->query($sql)->fetchColumn();
+		$res = $this->db->query($sql);
+		if($res) return $res->fetchColumn();
+		return 0;
 	}
 	function queryPure($sql){
 		return  $this->db->query($sql);
@@ -37,6 +46,14 @@ class MyConnector{
 			if($res)return $stmt->fetchAll(PDO::FETCH_OBJ);
 			return  $this->db->errorInfo();		
 		//return $stmt->execute($arVars);		
+	}
+	function queryA($sql,$ar){
+		$stmt =   $this->db->prepare($sql);
+		if($stmt){
+			$res = $stmt->execute($ar);	
+			if($res) return $stmt->fetchAll(PDO::FETCH_ASSOC);
+		}
+		return 0;
 	}
 	function getNextAsSoc($result){
 		return $result->fetch(PDO::FETCH_ASSOC);

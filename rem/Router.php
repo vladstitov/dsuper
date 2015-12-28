@@ -1,17 +1,22 @@
 <?
     class Router{
     	var $login;
-    	function Router($login){
+    	function Router($login,$a){
     		$this->login = $login;
-			$this->rote($login);
+			$this->rote($login,$a);
     	}
-		function rote($login){
-			$a=explode('.',$_GET['a']);
+		function rote($login,$a){			
 				switch(array_shift($a)){
 						case 'account':			
 							require('Accounts.php');
 							$ctr = new Accounts($login);
 							$res = $ctr->process($a,$_GET,$_POST);
+							echo (is_string($res)?$res:json_encode($res));
+						break;
+						case 'utils':			
+							require('Utils.php');
+							$ctr = new Utils($login);
+							$res = $ctr->process($a,$_GET);
 							echo (is_string($res)?$res:json_encode($res));
 						break;
 						case 'server_url':
@@ -43,7 +48,7 @@
 						echo file_put_contents('../data/'.$file_name,file_get_contents("php://input"));			
 						break;
 						case 'login':
-							$res = $this->login->process($_POST);
+							$res = $this->login->process($a,$_GET);
 							 echo (is_string($res)?$res:json_encode($res));
 							break;
 				}

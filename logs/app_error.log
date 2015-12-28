@@ -3336,4 +3336,36 @@ Call Stack:
     0.0050     544456   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:14
     0.0051     544872   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
 
+[]2015-12-28 02:41:16
+
+Warning: mail(): Failed to connect to mailserver at "localhost" port 25, verify your "SMTP" and "smtp_port" setting in php.ini or use ini_set() in C:\wamp\www\dir_super\rem\Accounts.php on line 432
+
+Call Stack:
+    0.0003     256104   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0026     393760   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:17
+    0.0026     393760   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0044     560784   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:13
+    0.0044     561208   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+    0.0056     570208   6. mail() C:\wamp\www\dir_super\rem\Accounts.php:432
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 434
+
+Call Stack:
+    0.0003     256104   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0026     393760   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:17
+    0.0026     393760   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0044     560784   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:13
+    0.0044     561208   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+
+
+Warning: Attempt to assign property of non-object in C:\wamp\www\dir_super\rem\Accounts.php on line 435
+
+Call Stack:
+    0.0003     256104   1. {main}() C:\wamp\www\dir_super\rem\service.php:0
+    0.0026     393760   2. Router->Router() C:\wamp\www\dir_super\rem\service.php:17
+    0.0026     393760   3. Router->rote() C:\wamp\www\dir_super\rem\Router.php:6
+    0.0044     560784   4. Accounts->process() C:\wamp\www\dir_super\rem\Router.php:13
+    0.0044     561208   5. Accounts->send_email_notification() C:\wamp\www\dir_super\rem\Accounts.php:69
+
 []

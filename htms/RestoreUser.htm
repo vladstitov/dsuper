@@ -1,0 +1,25 @@
+<div id="RestoreUsername" class="panel panel-default">
+    <h3>Email me my username</h3>
+            <div class="panel-body">
+                <div style="position: relative">
+                    <div id="Message" class="hidden">
+
+                    </div>
+                </div>
+
+                <form>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" name="email" id="email" required>
+                    </div>                
+                    <button type="submit" class="btn btn-primary pull-right">Submit</button>
+                </form>
+            </div>
+       <script type="text/javascript">
+		      require(['js/Utils'],function(){
+		         require(['js/RestorePassowrd'],function(){
+		           var login = new uplight.RestorePassowrd($('#RestoreUsername'),'login.restore.email_username','RestoreUsername');
+		            });
+		        })
+    </script>
+</div>

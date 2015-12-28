@@ -6,7 +6,6 @@
 
 module uplight{
    export class Utils{
-
        static message(text:string,vis:JQuery,time?:number){
            if(!time) time=3;
            var msg =  $('<div>').addClass('message').css(vis.offset()).text(text).appendTo('body');
@@ -32,10 +31,14 @@ module uplight{
 
     export class Connector{
         static inst:Connector = new Connector();
-       service:string = 'rem/service.php';
+        service:string = 'rem/service.php';
         static results:_.Dictionary<VOResult>;
+        constructor(private action?:string){
+
+        }
         post(obj:any,url?:string):JQueryPromise<string>{
-            if(!url)url='';
+            if(typeof obj == 'object') obj = JSON.stringify(obj);
+            if(!url)url=this.action || '';
             return  $.post(this.service+'?a='+url,obj);
         }
         get(url:string):JQueryPromise<string>{
@@ -126,7 +129,77 @@ module uplight{
         }
 
     }
+    export class SimpleForm extends DisplayObject{
+        inputs:HTMLInputElement[];
+       ind:_.Dictionary<HTMLInputElement>;
+        $submit:JQuery;
+        conn:Connector;
+        message:string='Form error';
+        constructor(public $view,service:string,name?:string){
+            super($view,name);
+            this.conn = new Connector(service);        }
+        init(){
+           this. $view.find( "form" ).submit(function( evt ) { evt.preventDefault(); });
+            var ar:HTMLInputElement[]=[];
+            var dic:any={};
+            this.$view.find('input').each(function(i,el){
+                dic[el.getAttribute('data-id')]=el;
+                ar.push(el);
+            })
+            this.inputs = ar;
+            this.ind=dic;
+            this.$submit = this.$view.find('[type=submit]').click(()=>this.onSubmitClick())
+        }
+        onSubmitClick():void{
+            var valid = true;
+            var ar = this.inputs;
+            var data:any={};
+            for(var i=0,n=ar.length;i<n;i++){
+               if(!ar[i].checkValidity()) valid = false;
+                if(ar[i].type=='checkbox') data[ar[i].name]=ar[i].checked;
+                else data[ar[i].name]=ar[i].value;
+            }
+            if(valid)this.onSubmit(data);
+        }
+        onComplete(res:VOResult):void{
+
+        }
+        onError(res:VOResult):void{
+            var msg:string = res.message || this.message
+            this.showMessage(msg);
+            console.log(msg);
+        }
+        onResult(res:VOResult):void{
+            if(res.success)this.onComplete(res)
+            else this.onError(res)
+        }
+
+        onRespond(s:string):void{
+            var res:VOResult;
+            try{
+                res = JSON.parse(s);
+            }catch (e){
+                console.log(s);
+                return;
+            }
+            if(res) this.onResult(res);
+        }
+
+        send(obj){
+            this.conn.post(obj).done((s:string)=>this.onRespond(s))
+        }
+
+        onSubmit(data:any){
+            this.send(data);
+        }
+        timeout:number;
+        showMessage(str:string){
+            var msg = this.$view.find('[data-id=message]').html(str).removeClass('hidden').fadeIn();
+            clearTimeout(this.timeout);
+           this.timeout =  setTimeout(function(){ msg.fadeOut(); },5000);
+        }
 
 
+    }
 
 }

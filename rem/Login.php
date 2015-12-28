@@ -1,38 +1,38 @@
 <?
 class Login{
-	var $conn;
-	
-	public function process($post){
-		$out = new stdClass();			
-		$cred= explode(',',$post['credetials']);
-		$cmd = $cred[0];		
-		$out->result=$cmd;		
-		if($cmd == 'logout') return $this->logout();			
-		else if($cmd =='login') return $this->_login($cred[1],$cred[2]);				
-		else if($cmd == 'createuser') return $this->createUser($cred[1],$cred[2],$cred[3]);
-		else if($cmd == 'checkuser') return $this->checkUser($cred[1]);
-		
-		return $out;
-		
+	var $conn;	
+	public function process($a,$get){
+		array_shift($a);
+		switch(array_shift($a)){
+			case 'restore':
+				require 'Restore.php';
+				$restore = new Restore();
+				return $restore->process($a,$get);
+				break;
+				default:
+				$post = json_decode(file_get_contents("php://input"),TRUE);					
+				if(!isset($post['credentials']))		return 'OOPS';
+				
+				$cred= explode(',',$post['credentials']);
+				$cmd = $cred[0];				
+				if($cmd == 'welcome') return $this->_login($cred[1],$cred[2]);	
+				elseif($cmd == 'logout') return $this->logout();			
+				else if($cmd =='login') return $this->_login($cred[1],$cred[2]);				
+				else if($cmd == 'createuser') return $this->createUser($cred[1],$cred[2],$cred[3]);
+				else if($cmd == 'checkuser') return $this->checkUser($cred[1]);					
+				break;
+		}
+				
+		return 'OPPS2';		
 	}
 	
+	
+	
+	
+	
 	function isValid(){
-		if(!isset($_GET['a'])){
-			echo 'Hello World';
-			return FALSE;
-			
-		}else if($this->getUserId())	return TRUE;
-		else  if($_GET['a']=='login'){
-				$cred = explode(',',$_POST['credetials']);
-				$cmd = $cred[0];
-				if($cmd == 'logout') echo json_encode($this->logout());					
-				else if($cmd =='login') {
-					$res= $this->_login($cred[1],$cred[2]);
-					 echo (is_string($res)?$res:json_encode($res));
-				}
-								
-		} 
-		return FALSE;		
+		if($this->getUserId())	return TRUE;	
+		return FALSE;	
 	
 	}
 	function keepData($data,$index){
@@ -89,6 +89,17 @@ class Login{
 		return isset($_SESSION['accoun_id'])?$_SESSION['accoun_id']:0;
 	}
 
+	private function myMd($str){
+		$strS = md5($str);
+		$sql = "SELECT val FROM extra WHERE ind= (?)";
+		$conn = $this->con();
+		$res =  $conn->query($sql,array($strS));
+		if($res && count($res)) return $strS;
+		$sql = "INSERT INTO extra (ind,val) VALUES (?,?)";
+		$conn->insertRow($sql,array($strS,$str));
+		return $strS;
+	}
+	
 	private function createUser($username,$pass,$email){
 			$out = new stdClass();
 			$user = $this->getUser();
@@ -96,9 +107,13 @@ class Login{
 			if($user && $user->status!=='welcome'){
 				$out->success='hacker';					
 				return $out;	
-			}					
+			}
+			$username= $this->myMd($username);
+			$pass = $this->myMd($pass);
+				
+					
 			$exists = $this->checkUserNmae($username);
-			if($exists->success=='taken')	return $exists ;			
+			if(!isset($exists->success))	return $exists ;			
 			
 			$ip = $_SERVER['REMOTE_ADDR'];
 			$role='newuser';
@@ -108,6 +123,7 @@ class Login{
 			
 			$id = $conn->insertRow($sql,array($username,$pass,$role,$url,$ip,$email));			
 			if($id){
+					
 				$out->success='usercreated';				
 				$out->result=$url.'#'.$username;
 				
@@ -131,8 +147,9 @@ class Login{
 				$out->result =  $username;
 				return $out;
 		}
-		$out->success='taken';
-		$out->result =  $username;		
+		$out->error='taken';
+		$out->result =  $username;
+		$out->message='Please use another username';
 		return $out;
 	}
 	private function _login($user,$pass){
@@ -153,27 +170,24 @@ class Login{
 				return $out;
 			}
 					
-			$conn = $this->con();		
+			$conn = $this->con();
+				
 		$sql = "SELECT id,status,url FROM users WHERE username=? AND pass=?";
+		$user = md5($user);
+		$pass = md5($pass);
 		$result = $conn->query($sql,array($user,$pass));
 		
 		if ($result && count($result) === 1){
-				$row = $result[0];
-			if($row->status == 'welcome'){
-				$this->setUserId($row->id);				
-				$out->success='welcome';
-				$out->result = $row->url;	
-			}else{
-				$this->setRole($row->status);
-				$this->setUserId($row->id);			
-				$out->success='loggedin';
+				$row = $result[0];			
+				$this->setUserId($row->id);
+				$this->setRole($row->status);				
+				$out->success='create_user';
 				$out->result = $row->url;
-			}
 				
-		}else {
-				
+		}else {				
 				$out->error='wrong';
-				$out->result =  count($result);			
+				$out->result =  count($result);	
+				$out->message= 'Please check username or password';	
 		}		
 			return $out;
 	}

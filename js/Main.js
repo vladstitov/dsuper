@@ -9,9 +9,9 @@ var uplight;
         function Controller() {
             var conn = new uplight.Connector();
             $('#btnLogout').click(function () {
-                conn.post({ credetials: 'logout' }, 'login').done(function (s) {
+                conn.post({ credentials: 'logout' }, 'login').done(function (s) {
                     var res = JSON.parse(s);
-                    if (res.success == 'logout')
+                    if (res.success)
                         window.location.reload();
                 });
             });

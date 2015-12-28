@@ -12,6 +12,9 @@
     <script src="js/libs/require.js"> </script>
 
     <style>
+        .off{
+            display: none;
+        }
         #CreateUser>div, #FirstLogin>div {
             width: 350px;
             position: absolute;
@@ -43,10 +46,14 @@
             }
         });
 $(document).ready(function(){
-    require(['Login','MD5','Utils'],function(){
-        var login = new uplight.LoginController($('[data-ctr=uplightLoginController]:first'));
+    require(['Utils'],function(){
+        require(['Login','Utils'],function(){
+            var login = new uplight.LoginController($('[data-ctr=uplightLoginController]:first'));
 
+
+        });
     });
+
 })
 
     </script>
@@ -54,8 +61,8 @@ $(document).ready(function(){
     <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<div class="container" data-ctr="uplightLoginController">
-    <div id="CreateUser"  class="row hidden">
+<div id="uplightLoginController" class="container" data-ctr="uplightLoginController">
+    <div id="CreateUser"  class="row off">
         <div class="panel panel-default">
             <div class="panel-body">
                 <div style="position: relative">
@@ -67,7 +74,7 @@ $(document).ready(function(){
                 <form role="form">
                     <div class="form-group">
                         <label for="create-email">Email</label><small> (Reqired to restore password) </small>
-                        <input type="email" class="form-control" id="create-email" data-id="email1" />
+                        <input type="email" class="form-control"  id="create-email" name="email" />
                     </div>
                    <!-- <div class="form-group">
                         <label for="create-email2">Confirm Email</label>
@@ -75,11 +82,11 @@ $(document).ready(function(){
                     </div>-->
                     <div class="form-group">
                         <label for="create-user">Username</label>
-                        <input type="text" min="" class="form-control" id="create-user" data-id="user" placeholder="Minimum 5 characters"  pattern=".{5,30}" required  />
+                        <input type="text" min="" name="username" class="form-control" id="create-user" data-id="user" placeholder="Minimum 5 characters"  pattern=".{5,30}" required  />
                     </div>
                     <div class="form-group">
                         <label for="create-pwd">Password:</label>
-                        <input type="password" class="form-control" id="create-pwd" data-id="pass" placeholder="Minimum 5 characters"  pattern=".{5,30}" required />
+                        <input type="password" name="password" class="form-control" id="create-pwd" data-id="pass" placeholder="Minimum 5 characters"  pattern=".{5,30}" required />
                     </div>
 
                     <div class="checkbox">
@@ -101,11 +108,11 @@ $(document).ready(function(){
                 <form>
                     <div class="form-group">
                         <label for="welcome-user">Username</label>
-                        <input type="text" class="form-control" id="welcome-user" data-id="user" required />
+                        <input type="text" name="username" class="form-control" id="welcome-user" data-id="user" required />
                     </div>
                     <div class="form-group">
                         <label for="welcome-pwd">Password:</label>
-                        <input type="password" class="form-control" id="welcome-pwd" data-id="pass" required />
+                        <input type="password" name="password" class="form-control" id="welcome-pwd" data-id="pass" required />
                     </div>
                     <div class="checkbox">
                         <label><input type="checkbox" data-id="chkPass"> Show password</label>

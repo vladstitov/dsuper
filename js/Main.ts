@@ -10,9 +10,9 @@ module uplight{
         constructor(){
             var conn:Connector = new Connector()
             $('#btnLogout').click(()=>{
-                conn.post({credetials:'logout'},'login').done((s:string)=>{
+                conn.post({credentials:'logout'},'login').done((s:string)=>{
                     var res:VOResult = JSON.parse(s);
-                    if(res.success=='logout')window.location.reload();
+                    if(res.success)window.location.reload();
                 });
             });
             this.router();

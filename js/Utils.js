@@ -35,12 +35,15 @@ var uplight;
     })();
     uplight.VOResult = VOResult;
     var Connector = (function () {
-        function Connector() {
+        function Connector(action) {
+            this.action = action;
             this.service = 'rem/service.php';
         }
         Connector.prototype.post = function (obj, url) {
+            if (typeof obj == 'object')
+                obj = JSON.stringify(obj);
             if (!url)
-                url = '';
+                url = this.action || '';
             return $.post(this.service + '?a=' + url, obj);
         };
         Connector.prototype.get = function (url) {
@@ -132,5 +135,81 @@ var uplight;
         return ModuleView;
     })(WindowView);
     uplight.ModuleView = ModuleView;
+    var SimpleForm = (function (_super) {
+        __extends(SimpleForm, _super);
+        function SimpleForm($view, service, name) {
+            _super.call(this, $view, name);
+            this.$view = $view;
+            this.message = 'Form error';
+            this.conn = new Connector(service);
+        }
+        SimpleForm.prototype.init = function () {
+            var _this = this;
+            this.$view.find("form").submit(function (evt) { evt.preventDefault(); });
+            var ar = [];
+            var dic = {};
+            this.$view.find('input').each(function (i, el) {
+                dic[el.getAttribute('data-id')] = el;
+                ar.push(el);
+            });
+            this.inputs = ar;
+            this.ind = dic;
+            this.$submit = this.$view.find('[type=submit]').click(function () { return _this.onSubmitClick(); });
+        };
+        SimpleForm.prototype.onSubmitClick = function () {
+            var valid = true;
+            var ar = this.inputs;
+            var data = {};
+            for (var i = 0, n = ar.length; i < n; i++) {
+                if (!ar[i].checkValidity())
+                    valid = false;
+                if (ar[i].type == 'checkbox')
+                    data[ar[i].name] = ar[i].checked;
+                else
+                    data[ar[i].name] = ar[i].value;
+            }
+            if (valid)
+                this.onSubmit(data);
+        };
+        SimpleForm.prototype.onComplete = function (res) {
+        };
+        SimpleForm.prototype.onError = function (res) {
+            var msg = res.message || this.message;
+            this.showMessage(msg);
+            console.log(msg);
+        };
+        SimpleForm.prototype.onResult = function (res) {
+            if (res.success)
+                this.onComplete(res);
+            else
+                this.onError(res);
+        };
+        SimpleForm.prototype.onRespond = function (s) {
+            var res;
+            try {
+                res = JSON.parse(s);
+            }
+            catch (e) {
+                console.log(s);
+                return;
+            }
+            if (res)
+                this.onResult(res);
+        };
+        SimpleForm.prototype.send = function (obj) {
+            var _this = this;
+            this.conn.post(obj).done(function (s) { return _this.onRespond(s); });
+        };
+        SimpleForm.prototype.onSubmit = function (data) {
+            this.send(data);
+        };
+        SimpleForm.prototype.showMessage = function (str) {
+            var msg = this.$view.find('[data-id=message]').html(str).removeClass('hidden').fadeIn();
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(function () { msg.fadeOut(); }, 5000);
+        };
+        return SimpleForm;
+    })(DisplayObject);
+    uplight.SimpleForm = SimpleForm;
 })(uplight || (uplight = {}));
 //# sourceMappingURL=Utils.js.map

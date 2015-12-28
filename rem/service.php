@@ -1,12 +1,21 @@
 <?
 session_start();
+if(!isset($_GET['a'])){
+			echo 'Hello World';
+			exit;		
+}
+$a=explode('.',$_GET['a']);
 require ('Login.php');
 require('MyConnector.php');
 $login = new Login();
-if($login->isValid()){	
+if($a[0]=='login'){
+	$res = $login->process($a,$_GET);
+	echo (is_string($res)?$res:json_encode($res));
+} 
+else if($login->isValid()){	
 	require ('Router.php');
-	$ctr = new Router($login);
-}	
+	$ctr = new Router($login,$a);
+} else echo 'not valid';
 
 /*
 if(isset($_SESSION['directories_userid']) && $_SESSION['directories_userid']!=0 && isset($_GET['a'])){
