@@ -3,8 +3,8 @@ require_once('MyConnector.php');
 class Accounts{		
 	var $_db2;
 	var $_db1;
-	var $dist ='/dist/';
-	var $src = '/demo/dir_test';
+	var $pub ='/directories/';
+	var $src = '/directories/dist/dir_test';
 	var $https='https://frontdes-wwwss24.ssl.supercp.com';	
 	var $login;
 	
@@ -221,7 +221,7 @@ class Accounts{
 	private function create_config($data){			
 			$config = array();
 			foreach($data as $item)	$config[$item->id] = $item->value;	
-			$config['folder']=$this->dist.$config['namespace'];
+			$config['folder']=$this->pub.$config['namespace'];
 			//$config = new stdClass();			
 			//$config->folder = $_SESSION['directories_folder'];
 			
@@ -231,7 +231,7 @@ class Accounts{
 			
 			$config['filename']=$filename;
 			$config['root'] = $_SERVER['DOCUMENT_ROOT'];
-			$config['dist'] = $this->dist;
+			$config['pub'] = $this->pub;
 			$config['src'] = $this->src;
 			$config['pub'] = '/pub/';
 			$config['data']='/data/';
@@ -516,16 +516,16 @@ class Accounts{
 				$ns = 	$get['url'];				
 				if(is_numeric(substr($ns,0,1))) $ns='a'.$ns;
 				//$root = $_SERVER['DOCUMENT_ROOT'];					 
-				$dest = $this->dist.$ns;							
+				$dest = $this->pub.$ns;							
 				$ar=array($dest);
 				$db = $this->db1();
 				$result = $db->query($sql,$ar);
 				
 				if(count($result)===0)	{						
 						$out->success='OK';
-						$out->result = $this->dist.$ns;
+						$out->result = $this->pub.$ns;
 				}else {'a'.$this->getSuperId().'-'.$ns;
-					$dest = $this->dist.$ns;
+					$dest = $this->pub.$ns;
 					$ar=array($dest);
 					$result = $db->query($sql,$ar);				
 					if(count($result)===0){						
