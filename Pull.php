@@ -1,3 +1,3 @@
 <?
-echo shell_exec('git pull -v --progress "origin"');
+echo shell_exec('git pull 2>&1');
 ?>
