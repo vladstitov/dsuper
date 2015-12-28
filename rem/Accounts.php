@@ -263,12 +263,15 @@ class Accounts{
 	function log($str){
 		error_log("\r\n".date("Y-m-d H:i:s").$str,3,'../logs/account_'.$this->getUserId().'.log');
 	}
+
 	function emailError($str){
 		error_log($str,1,'uplight.ca@gmail.com');
 	}
+	
 	function logError($str){
 		error_log("\r\n".date("Y-m-d H:i:s").$str,3,'../logs/ERROR_account_'.$this->getUserId().'.log');
 	}
+	
 	private function start_create(){			
 			$out= new stdClass();
 			$cfg = $this->getInstallConfig();
@@ -277,7 +280,7 @@ class Accounts{
 				$sql='SELECT * FROM accounts WHERE folder=?';
 				$res = $db->query($sql,array($cfg->folder));
 				if(count($res)!==0){
-					$this->logError('start create folder exists', 'install');
+					$this->logError('start create folder exists');
 					$out->error='exists';
 					return $out;
 				}
@@ -291,7 +294,7 @@ class Accounts{
 					$filename = $cfg->root.$cfg->folder;
 					if(file_exists($filename)){
 						$out->error='folder_exists';
-						$this->login->Log('ERROR start_create folder_exists');
+						$this->log('ERROR start_create folder_exists');
 						$out->result = $filename;
 						return $out;
 					}
@@ -299,14 +302,14 @@ class Accounts{
 					$res = @mkdir($filename, 0755);
 					if(!$res){						
 						$out->error='cant_make_dir';
-						$this->logError('ERROR start_create cant create '.$filename,'install');
+						$this->logError('ERROR start_create cant create '.$filename);
 						$out->result=$filename;
 						return $out;
 					}
 					$this->saveInstallId($id);				
 				}else {				
 					$out->error='cant insert';
-					$this->logError('start_create cant insert  '.$sql, 'install');					
+					$this->logError('start_create cant insert  '.$sql);					
 					return $out;
 				}				
 			
