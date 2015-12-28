@@ -57,8 +57,11 @@ class Restore{
 			 $subject= 'username restore ';
 			 $message ='Your username is: '.$username;
 			 $headers = 'From: admin@front-desk.ca' . "\r\n" . 'Reply-To: admin@front-desk.ca' . "\r\n" . 'X-Mailer: PHP/' . phpversion();
-			mail($to, $subject, $message,$headers);			
-			return 'RESULT,username_sent_to'.$email;		
+			mail($to, $subject, $message,$headers);	
+				$out=new stdClass();
+				$out->success='username_sent_to';
+				$out->result=$email;		
+			return $out;//'RESULT,username_sent_to'.$email;		
 		}
 		return 'ERROR,no_user_with_email,'.$email;
 	}
@@ -84,7 +87,10 @@ class Restore{
 			 $message ='Your password is: '.$password;
 			 $headers = 'From: admin@front-desk.ca' . "\r\n" . 'Reply-To: admin@front-desk.ca' . "\r\n" . 'X-Mailer: PHP/' . phpversion();
 				mail($to, $subject, $message,$headers);
-			return 'RESULT,password_sent_to,'.$email;//'RESULT,'.$password.','.$email;
+				$out=new stdClass();
+				$out->success='password_sent_to';
+				$out->result=$email.$password;
+			return $out;//'RESULT,'.$password.','.$email;
 		}
 		return 'ERROR,no_user_with_username,'.$username;
 	}

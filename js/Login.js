@@ -38,11 +38,12 @@ var uplight;
         function Login($view) {
             _super.call(this, $view, 'login', 'LoginForm');
             this.$view = $view;
+            this.credentials = 'welcome';
             this.init();
             this.show();
         }
         Login.prototype.onSubmit = function (obj) {
-            var obj2 = { credentials: 'welcome,' + obj.username + ',' + obj.password };
+            var obj2 = { credentials: this.credentials + ',' + obj.username + ',' + obj.password };
             this.send(obj2);
         };
         return Login;

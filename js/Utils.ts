@@ -130,6 +130,7 @@ module uplight{
 
     }
     export class SimpleForm extends DisplayObject{
+
         inputs:HTMLInputElement[];
        ind:_.Dictionary<HTMLInputElement>;
         $submit:JQuery;
@@ -159,7 +160,13 @@ module uplight{
                 if(ar[i].type=='checkbox') data[ar[i].name]=ar[i].checked;
                 else data[ar[i].name]=ar[i].value;
             }
-            if(valid)this.onSubmit(data);
+            if(valid){
+                var btn:JQuery = this.$submit.prop('disabled',true);
+                setTimeout(function(){
+                 btn.prop('disabled',false)
+                },3000)
+                this.onSubmit(data);
+            }
         }
         onComplete(res:VOResult):void{
 
@@ -170,7 +177,7 @@ module uplight{
             console.log(msg);
         }
         onResult(res:VOResult):void{
-            if(res.success)this.onComplete(res)
+            if(res.success)this.onComplete(res);
             else this.onError(res)
         }
 
@@ -184,7 +191,6 @@ module uplight{
             }
             if(res) this.onResult(res);
         }
-
         send(obj){
             this.conn.post(obj).done((s:string)=>this.onRespond(s))
         }

@@ -12,26 +12,15 @@
     <script type="text/javascript" src="js/libs/require.js"></script>
 
     <style>
-        #loginForm{
+        .login-form{
             width: 350px;
             height: 250px;
             position: absolute;
             margin: auto;
             left: 0;
             right: 0;
-            top: 0;
-            bottom: 0;
+            top: 200px;
         }
-
-        #Message{
-            position: absolute;
-            bottom: 20px;
-            padding: 5px;
-            background-color: #faebcc;
-            border-radius: 5px;
-            box-shadow: 5px 5px 5px gray;
-        }
-
 
 
     </style>   
@@ -41,14 +30,19 @@
 <body>
 <div class="container">
     <div class="row">
-    	<? 
-			include('htms/RestoreUser.htm');
+        <div class="login-form">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                <?	include('htms/RestoreUser.htm');	?>
+                     </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                <? include('htms/RestorePassword.htm'); ?>
+                    </div>
+                </div>
 
-		?>  
-        
-    </div>
-    <div class="row">
-       <? include('htms/RestorePassword.htm'); ?>
+        </div>
     </div>
 </div>
 

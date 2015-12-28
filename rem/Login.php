@@ -101,23 +101,21 @@ class Login{
 	}
 	
 	private function createUser($username,$pass,$email){
-			$out = new stdClass();
-			$user = $this->getUser();
-			
-			if($user && $user->status!=='welcome'){
+			$out = new stdClass();			
+			if($this->getRole()!=='welcome'){
 				$out->success='hacker';					
 				return $out;	
 			}
+			$name= $username;
 			$username= $this->myMd($username);
-			$pass = $this->myMd($pass);
-				
+			$pass = $this->myMd($pass);			
 					
 			$exists = $this->checkUserNmae($username);
 			if(!isset($exists->success))	return $exists ;			
 			
 			$ip = $_SERVER['REMOTE_ADDR'];
 			$role='newuser';
-			$url=$user->url;
+			$url='index';
 			$conn = $this->con();			
 			$sql = "INSERT INTO users (username,pass,status,url,ip,email) VALUES (?,?,?,?,?,?)";
 			
@@ -125,7 +123,7 @@ class Login{
 			if($id){
 					
 				$out->success='usercreated';				
-				$out->result=$url.'#'.$username;
+				$out->result=$url.'#'.$name;
 				
 				$this->setRole($role);
 				$this->setUserId($id);							
@@ -152,24 +150,32 @@ class Login{
 		$out->message='Please use another username';
 		return $out;
 	}
-	private function _login($user,$pass){
-			$out = new stdClass();
-			if(isset($_SESSION['login_count']))	$_SESSION['login_count']++;
+	private function isBlocked(){		
+		if(isset($_SESSION['login_count']))	$_SESSION['login_count']++;
 			else $_SESSION['login_count']=1;
-			$num = $_SESSION['login_count'];					
+			$num = $_SESSION['login_count'];								
 			if($num>100){
+				$out = new stdClass();
 				if($num>10000){
-					if(time()-$num>100)	{
-						$_SESSION['login_count']=0;							
-					}
-				}			
-			
+					$dif = time()-$num;
+					if($dif>100){
+						$_SESSION['login_count']=1;							
+						return 0;					
+					}else $out->message=$dif.' seconds left';
+				}else $_SESSION['login_count'] = time();					
 				$out->error='blocked';
-				$out->result=$num;
-				$_SESSION['login_count'] = time();
+				$out->result=$num;	
 				return $out;
 			}
-					
+		
+			return 0;		
+	}
+	
+	
+	private function _login($user,$pass){
+			$out = new stdClass();
+			if($this->isBlocked()) return $this->isBlocked();
+								
 			$conn = $this->con();
 				
 		$sql = "SELECT id,status,url FROM users WHERE username=? AND pass=?";
@@ -179,9 +185,15 @@ class Login{
 		
 		if ($result && count($result) === 1){
 				$row = $result[0];			
-				$this->setUserId($row->id);
+				if($row->status ==='welcome'){
+					$this->setUserId(0);
+					$out->success='create_user';
+				}else{
+					$this->setUserId($row->id);
+					$out->success='logedin';
+				} 				
 				$this->setRole($row->status);				
-				$out->success='create_user';
+				
 				$out->result = $row->url;
 				
 		}else {				

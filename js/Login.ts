@@ -33,16 +33,17 @@ module uplight{
             }
         }
     }
-    export class Login extends SimpleForm{
 
+    export class Login extends SimpleForm{
         constructor(public $view:JQuery){
            super($view,'login','LoginForm');
             this.init();
             this.show();
         }
+        credentials:string='welcome';
 
         onSubmit(obj){
-            var  obj2 ={credentials:'welcome,'+obj.username+','+obj.password};
+            var  obj2 ={credentials:this.credentials+','+obj.username+','+obj.password};
             this.send(obj2);
         }
     }

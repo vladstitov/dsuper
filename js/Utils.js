@@ -168,8 +168,13 @@ var uplight;
                 else
                     data[ar[i].name] = ar[i].value;
             }
-            if (valid)
+            if (valid) {
+                var btn = this.$submit.prop('disabled', true);
+                setTimeout(function () {
+                    btn.prop('disabled', false);
+                }, 3000);
                 this.onSubmit(data);
+            }
         };
         SimpleForm.prototype.onComplete = function (res) {
         };

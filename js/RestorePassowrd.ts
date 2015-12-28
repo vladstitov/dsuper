@@ -12,7 +12,8 @@ module uplight{
             this.init();
         }
         onResult(res:VOResult){
-            console.log(res);
+            console.log(res)
+
         }
 
     }

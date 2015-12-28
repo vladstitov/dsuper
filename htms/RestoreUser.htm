@@ -1,9 +1,20 @@
-<div id="RestoreUsername" class="panel panel-default">
-    <h3>Email me my username</h3>
-            <div class="panel-body">
+<div id="RestoreUsername">
+    <style>
+        .off{
+            display: none;
+        }
+        .message{
+            position: absolute;
+            bottom: 20px;
+            padding: 5px;
+            background-color: #faebcc;
+            border-radius: 5px;
+            box-shadow: 5px 5px 5px gray;
+        }
+    </style>
+    <h5>Username restore</h5>
                 <div style="position: relative">
-                    <div id="Message" class="hidden">
-
+                    <div class="off message">
                     </div>
                 </div>
 
@@ -11,10 +22,10 @@
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" class="form-control" name="email" id="email" required>
-                    </div>                
-                    <button type="submit" class="btn btn-primary pull-right">Submit</button>
+                    </div>
+                   <button type="submit" class="btn btn-primary pull-right">Email me my username</button>
                 </form>
-            </div>
+
        <script type="text/javascript">
 		      require(['js/Utils'],function(){
 		         require(['js/RestorePassowrd'],function(){
