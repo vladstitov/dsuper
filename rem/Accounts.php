@@ -163,13 +163,20 @@ class Accounts{
 	
 	private function cancel_install(){	
 			$out= new stdClass();
-			$id  =  isset($_SESSION['account_id'])?$_SESSION['account_id']:0;
+			$id  =  $this->getInstallId();
 			if($id){					
 					$res = $this->delete_account($id);
-					$_SESSION['account_id']=0;
+					$this->saveInstallId(0);
+					$log='cancel_install:'.json_encode($res);
+					$this->log($log);				
 					return $res;
 					
-			}	
+			}
+			$err = 'no_install_id';
+			$this->logError($err);
+			$out->error='no_install_id';
+			return $out;
+		/*	
 			$folder = $this->login->getInstallFolder();			
 			if($folder){
 					$foder=$_SERVER['DOCUMENT_ROOT'].$folder;
@@ -195,7 +202,8 @@ class Accounts{
 				$out->result = 'cancel_install';
 			}
 			
-			return $out;				
+			return $out;	
+		 * */			
 	}	
 	
 	
@@ -213,6 +221,10 @@ class Accounts{
 	private function saveInstallId($id){
 		$this->login->setCurrentAccountId($id);		
 	}
+	private function getInstallId(){
+		return ;$this->login->getCurrentAccountId($id);		
+	}
+	
 	
 	private function getSuperId(){
 		return $this->login->getUserId();
@@ -276,8 +288,8 @@ class Accounts{
 				$ar = array($cfg->uid,$cfg->folder,'try',$cfg->account_name,$cfg->description,json_encode($cfg));				
 				$sql="INSERT INTO accounts (user_id,folder,status,name,description,config) VALUES(?,?,?,?,?,?)";				
 				$id = $db->insertRow($sql,$ar);
-				if($id){
-					
+				$this->saveInstallId($id);
+				if($id){					
 					$filename = $cfg->root.$cfg->folder;
 					if(file_exists($filename)){
 						$out->error='folder_exists';
@@ -293,7 +305,7 @@ class Accounts{
 						$out->result=$filename;
 						return $out;
 					}
-					$this->saveInstallId($id);				
+								
 				}else {				
 					$out->error='cant insert';
 					$this->logError('start_create cant insert  '.$sql);					
