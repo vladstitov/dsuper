@@ -47,6 +47,7 @@ class Restore{
 			return 'ERROR,No email';
 		}
 		$db =  new MyConnector(0);
+
 		$sql='SELECT username FROM users WHERE email=?';
 		$res = $db->queryA($sql, array($email));
 		if($res && count($res)){

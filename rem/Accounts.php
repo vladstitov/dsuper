@@ -8,7 +8,7 @@ class Accounts{
 	var $https='https://frontdes-wwwss24.ssl.supercp.com';	
 	var $login;
 	
-	function Accounts($login){
+	function Accounts(Login $login){
 			$this->login=$login;
 	}
 	
@@ -106,7 +106,7 @@ class Accounts{
 	
 	private function save_config($id,$data){
 				$out= new stdClass();
-				$foder = $this->getFolder($id);
+				$folder = $this->getFolder($id);
 				if($folder){
 						$out->success = 'success';
 						$out->result = file_put_contents(json_encode($data),$folder.'/data/config.json');
@@ -259,7 +259,7 @@ class Accounts{
 			//foreach($kiosks as $key=>$value)if(isset($indexed[$key]) && $indexed[$key])$config->kiosksUrls[]=$value;	
 			$log = 'new config:'.json_encode($config);
 			
-			$this->login->Log($log);				
+			$this->log($log);
 			$res = $this->saveInstallCongig($config);
 						
 			if($res)return $config;			
@@ -333,7 +333,8 @@ class Accounts{
 	}
 	
 	private function install(){
-		$this->log('install');			
+		$this->log('install');
+		set_time_limit(60);
 			$cfg = $this->getInstallConfig();
 			if($cfg){
 				$root = $cfg->root;
@@ -387,9 +388,9 @@ class Accounts{
 			}
 			
 			$folder = $this->login->getInstallFolder();	
-			$folder = $_SERVER['DOCUMENT_ROOT'].$folder;		
-			//$file_name = $cfg->root.$cfg->folder.$cfg->data.'config.json';
-			$res = file_put_contents($folder.$cfg->data.'config.json',json_encode($cfg));			
+			//$folder = $_SERVER['DOCUMENT_ROOT'].$folder;
+			$file_name = $cfg->root.$cfg->folder.$cfg->data.'config.json';
+			$res = file_put_contents($file_name,json_encode($cfg));
 			if($res){
 				$log='check_complete:'.implode(',',$ar);
 				$this->log($log);					
