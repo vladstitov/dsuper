@@ -256,24 +256,11 @@ class Accounts{
 	}
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
-	private function getUserId(){
-		return $this->login->getUserId();
-	}
 	
-	function log($str){
-		error_log("\r\n".date("Y-m-d H:i:s").$str,3,'../logs/account_'.$this->getUserId().'.log');
-	}
-
-	function emailError($str){
-		error_log($str,1,'uplight.ca@gmail.com');
-	}
-	
-	function logError($str){
-		error_log("\r\n".date("Y-m-d H:i:s").$str,3,'../logs/ERROR_account_'.$this->getUserId().'.log');
-	}
 	
 	private function start_create(){			
 			$out= new stdClass();
+			$this->log('start_create');
 			$cfg = $this->getInstallConfig();
 			if($cfg){			
 				$db = $this->db1();
@@ -294,7 +281,7 @@ class Accounts{
 					$filename = $cfg->root.$cfg->folder;
 					if(file_exists($filename)){
 						$out->error='folder_exists';
-						$this->log('ERROR start_create folder_exists');
+						$this->logError('ERROR start_create folder_exists');
 						$out->result = $filename;
 						return $out;
 					}
@@ -314,10 +301,10 @@ class Accounts{
 				}				
 			
 				sleep(1);
-				$cmd = "git -v";
+				$cmd = "git --version 2>&1";
 				$msg='';
 				$msg.= shell_exec($cmd);
-				$this->login->Log($msg);
+				$this->log($msg);
 				$out->message = $msg;
 				$out->result = $cfg->namespace;
 				sleep(3);
@@ -325,7 +312,7 @@ class Accounts{
 				
 					return $out;
 			}else{
-				$this->login->Log('no_config_file');
+				$this->logError('no_config_file');
 				$out->error='no_config_file';
 		 		$out->result = $_SESSION['data_install_cfg'];
 			}		
@@ -333,28 +320,31 @@ class Accounts{
 		return $out;
 	}
 	
-	private function install(){			
+	private function install(){
+		$this->log('install');			
 			$cfg = $this->getInstallConfig();
 			if($cfg){
 				$root = $cfg->root;
 					$src = $root.$cfg->src;			 
 					$dest = $root.$cfg->folder;
 					$folder = $cfg->folder;
-					$this->login->setInstallFolder($folder);
-					$out="\r\n".date("Y-m-d H:i:s")."  folder:  ".$folder."\r\n";
-					error_log($out,3,'../logs/install_'.$cfg->uid.'.log');					
-					$cmd = "git clone -l  $src $dest";					
-					$out.= shell_exec($cmd);
-					error_log($out,3,'../logs/install_'.$cfg->uid.'.log');
+					$this->login->setInstallFolder($folder);					
+					$this->log('Install in folder '.$folder);		
+					$cmd = "git clone -l  $src $dest 2>&1";
+					$log='';		
+					$log.= shell_exec($cmd);
+					$this->log($log);
 					sleep(1);
 					$res = file_exists($dest);					
-					if($res){									
+					if($res){
+						$this->log('INSTALL_FINISHED');								
 						return 'INSTALL_FINISHED';
-					}else {		
+					}else {
+						$this->logError('error installing application cant create folder ');
 						return 'error installing application cant create folder ';
 					}			
 			}					
-			
+			$this->logError('no_config');
 			return 'no_config';			
 	}	
 	
@@ -377,6 +367,8 @@ class Accounts{
 					else $errors[]=$val;					
 			}			
 			if(count($errors)){
+						$err = 'Nissing files '.implode(',',$errors);
+						$this->logError($err);
 						$out->error='missing_files';
 						$out->result=implode(',',$errors);
 						return $out;						
@@ -386,12 +378,16 @@ class Accounts{
 			$folder = $_SERVER['DOCUMENT_ROOT'].$folder;		
 			//$file_name = $cfg->root.$cfg->folder.$cfg->data.'config.json';
 			$res = file_put_contents($folder.$cfg->data.'config.json',json_encode($cfg));			
-			if($res){						
+			if($res){
+				$log='check_complete:'.implode(',',$ar);
+				$this->log($log);					
 				$out->success='check_complete';
 				$out->result = implode(',',$ar);
 				$out->message = $folder;
 				return $out;
 			}else{
+				$err = 'cant_save_config:'.$file_name;
+				$this->logError($err);
 				$out->error='cant_save_config';
 				$out->result=$file_name;
 				return $out;
@@ -403,6 +399,8 @@ class Accounts{
 				$out= new stdClass();
 				$folder = $this->login->getInstallFolder();				
 				if($folder===0){
+					$err='create_admins:no_folder';
+					$this->logError($err);
 					$out->error='nofolder';
 					return $out;
 				}	
@@ -411,9 +409,12 @@ class Accounts{
 				$sql ='INSERT INTO users (name,email,username,password,sendemail,role) VALUES(?,?,?,?,?,?)';				
 				$stmt = $db->prepare($sql);
 				if(!$stmt){
-						$out->error='prepare';
-						$out->result = $db->errorInfo();
-						return $out;
+					$dberr= $db->errorInfo();
+					$err = json_encode($value);
+					$this->logError($err);				
+					$out->error='prepare';
+					$out->result = $dberr;
+					return $out;
 				}
 				$sendemail = array();
 				$names =array();
@@ -429,9 +430,9 @@ class Accounts{
 				}
 				if(count($sendemail))	$out->success = 'admins_created_email';				
 				else $out->success = 'admins_created';
-					
+				$this->log($out->success);
 				$out->result = implode(',',$names);
-				$out->message = $folder;			
+				$out->message = $folder;		
 				return $out;				
 	}
 	
@@ -463,7 +464,8 @@ class Accounts{
 							
 							try{
 								if(mail($email ,'Administrator account Kiosk Directories' ,$text,$headers))	$names[]=$user->name;
-							  	else{							  		
+							  	else{
+							  		$this->logError('email admins error');						  		
 							  		$out->error = 'email_error';	
 									$out->result = $name;						  		
 							  		return  $out;		
@@ -476,7 +478,7 @@ class Accounts{
 						}
 				}			
 				
-				
+				$this->log('email_sent:'.implode(',',$names));
 				$out->success='email_sent';
 				$out->result = implode(',',$names);					
 				return $out;	
@@ -488,7 +490,9 @@ class Accounts{
 				$sql="UPDATE accounts SET status='new' WHERE id=".$id;
 				$db = $this->db1();
 				$res = $db->queryPure($sql);				
-				if($res){					
+				if($res){
+					$log='registered'.$id.' set status new ';
+					$this->log($log);				
 					$out->success='registered';
 					$out->result= $id;
 					$out->message = $this->login->getInstallFolder();
@@ -615,11 +619,19 @@ class Accounts{
 		return $out;
 	}
 	
-	private function log($str){
-			error_log(date("Y-m-d H:i:s").'    '.$str."\n\r",3,'../logs/errors.log','');
+	private function getUserId(){
+		return $this->login->getUserId();
 	}
-	private function emailError($str){
-			$headers = 'From: admin@front-desk.ca' . "\r\n" .'Reply-To: admin@front-desk.ca' . "\r\n" .'X-Mailer: PHP/' . phpversion();
-			error_log(date("Y-m-d H:i:s").'  Accounts.php  '.$str,1,'uplight.ca@gmail.com',$headers);
+	
+	function log($log){
+		error_log("\r\n ".date("Y-m-d H:i:s").'  '.$log,3,'../logs/account_'.$this->getUserId().'.log');
+	}
+
+	function emailError($email){
+		error_log($err,1,'uplight.ca@gmail.com');
+	}
+	
+	function logError($err){
+		error_log("\r\n ".date("Y-m-d H:i:s").'  '.$err,3,'../logs/ERROR_account_'.$this->getUserId().'.log');
 	}
 }
