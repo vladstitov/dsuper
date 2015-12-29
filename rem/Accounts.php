@@ -33,7 +33,7 @@ class Accounts{
 			switch($cmd[0]){
 					case 'server_url':
 					$out = new stdClass();
-					$out->success = $_SERVER['SERVER_NAME'];
+					$out->success = 'http://front-desk.ca';
 					$out->result='https://frontdes-wwwss24.ssl.supercp.com';
 					return $out;
 				break;				
@@ -237,7 +237,7 @@ class Accounts{
 			//$config = new stdClass();			
 			//$config->folder = $_SESSION['directories_folder'];
 			
-			$config['server']= 'http://'.$_SERVER['SERVER_NAME'];
+			$config['server']= 'http://front-desk.ca';
 			$config['uid']=$this->getSuperId();
 			$filename = 'cfg_'.$config['uid'].'_'.time().'.json';
 			
@@ -249,7 +249,7 @@ class Accounts{
 			$config['data']='/data/';
 			$config['db'] = 'directories.db';			
 			$config['https']='https://frontdes-wwwss24.ssl.supercp.com';
-			$config['adminurl']=$config['https'].$config['folder'].'/Admin';
+			$config['adminurl']=$config['https'].$config['folder'].'/pub/Admin';
 			$config['Admin'] = 'Admin';
 			if(isset($config['KioskMobile']) && $config['KioskMobile']) $config['KioskMobile']='KioskMobile';
 			if(isset($config['Kiosk1080']) && $config['Kiosk1080']) $config['Kiosk1080'] = 'Kiosk1080';
