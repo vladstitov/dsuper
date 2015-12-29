@@ -64,6 +64,10 @@ class Login{
 		}
 		return 0;;
 	}
+	public static function getId(){
+		return isset($_SESSION['directories_userid'])?$_SESSION['directories_userid']:0;
+	}
+		
 	function getUserId(){
 		return isset($_SESSION['directories_userid'])?$_SESSION['directories_userid']:0;
 	}

@@ -50,6 +50,9 @@ module uplight{
         Log(str):JQueryPromise<string>{
             return  $.post(this.service+'?a=LOG',str);
         }
+        logError(str):JQueryPromise<string>{
+            return  $.post(this.service+'?a=ERROR',str);
+        }
         Email(str):JQueryPromise<string>{
             return  $.post(this.service+'?a=EMAIL',str);
         }
@@ -186,7 +189,9 @@ module uplight{
             try{
                 res = JSON.parse(s);
             }catch (e){
-                console.log(s);
+                this.showMessage('Communication Error logged on server <br/> We will contact you soon');
+                this.conn.Email(this.name+this.conn.service+'  '+s);
+              //  console.log(s);
                 return;
             }
             if(res) this.onResult(res);

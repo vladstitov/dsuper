@@ -17,8 +17,13 @@ var uplight;
             _super.call(this, $view, service, name);
             this.init();
         }
-        RestorePassowrd.prototype.onResult = function (res) {
-            console.log(res);
+        /* onResult(res:VOResult){
+             console.log(res)
+ 
+         }*/
+        RestorePassowrd.prototype.onComplete = function (res) {
+            this.$view.find('[data-id=message]').text(res.message).show();
+            this.$view.find('form').hide();
         };
         return RestorePassowrd;
     })(uplight.SimpleForm);

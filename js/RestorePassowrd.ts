@@ -11,9 +11,13 @@ module uplight{
             super($view,service,name);
             this.init();
         }
-        onResult(res:VOResult){
+       /* onResult(res:VOResult){
             console.log(res)
 
+        }*/
+        onComplete(res:VOResult):void{
+            this.$view.find('[data-id=message]').text(res.message).show();
+            this.$view.find('form').hide();
         }
 
     }

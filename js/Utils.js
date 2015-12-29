@@ -55,6 +55,9 @@ var uplight;
         Connector.prototype.Log = function (str) {
             return $.post(this.service + '?a=LOG', str);
         };
+        Connector.prototype.logError = function (str) {
+            return $.post(this.service + '?a=ERROR', str);
+        };
         Connector.prototype.Email = function (str) {
             return $.post(this.service + '?a=EMAIL', str);
         };
@@ -195,7 +198,9 @@ var uplight;
                 res = JSON.parse(s);
             }
             catch (e) {
-                console.log(s);
+                this.showMessage('Communication Error logged on server <br/> We will contact you soon');
+                this.conn.Email(this.name + this.conn.service + '  ' + s);
+                //  console.log(s);
                 return;
             }
             if (res)

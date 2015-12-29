@@ -41,6 +41,7 @@ class Restore{
 	
 	
 	function email_username($ar){
+		$out=new stdClass();
 		$email = $ar['email'];
 		if(!$email) {
 			return 'ERROR,No email';
@@ -58,14 +59,19 @@ class Restore{
 			 $message ='Your username is: '.$username;
 			 $headers = 'From: admin@front-desk.ca' . "\r\n" . 'Reply-To: admin@front-desk.ca' . "\r\n" . 'X-Mailer: PHP/' . phpversion();
 			mail($to, $subject, $message,$headers);	
-				$out=new stdClass();
+				
 				$out->success='username_sent_to';
 				$out->result=$email;	
 				$out->message= 'Username sent to '.$email;	
+				$this->log('Username sent to '.$email);
 			return $out;//'RESULT,username_sent_to'.$email;		
 		}
-		return 'ERROR,no_user_with_email,'.$email;
-	}
+		
+		$this->logError('no_user_with_email '.$email);
+		$out->error ='no_user_with_email';
+		$out->message = 'No user with email '.$email;
+		return $out;		
+}
 	
 	function email_password($ar){
 		$username = $ar['username'];
@@ -89,11 +95,30 @@ class Restore{
 			 $headers = 'From: admin@front-desk.ca' . "\r\n" . 'Reply-To: admin@front-desk.ca' . "\r\n" . 'X-Mailer: PHP/' . phpversion();
 				mail($to, $subject, $message,$headers);
 				$out=new stdClass();
-				$out->success='password_sent_to';
+				$out->success='password_sent_to';				
 				$out->result=$email.$password;
 				$out->message= 'Password sent to your email';
+				$this->log('password_sent_to '.$email);
 			return $out;//'RESULT,'.$password.','.$email;
 		}
-		return 'ERROR,no_user_with_username,'.$username;
+		$this->logError('no_user_with_username '.$username);
+		$out->error ='no_user_with_username';
+		$out->message = 'No user with Username '.$username;
+		return  $out;//'ERROR,no_user_with_username,'.$username;
+	}
+
+	private function getUserId(){
+		return Login::getId();
+	}
+	function log($log){
+		error_log("\r\n ".date("Y-m-d H:i:s").'  '.$log,3,'../logs/restore_'.$this->getUserId().'.log');
+	}
+
+	function emailError($email){
+		error_log($err,1,'uplight.ca@gmail.com');
+	}
+	
+	function logError($err){
+		error_log("\r\n ".date("Y-m-d H:i:s").'  '.$err,3,'../logs/ERROR_restore_'.$this->getUserId().'.log');
 	}
 }

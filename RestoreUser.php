@@ -31,6 +31,9 @@
 <div class="container">
     <div class="row">
         <div class="login-form">
+           <h6 class="text-right">
+               <small><a href="index" class="btn">To Admin panel</a></small>
+           </h6>
                 <div class="panel panel-default">
                     <div class="panel-body">
                 <?	include('htms/RestoreUser.htm');	?>

@@ -25,23 +25,15 @@
 							echo json_encode($out);
 						break;
 						case 'LOG':
-							$res =  error_log(date("Y-m-d H:i:s")."\r\n".file_get_contents("php://input"),3,'../logs/app_error.log');
-							$out = new stdClass();
-							if($res){
-								$out->success = 'success';
-								$out->result=$res;
-							} else $out->error='error log';
-							echo json_encode($out);
+							echo json_encode(error_log(date("Y-m-d H:i:s")."\r\n".file_get_contents("php://input"),3,'../logs/app_log'.Login::getId().'.log'));							
+						break;
+						case 'ERROR':
+							echo json_encode(error_log(date("Y-m-d H:i:s")."\r\n".file_get_contents("php://input"),3,'../logs/app_error'.Login::getId().'.log'));							
 						break;
 						case 'EMAIL':
 							$headers = 'From: admin@front-desk.ca' . "\r\n" .'Reply-To: admin@front-desk.ca' . "\r\n" .'X-Mailer: PHP/' . phpversion();
-							$res =  error_log(date("Y-m-d H:i:s")."\r\n".file_get_contents("php://input"),1,'uplight.ca@gmail.com',$headers);
-							$out = new stdClass();
-							if($res){
-								$out->success = 'success';
-								$out->result=$res;
-							} else $out->error='error email';
-							echo json_encode($out);
+							echo json_encode(error_log(date("Y-m-d H:i:s")."\r\n".file_get_contents("php://input"),1,'uplight.ca@gmail.com',$headers));
+							
 						break;
 						case 'save_file':
 						$file_name=explode('/',$_GET['file_name'])[0];
