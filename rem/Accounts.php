@@ -119,8 +119,7 @@ class Accounts{
 	
 	}
 	private function get_account_data($id){
-				$out= new stdClass();
-				$out->server = $_SERVER['SERVER_NAME'];
+				$out= new stdClass();				
 				$folder = $this->getFolder($id);				
 				if($folder){
 						$folder = $_SERVER['DOCUMENT_ROOT'].$folder;
