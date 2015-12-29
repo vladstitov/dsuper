@@ -1,4 +1,5 @@
 <?
+session_start();
 $id = isset($_SESSION['directories_userid'])?$_SESSION['directories_userid']:0;
 if($id){
 
