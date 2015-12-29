@@ -222,7 +222,7 @@ class Accounts{
 		$this->login->setCurrentAccountId($id);		
 	}
 	private function getInstallId(){
-		return ;$this->login->getCurrentAccountId($id);		
+		return $this->login->getCurrentAccountId();		
 	}
 	
 	
@@ -289,6 +289,7 @@ class Accounts{
 				$sql="INSERT INTO accounts (user_id,folder,status,name,description,config) VALUES(?,?,?,?,?,?)";				
 				$id = $db->insertRow($sql,$ar);
 				$this->saveInstallId($id);
+				$this->log('start_create install_id: '.$this->getInstallId());
 				if($id){					
 					$filename = $cfg->root.$cfg->folder;
 					if(file_exists($filename)){
@@ -317,7 +318,7 @@ class Accounts{
 				$msg='';
 				$msg.= shell_exec($cmd);
 				$this->log($msg);
-				$out->message = $msg;
+				$out->message = $this->getInstallId();
 				$out->result = $cfg->namespace;
 				sleep(3);
 				$out->success='ready';
