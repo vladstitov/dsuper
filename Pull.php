@@ -1,5 +1,5 @@
 <?
-$id = isset($_SESSION['directories_userid']?$_SESSION['directories_userid']:null;
+$id = isset($_SESSION['directories_userid'])?$_SESSION['directories_userid']:null;
 if(isset($_SESSION['directories_userid']) && $_SESSION['directories_userid']){
 
     echo shell_exec('git pull 2>&1');
