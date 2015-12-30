@@ -29,7 +29,7 @@ module uplight{
                     $('#Content').load(('htms/Login.html'));
                     break;
                 default:
-                    $('#Content').load(('htms/Accounts.htm'),()=> {
+                    $('#Content').load(('htms/Accounts.php'),()=> {
 
                     });
 
