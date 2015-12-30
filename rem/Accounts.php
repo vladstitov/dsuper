@@ -485,7 +485,7 @@ class Accounts{
 							$username=$user->username;
 							$name = $user->name;
 							$pass = $user->password;
-							$url=$this->https.$this->app_folder.$folder;
+							$url=$this->https.$this->$folder;
 							
 							$text="Hi $name  You are registered as Administrator Kiosks Directories \r\n";
 
