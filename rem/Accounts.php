@@ -469,11 +469,9 @@ class Accounts{
 					$out->error='nofolder';
 					return $out;
 				}
-				$folder= $_SERVER['DOCUMENT_ROOT'].$folder;
-
 				$result=array();
 				//$out=array();
-				$db = $this->db2($folder);
+				$db = $this->db2($_SERVER['DOCUMENT_ROOT'].$folder);
 				$sql ='SELECT * FROM users';
 				$result = $db->queryPure($sql)->fetchAll(PDO::FETCH_OBJ);
 				
@@ -495,7 +493,7 @@ class Accounts{
 							$text.="username: $username \r\n";
 							$text.="password: $pass \r\n";
 							if($serverNme=='localhost'){
-								$names[]= $email.'  username: '.$name.' password: '.$pass;
+								$names[]= $email.'  username: '.$name.' password: '.$pass.'  url: '.$url;
 								continue;
 							};
 							try{
