@@ -178,12 +178,14 @@ module uplight{
                 this.conn.get('account.check_url&url='+val).done((s)=>{
                     this.$btnSubmit.prop('disabled',false);
                     console.log('check name '+s);
+
                     var res:VOResult = JSON.parse(s);
+
                     if(res.success =='OK') this.onComplete();
                     else if(res.success=='ISOK'){
                         $($item).val(res.result);
                     }else if(res.success=='message')this.showMessage(res.message);
-                    else if(res.success=='exists')this.showMessage('This url exists please use another one');
+                    else if(res.error=='exists')this.showMessage('This url exists please use another one');
 
 
                 });

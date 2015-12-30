@@ -48,7 +48,7 @@ class Accounts{
 				return $this->update(json_decode(file_get_contents("php://input")));
 				break;
 				case 'check_url':
-				return json_encode($this->check_url($get));
+				return json_encode($this->check_url($get['url']));
 				break;	
 				case 'create':			
 				return json_encode($this->createAccount(json_decode(file_get_contents("php://input"))));
@@ -286,16 +286,10 @@ class Accounts{
 			$out= new stdClass();
 			$this->log('start_create');
 			$cfg = $this->getInstallConfig();
-			if($cfg){			
+			if($cfg){
 				$db = $this->db1();
-				$sql='SELECT * FROM accounts WHERE folder=?';
-				$res = $db->query($sql,array($cfg->folder));
-				if(count($res)!==0){
-					$this->logError('start create folder exists');
-					$out->error='exists';
-					return $out;
-				}
-					
+				$res = $this->check_url($cfg->folder);
+				if(isset($res->error)) return $res;
 				$status='try';
 				$ar = array($cfg->uid,$cfg->folder,'try',$cfg->account_name,$cfg->description,json_encode($cfg));				
 				$sql="INSERT INTO accounts (user_id,folder,status,name,description,config) VALUES(?,?,?,?,?,?)";				
@@ -485,7 +479,7 @@ class Accounts{
 							$username=$user->username;
 							$name = $user->name;
 							$pass = $user->password;
-							$url=$this->https.$this->$folder;
+							$url=$this->https.$folder;
 							
 							$text="Hi $name  You are registered as Administrator Kiosks Directories \r\n";
 
@@ -579,10 +573,10 @@ class Accounts{
 	
 	
 		
-	private function check_url($get){
+	private function check_url($ns){
 				$out= new stdClass();
-				$sql='SELECT * FROM accounts WHERE folder=?';
-				$ns = 	$get['url'];				
+				$sql="SELECT * FROM accounts WHERE folder=? AND status !='del'";
+				//$ns = 	$get['url'];
 				//if(is_numeric(substr($ns,0,1))) $ns='a'.$ns;
 				//$root = $_SERVER['DOCUMENT_ROOT'];					 
 				$dest = $this->app_folder.'/'.$ns;
@@ -590,7 +584,12 @@ class Accounts{
 				$db = $this->db1();
 				$result = $db->query($sql,$ar);
 				
-				if(count($result)===0)	{						
+				if(count($result)===0)	{
+					if(file_exists($_SERVER['DOCUMENT_ROOT'].$dest)){
+						$remove= $this->deleteDirectory($_SERVER['DOCUMENT_ROOT'].$dest);
+						$this->logError('ERRROOORRR !!!!! '.$_SERVER['DOCUMENT_ROOT'].$dest.' existt but not registered  removing directory result: '.$remove);
+					}
+
 						$out->success='OK';
 						$out->result = $dest;
 				}else {

@@ -184,7 +184,7 @@ var uplight;
                     }
                     else if (res.success == 'message')
                         _this.showMessage(res.message);
-                    else if (res.success == 'exists')
+                    else if (res.error == 'exists')
                         _this.showMessage('This url exists please use another one');
                 });
             }
