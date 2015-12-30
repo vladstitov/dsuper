@@ -34,6 +34,9 @@ var uplight;
             this.$message = this.$view.find('[data-id=message]:first');
             this.conn = new uplight.Connector();
         }
+        InstallProcess.prototype.addWait = function () {
+            this.$message.html(this._message + '<img src="css/wait.gif" />');
+        };
         InstallProcess.prototype.message = function (str) {
             this._message += '<li>' + str + '</li>';
             this.$message.html(this._message);
@@ -97,6 +100,8 @@ var uplight;
                     this.message('Server Ready');
                     this.conn.get(this.service + 'install').done(function (s) { return _this.onInstall(s); });
                     this.message('Installing kiosk Application at ' + res.result);
+                    this.message('Please wait a minute ');
+                    this.addWait();
                     break;
                 case 'check_complete':
                     this.message('Creating administrators');

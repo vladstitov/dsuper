@@ -22,6 +22,9 @@ module uplight{
         $message:JQuery;
         _message:string='';
 
+        addWait(){
+            this.$message.html(this._message+'<img src="css/wait.gif" />');
+        }
         message(str:string):void{
             this._message+='<li>'+str+'</li>';
             this.$message.html(this._message);
@@ -95,6 +98,9 @@ module uplight{
                     this.message('Server Ready');
                     this.conn.get(this.service+'install').done((s)=>this.onInstall(s));
                     this.message('Installing kiosk Application at '+res.result);
+                    this.message('Please wait a minute ');
+                    this.addWait();
+
                     break;
                 case 'check_complete':
                     this.message('Creating administrators');
