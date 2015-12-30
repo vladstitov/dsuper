@@ -491,7 +491,7 @@ class Accounts{
 							
 							$text="Hi $name  You are registered as Administrator Kiosks Directories \r\n";
 
-							$text.$url."/Admin \r\n";
+							$text.=$url."/Admin \r\n";
 							$text.="username: $username \r\n";
 							$text.="password: $pass \r\n";
 							if($serverNme=='localhost'){
