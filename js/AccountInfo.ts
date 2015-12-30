@@ -16,7 +16,7 @@ module uplight{
         private renderData(data:AccData):void{
             console.log(data);
             var cfg:AccCfg= data.config;
-            var url:string = cfg.server+cfg.folder+cfg.pub;
+            var url:string = cfg.server+'/';
             if(cfg.KioskMobile)  this.$view.find('[data-id=mobile]:first').text(url+cfg.KioskMobile).attr('href',url+cfg.KioskMobile).parent().show();
             else this.$view.find('[data-id=mobile]:first').parent().hide();
 

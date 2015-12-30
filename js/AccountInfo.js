@@ -22,7 +22,7 @@ var uplight;
         AccountInfo.prototype.renderData = function (data) {
             console.log(data);
             var cfg = data.config;
-            var url = cfg.server + cfg.folder + cfg.pub;
+            var url = cfg.server + '/';
             if (cfg.KioskMobile)
                 this.$view.find('[data-id=mobile]:first').text(url + cfg.KioskMobile).attr('href', url + cfg.KioskMobile).parent().show();
             else

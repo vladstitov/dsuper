@@ -3,10 +3,14 @@ require_once('MyConnector.php');
 class Accounts{		
 	var $_db2;
 	var $_db1;
-	var $pub ='/directories/';
+	var $app_folder ='/directories';
+	var $http='http://front-desk.ca';
+	var $data_folder='/data';
+	//var $pub_folder='';
 	var $src = '/directories/dist/dir_test';
 	var $https='https://frontdes-wwwss24.ssl.supercp.com';	
 	var $login;
+
 	
 	function Accounts(Login $login){
 			$this->login=$login;
@@ -58,15 +62,18 @@ class Accounts{
 				case 'check_install';							
 				return $this->check_install();
 				break;
-				case 'create_admins';				
-				return $this->create_admins(json_decode(file_get_contents("php://input")));
+				case 'create_admins';
+					$cfg = $this->getInstallConfig();
+					$folder  = $cfg->folder;
+				return $this->create_admins(json_decode(file_get_contents("php://input")),$folder);
 				break;
 				case 'register';							
 				return $this->register();
 				break;
-				case 'send_email_notification';		
-				$folder  =  $this->login->getInstallFolder();				
-				return json_encode($this->send_email_notification($folder));
+				case 'send_email_notification';
+					$cfg = $this->getInstallConfig();
+					$folder  = $cfg->folder;
+				return $this->send_email_notification($folder);
 				break;
 				case 'cancel_install';							
 				return $this->cancel_install();
@@ -165,15 +172,16 @@ class Accounts{
 			$id  =  $this->getInstallId();
 			if($id){					
 					$res = $this->delete_account($id);
-					$this->saveInstallId(0);
-					$log='cancel_install:'.json_encode($res);
+					$this->resetInstall();
+					$log=' cancel_install:'.json_encode($res);
 					$this->log($log);				
 					return $res;
 					
 			}
-			$err = 'no_install_id';
+			$err = 'no_install_id '.$id;
 			$this->logError($err);
 			$out->error='no_install_id';
+			$out->result = $id;
 			return $out;
 		/*	
 			$folder = $this->login->getInstallFolder();			
@@ -206,22 +214,31 @@ class Accounts{
 	}	
 	
 	
-	private function getInstallConfig(){		
-		return $this->login->getData('install_cfg');				
+	private function getInstallConfig(){
+		if(isset($_SESSION['install_cfg']) && $_SESSION['install_cfg']) return json_decode(file_get_contents($_SESSION['install_cfg']));
+		return 0;
 	}
 
 	private function saveInstallCongig($cfg){
-			if($cfg) return $this->login->keepData($cfg,'install_cfg');				
-			else return $this->login->killData('install_cfg');			
-			
+			if($cfg){
+				$filename = '../temp/config_'.$this->getSuperId().'_'.time().'.json';
+				$res  = file_put_contents($filename,json_encode($cfg));
+				if($res){
+					$_SESSION['install_cfg']= $filename;
+					return 1;
+				}else return 0;
+			}else {
+				$_SESSION['install_cfg']=0;
+				return 1;
+			}
 	}	
 		
 	
 	private function saveInstallId($id){
-		$this->login->setCurrentAccountId($id);		
+		$_SESSION['install_id']=$id;
 	}
 	private function getInstallId(){
-		return $this->login->getCurrentAccountId();		
+		return isset($_SESSION['install_id'])?$_SESSION['install_id']:0;
 	}
 	
 	
@@ -231,39 +248,35 @@ class Accounts{
 	
 	private function create_config($data){			
 			$config = array();
-			foreach($data as $item)	$config[$item->id] = $item->value;	
-			$config['folder']=$this->pub.$config['namespace'];
-			//$config = new stdClass();			
-			//$config->folder = $_SESSION['directories_folder'];
-			
-			$config['server']= 'http://front-desk.ca';
+			foreach($data as $item)	$config[$item->id] = $item->value;
+
+			$config['folder']=$this->app_folder.'/'.$config['namespace'];
+			$config['server']= 'http://front-desk.ca'.$config['folder'];
 			$config['uid']=$this->getSuperId();
-			$filename = 'cfg_'.$config['uid'].'_'.time().'.json';
-			
-			$config['filename']=$filename;
 			$config['root'] = $_SERVER['DOCUMENT_ROOT'];
-			$config['pub'] = $this->pub;
+			$config['app'] = $this->app_folder;
 			$config['src'] = $this->src;
-			$config['pub'] = '/pub/';
-			$config['data']='/data/';
-			$config['db'] = 'directories.db';			
+			$config['data']='/data';
+			$config['db'] = 'directories.db';
+			$config['cfg']=$config['folder'].$config['data'].'/config.json';
 			$config['https']='https://frontdes-wwwss24.ssl.supercp.com';
-			$config['adminurl']=$config['https'].$config['folder'].'/pub/Admin';
+
+			$config['adminurl']=$config['https'].$config['folder'].'/Admin';
 			$config['Admin'] = 'Admin';
 			if(isset($config['KioskMobile']) && $config['KioskMobile']) $config['KioskMobile']='KioskMobile';
 			if(isset($config['Kiosk1080']) && $config['Kiosk1080']) $config['Kiosk1080'] = 'Kiosk1080';
 			if(isset($config['Kiosk1920']) && $config['Kiosk1920']) $config['Kiosk1920'] = 'Kiosk1920';
-			
-			//$config->kiosksUrls=array();			
-			//$kiosks = array('kiosk1920'=>'Kiosk1920','kiosk1080'=>'Kiosk1080');			
-			//foreach($kiosks as $key=>$value)if(isset($indexed[$key]) && $indexed[$key])$config->kiosksUrls[]=$value;	
-			$log = 'new config:'.json_encode($config);
-			
+
+			$log = 'new config '.$config['namespace'];
 			$this->log($log);
 			$res = $this->saveInstallCongig($config);
 						
 			if($res)return $config;			
-			else return 'ERROR CONFIG';				 
+			else {
+				$out= new stdClass();
+				$out->error ='error save config';
+				return $out;
+			}
 	}
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
@@ -289,20 +302,21 @@ class Accounts{
 				$id = $db->insertRow($sql,$ar);
 				$this->saveInstallId($id);
 				$this->log('start_create install_id: '.$this->getInstallId());
+
 				if($id){					
-					$filename = $cfg->root.$cfg->folder;
-					if(file_exists($filename)){
+					$folder = $cfg->root.$cfg->folder;
+					if(file_exists($folder)){
 						$out->error='folder_exists';
-						$this->logError('ERROR start_create folder_exists');
-						$out->result = $filename;
+						$this->logError('ERROR start_create folder_exists '.$folder);
+						$out->result = $cfg->folder;
 						return $out;
 					}
 					
-					$res = @mkdir($filename, 0755);
-					if(!$res){						
+					$res = @mkdir($folder, 0755);
+					if(!$res){
 						$out->error='cant_make_dir';
-						$this->logError('ERROR start_create cant create '.$filename);
-						$out->result=$filename;
+						$this->logError('ERROR start_create cant create '.$folder);
+						$out->result=$folder;
 						return $out;
 					}
 								
@@ -337,12 +351,10 @@ class Accounts{
 		set_time_limit(60);
 			$cfg = $this->getInstallConfig();
 			if($cfg){
-				$root = $cfg->root;
+					$root = $cfg->root;
 					$src = $root.$cfg->src;			 
 					$dest = $root.$cfg->folder;
-					$folder = $cfg->folder;
-					$this->login->setInstallFolder($folder);					
-					$this->log('Install in folder '.$folder);		
+					$this->log(" Install in folder From: $src to $dest");
 					$cmd = "git clone -l  $src $dest 2>&1";
 					$log='';		
 					$log.= shell_exec($cmd);
@@ -365,65 +377,66 @@ class Accounts{
 			$out= new stdClass();	
 			$cfg = $this->getInstallConfig();					
 			$ar= array();
-			$ar[]=$cfg->pub;
 			$ar[]=$cfg->data;
-			if($cfg->KioskMobile)$ar[]=$cfg->pub.$cfg->KioskMobile.'.php';
-			if($cfg->Kiosk1080)$ar[]=$cfg->pub.$cfg->Kiosk1080.'.php';
-			if($cfg->Kiosk1920)$ar[]=$cfg->pub.$cfg->Kiosk1920.'.php';			
-			$ar[]=$cfg->pub.$cfg->Admin.'.php';			
-			$ar[]=$cfg->data.$cfg->db;
+			if($cfg->KioskMobile)$ar[]=$cfg->KioskMobile.'.php';
+			if($cfg->Kiosk1080)$ar[]=$cfg->Kiosk1080.'.php';
+			if($cfg->Kiosk1920)$ar[]=$cfg->Kiosk1920.'.php';
+			$ar[]=$cfg->Admin.'.php';
+			$ar[]=$cfg->data.'/'.$cfg->db;
 			$errors=array();			
 			foreach($ar as $val) {
-					if(file_exists($cfg->root.$cfg->folder.$val)){
+				$file_name = $cfg->root.$cfg->folder.'/'.$val;
+					if(file_exists($file_name)){
 						
 					}
-					else $errors[]=$val;					
+					else $errors[]=$file_name;
 			}			
 			if(count($errors)){
 						$err = 'Nissing files '.implode(',',$errors);
 						$this->logError($err);
 						$out->error='missing_files';
-						$out->result=implode(',',$errors);
+						$out->result=$err;
 						return $out;						
 			}
 			
-			$folder = $this->login->getInstallFolder();	
+			//$folder = $this->login->getInstallFolder();
 			//$folder = $_SERVER['DOCUMENT_ROOT'].$folder;
-			$file_name = $cfg->root.$cfg->folder.$cfg->data.'config.json';
+			$file_name = $cfg->root.$cfg->folder.$cfg->data.'/config.json';
 			$res = file_put_contents($file_name,json_encode($cfg));
 			if($res){
 				$log='check_complete:'.implode(',',$ar);
 				$this->log($log);					
 				$out->success='check_complete';
 				$out->result = implode(',',$ar);
-				$out->message = $folder;
+				//$out->message = $folder;
 				return $out;
 			}else{
 				$err = 'cant_save_config:'.$file_name;
 				$this->logError($err);
 				$out->error='cant_save_config';
-				$out->result=$file_name;
+				//$out->result=$file_name;
 				return $out;
 			}			
 			return 'ERROR check_install';				
 	}
 		
-	private function create_admins($admins){
+	private function create_admins($admins,$folder){
 				$out= new stdClass();
-				$folder = $this->login->getInstallFolder();				
+				//$folder = $this->login->getInstallFolder();
+				$cfg = $this->getInstallConfig();
 				if($folder===0){
 					$err='create_admins:no_folder';
 					$this->logError($err);
 					$out->error='nofolder';
 					return $out;
 				}	
-				$folder = $_SERVER['DOCUMENT_ROOT'].$folder;
+				$folder = $cfg->root.$folder;
 				$db = $this->db2($folder);				
 				$sql ='INSERT INTO users (name,email,username,password,sendemail,role) VALUES(?,?,?,?,?,?)';				
 				$stmt = $db->prepare($sql);
 				if(!$stmt){
 					$dberr= $db->errorInfo();
-					$err = json_encode($value);
+					$err = json_encode(dberr);
 					$this->logError($err);				
 					$out->error='prepare';
 					$out->result = $dberr;
@@ -436,6 +449,7 @@ class Accounts{
 					$names[]=$user->name;
 					$res = $stmt->execute(array($user->name,$user->email,$user->username,$user->password,$user->sendemail,'admin'));
 					if(!$res) {
+						$this->logError('insert admin '.json_encode($db->errorInfo()));
 						$out->error='insertadmin';
 						$out->result = $db->errorInfo();
 						return $out;
@@ -443,9 +457,9 @@ class Accounts{
 				}
 				if(count($sendemail))	$out->success = 'admins_created_email';				
 				else $out->success = 'admins_created';
-				$this->log($out->success);
 				$out->result = implode(',',$names);
-				$out->message = $folder;		
+				$this->log($out->success.'  '.$out->result.' in folder '.$folder);
+				$out->message = $folder;
 				return $out;				
 	}
 	
@@ -456,8 +470,9 @@ class Accounts{
 					return $out;
 				}
 				$folder= $_SERVER['DOCUMENT_ROOT'].$folder;
+
 				$result=array();
-				$out=array();											
+				//$out=array();
 				$db = $this->db2($folder);
 				$sql ='SELECT * FROM users';
 				$result = $db->queryPure($sql)->fetchAll(PDO::FETCH_OBJ);
@@ -465,20 +480,28 @@ class Accounts{
 				$headers = 'From: admin@front-desk.ca' . "\r\n" .'Reply-To: admin@front-desk.ca' . "\r\n" .'X-Mailer: PHP/' . phpversion();
 				$message='';
 				$names=array();
-												
+				$serverNme=$_SERVER['SERVER_NAME'];
 				foreach($result as $user){
 						if($user->sendemail){
 							$email= $user->email;
 							$username=$user->username;
 							$name = $user->name;
+							$pass = $user->password;
+							$url=$this->https.$this->app_folder.$folder;
 							
-							$text='Hi $name <br/> You are registered as Administrator Kiosks Directories'."\r\n";
-							$text.='username: $username '."\r\n";
-							
+							$text="Hi $name  You are registered as Administrator Kiosks Directories \r\n";
+
+							$text.$url."/Admin \r\n";
+							$text.="username: $username \r\n";
+							$text.="password: $pass \r\n";
+							if($serverNme=='localhost'){
+								$names[]= $email.'  username: '.$name.' password: '.$pass;
+								continue;
+							};
 							try{
-								if(mail($email ,'Administrator account Kiosk Directories' ,$text,$headers))	$names[]=$user->name;
+								if(mail($email ,'Administrator account Kiosk Directories' ,$text,$headers))	$names[]= $email.':'.$name;
 							  	else{
-							  		$this->logError('email admins error');						  		
+							  		$this->logError('email admins error '.$email.':'.$name);
 							  		$out->error = 'email_error';	
 									$out->result = $name;						  		
 							  		return  $out;		
@@ -499,7 +522,7 @@ class Accounts{
 
 	private function register(){
 				$out= new stdClass();				
-				$id = $this->login->getCurrentAccountId();
+				$id =  $this->getInstallId();
 				$sql="UPDATE accounts SET status='new' WHERE id=".$id;
 				$db = $this->db1();
 				$res = $db->queryPure($sql);				
@@ -508,15 +531,15 @@ class Accounts{
 					$this->log($log);				
 					$out->success='registered';
 					$out->result= $id;
-					$out->message = $this->login->getInstallFolder();
+					//$out->message = $this->login->getInstallFolder();
 					$this->resetInstall();
 				}
 				else $out->error='redistration_error';
 			return $out;
 	}
 	private function resetInstall(){
-		$this->login->setInstallFolder(0);
-		$this->login->setCurrentAccountId(0);
+		$this->saveInstallId(0);
+		$this->saveInstallCongig(0);
 	}
 	
 	
@@ -560,28 +583,29 @@ class Accounts{
 		
 	private function check_url($get){
 				$out= new stdClass();
-				$out->success='exists';
-				
 				$sql='SELECT * FROM accounts WHERE folder=?';
 				$ns = 	$get['url'];				
-				if(is_numeric(substr($ns,0,1))) $ns='a'.$ns;
+				//if(is_numeric(substr($ns,0,1))) $ns='a'.$ns;
 				//$root = $_SERVER['DOCUMENT_ROOT'];					 
-				$dest = $this->pub.$ns;							
+				$dest = $this->app_folder.'/'.$ns;
 				$ar=array($dest);
 				$db = $this->db1();
 				$result = $db->query($sql,$ar);
 				
 				if(count($result)===0)	{						
 						$out->success='OK';
-						$out->result = $this->pub.$ns;
-				}else {'a'.$this->getSuperId().'-'.$ns;
+						$out->result = $dest;
+				}else {
+					$out->error='exists';
+					$out->message = 'Namespace '.$ns.' taken';
+					/*'a'.$this->getSuperId().'-'.$ns;
 					$dest = $this->pub.$ns;
 					$ar=array($dest);
 					$result = $db->query($sql,$ar);				
 					if(count($result)===0){						
 							$out->success='ISOK';
 							$out->result = $ns;					
-					}
+					}*/
 				}
 				return $out;
 				
@@ -640,7 +664,7 @@ class Accounts{
 		error_log("\r\n ".date("Y-m-d H:i:s").'  '.$log,3,'../logs/account_'.$this->getUserId().'.log');
 	}
 
-	function emailError($email){
+	function emailError($err){
 		error_log($err,1,'uplight.ca@gmail.com');
 	}
 	

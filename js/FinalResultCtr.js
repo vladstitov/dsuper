@@ -87,7 +87,7 @@ var uplight;
             var server = config.server;
             var v = this.$view;
             var namespace = config.namespace;
-            var url = config.server + config.folder;
+            var url = config.server;
             v.find('[data-id=account_name]').children().last().text(config.account_name);
             v.find('[data-id=description]').children().last().text(config.description);
             v.find('[data-id=namespace]').children().last().text(config.namespace);

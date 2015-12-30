@@ -95,7 +95,7 @@ module uplight{
 
             var v:JQuery = this.$view;
             var namespace:string = config.namespace;
-            var url = config.server+config.folder;
+            var url = config.server;
 
             v.find('[data-id=account_name]').children().last().text(config.account_name);
             v.find('[data-id=description]').children().last().text(config.description);
