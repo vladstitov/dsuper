@@ -1,3 +1,4 @@
 /.idea
 /logs/app_error.log
 /logs/*.log
+/temp/*.tmp

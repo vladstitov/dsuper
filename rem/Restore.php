@@ -79,7 +79,7 @@ class Restore{
 		if(!$username) {
 			return 'ERROR,No email';
 		}
-
+		$out=new stdClass();
 		$usernameS = md5($username);
 		$db =  new MyConnector(0);
 		$sql='SELECT pass,email FROM users WHERE username=?';
@@ -95,7 +95,7 @@ class Restore{
 			 $message ='Your password is: '.$password;
 			 $headers = 'From: admin@front-desk.ca' . "\r\n" . 'Reply-To: admin@front-desk.ca' . "\r\n" . 'X-Mailer: PHP/' . phpversion();
 				mail($to, $subject, $message,$headers);
-				$out=new stdClass();
+
 				$out->success='password_sent_to';				
 				$out->result=$email.$password;
 				$out->message= 'Password sent to your email';
@@ -115,7 +115,7 @@ class Restore{
 		error_log("\r\n ".date("Y-m-d H:i:s").'  '.$log,3,'../logs/restore_'.$this->getUserId().'.log');
 	}
 
-	function emailError($email){
+	function emailError($err){
 		error_log($err,1,'uplight.ca@gmail.com');
 	}
 	

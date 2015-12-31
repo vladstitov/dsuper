@@ -61,6 +61,7 @@ module uplight{
            }
             else {
                this.message('Please wait..');
+               this.addWait();
                setTimeout(()=>{
                    this.message('Checking installation');
                    this.ask('check_install');

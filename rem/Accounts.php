@@ -221,7 +221,7 @@ class Accounts{
 
 	private function saveInstallCongig($cfg){
 			if($cfg){
-				$filename = '../temp/config_'.$this->getSuperId().'_'.time().'.json';
+				$filename = '../temp/config_'.$this->getSuperId().'_'.time().'.json.tmp';
 				$res  = file_put_contents($filename,json_encode($cfg));
 				if($res){
 					$_SESSION['install_cfg']= $filename;
