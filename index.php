@@ -1,6 +1,6 @@
 <?
 session_start();
-if(!isset($_SESSION['directories_role'])  || $_SESSION['directories_role']=='welcome'){
+if(!isset($_SESSION['directories_role']) || !isset($_SESSION['directories_userid']) || $_SESSION['directories_userid']===0 || $_SESSION['directories_role']=='welcome'){
 	 echo file_get_contents('Login.html');
 	  exit;
 }
