@@ -11,16 +11,16 @@
                 &nbsp;
             </div>
             <div class="form-group" data-id="mobile">
-                <input type="checkbox" class="form-control" checked data-id="KioskMobile" />
+                <input type="checkbox" class="form-control" readonly checked data-id="KioskMobile" />
                 <label>Mobile </label><small> Mobile website (Part of standard package)</small>
             </div>
             <br/>
             <div class="form-group" data-id="kiosk1080">
-                <input  type="checkbox"   class="form-control" checked  data-id="Kiosk1080"/>
+                <input  type="checkbox"   class="form-control" checked readonly data-id="Kiosk1080"/>
                 <label >Kiosks 1080x1920</label> <small> Kiosk portrait application (Part of standard package)</small>
             </div>
             <div class="form-group" data-id="kiosk1920">
-                <input  type="checkbox"   class="form-control" checked data-id="Kiosk1920" />
+                <input  type="checkbox"   class="form-control" readonly checked data-id="Kiosk1920" />
                 <label >Kiosks 1920x1080</label> <small> Kiosk landscape application (Part of standard package)</small>
             </div>
         </div>

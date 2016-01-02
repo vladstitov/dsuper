@@ -7,9 +7,9 @@
         <div class="form">
             <div class="form-group" data-id="namespace">
                 <small> Namespace (ID) used in URL to idetify acoount on server.<br/>
-                    example : <b>1131MajMack</b><br/>
-                    Kiosk URL: <span data-id="server"></span>/dist/<span class="namespace">a1131MajMack</span>/Kiosk1080<br/>
-                    Admin URL: <span data-id="server-admin"></span>/dist/<span class="namespace">a1131MajMack</span>/Admin<br/>
+                    example : <b>address1</b><br/>
+                    Kiosk URL: <span data-id="server"></span>/<span class="namespace">address1</span>/Kiosk1080<br/>
+                    Admin URL: <span data-id="server-admin"></span>/<span class="namespace">address1</span>/Admin<br/>
                 </small>
                 <label>Namespace: </label><span><small> Letters and numbers only </small>
                                 <div class="off" data-id="message"></div>
